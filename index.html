@@ -1,0 +1,933 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ARIC — ศูนย์นวัตกรรมด้านปัญญาประดิษฐ์และหุ่นยนต์ มหาวิทยาลัยแม่ฟ้าหลวง</title>
+<meta name="description" content="ARIC สร้างสมองให้หุ่นยนต์จากโจทย์จริงของภาคเหนือ — ศูนย์นวัตกรรมด้านปัญญาประดิษฐ์และหุ่นยนต์ มหาวิทยาลัยแม่ฟ้าหลวง เชียงราย">
+<meta property="og:title" content="ARIC — สร้างสมองให้หุ่นยนต์ จากโจทย์จริงของภาคเหนือ">
+<meta property="og:description" content="ศูนย์นวัตกรรมด้านปัญญาประดิษฐ์และหุ่นยนต์ มหาวิทยาลัยแม่ฟ้าหลวง · รอบ Spark → Forge → Launch ทุก 4 เดือน">
+<meta property="og:image" content="https://cnacha-mfu.github.io/aric/assets/og.jpg">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#6E0B1C">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anuphan:wght@300;400;500;600&family=Bai+Jamjuree:wght@500;600;700&family=Martian+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --red:#C8102E; --red-d:#7A0C1E; --field:#6E0B1C; --field-d:#4A0712;
+  --gold:#E4B04A; --gold-l:#F3D48A; --gold-d:#9A6C14;
+  --ink:#17110F; --ink2:#463B37; --mute:#6B5E59; --rule:#E7E1DE; --paper:#FFFFFF; --wash:#F6F3F1;
+  --on-red:#FFF4EF; --on-red2:rgba(255,236,228,.80); --on-red3:rgba(255,236,228,.58);
+  --f2:#3F8F6F; --f3:#6B5B95; --f4:#0D3B66; --f1:#C9713C;
+  --disp:'Bai Jamjuree','Anuphan',system-ui,sans-serif;
+  --body:'Anuphan','Bai Jamjuree',system-ui,sans-serif;
+  --mono:'Martian Mono','Anuphan',ui-monospace,Consolas,monospace;
+  --ease:cubic-bezier(.16,1,.3,1);
+  --wrap:min(1240px, 100% - 2*clamp(20px,4vw,56px));
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scrollbar-color:var(--red) var(--wash);-webkit-text-size-adjust:100%}
+body{margin:0;font:400 17px/1.75 var(--body);color:var(--ink);background:var(--paper);caret-color:var(--red)}
+::selection{background:var(--gold);color:var(--ink)}
+:focus-visible{outline:3px solid var(--gold);outline-offset:3px;border-radius:4px}
+a{color:inherit;text-underline-offset:.22em;text-decoration-thickness:1px}
+img,video,canvas{display:block;max-width:100%}
+h1,h2,h3{font-family:var(--disp);font-weight:700;margin:0;letter-spacing:-.01em;text-wrap:balance}
+p{margin:0;text-wrap:pretty}
+.wrap{width:var(--wrap);margin-inline:auto}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.skip{position:absolute;left:12px;top:-60px;background:var(--gold);color:var(--ink);padding:8px 14px;border-radius:6px;z-index:100;text-decoration:none;font-weight:600}
+.skip:focus{top:12px}
+
+/* ---------- buttons ---------- */
+.btn{display:inline-flex;align-items:center;gap:12px;font:600 17px/1 var(--disp);padding:17px 24px 17px 26px;border-radius:999px;text-decoration:none;border:0;cursor:pointer;transition:transform .3s var(--ease),box-shadow .3s var(--ease),background .2s}
+.btn svg{width:18px;height:18px;transition:transform .35s var(--ease)}
+.btn-gold{background:var(--gold);color:var(--ink);box-shadow:0 8px 20px -10px rgba(0,0,0,.32)}
+.btn-gold:hover{transform:translateY(-2px);box-shadow:0 14px 26px -12px rgba(0,0,0,.38);background:#EDBD5C}
+.btn-gold:hover svg{transform:translateX(4px)}
+.btn-gold:active{transform:translateY(0)}
+.link-play{display:inline-flex;align-items:center;gap:10px;font:500 16px/1 var(--disp);text-decoration:none;color:var(--on-red);padding:14px 6px}
+.link-play i{width:38px;height:38px;border-radius:50%;border:1.5px solid var(--on-red3);display:grid;place-items:center;transition:border-color .2s,background .2s}
+.link-play:hover i{border-color:var(--gold);background:rgba(228,176,74,.15)}
+.link-play svg{width:12px;height:12px;margin-left:2px}
+
+/* ---------- nav ---------- */
+.nav{position:fixed;inset:0 0 auto 0;z-index:50;transition:background .35s,box-shadow .35s,color .35s;color:var(--on-red);background:linear-gradient(180deg,rgba(74,7,18,.55),rgba(74,7,18,0))}
+.nav .wrap{display:flex;align-items:center;gap:20px;height:72px}
+.nav.solid{background:rgba(255,255,255,.94);backdrop-filter:saturate(1.4) blur(10px);color:var(--ink);box-shadow:0 1px 0 var(--rule)}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;flex:none}
+.brand svg{width:44px;height:auto}
+.brand b{font:700 22px/1 var(--disp);letter-spacing:.06em}
+.brand span{display:block;font:500 11px/1.25 var(--disp);letter-spacing:.02em;opacity:.78;white-space:nowrap}
+.nav ul{display:flex;gap:4px;list-style:none;margin:0 0 0 auto;padding:0}
+.nav ul a{display:block;font:500 15px/1 var(--disp);padding:10px 12px;border-radius:999px;text-decoration:none;opacity:.86;transition:opacity .2s,background .2s}
+.nav ul a:hover{opacity:1;background:rgba(255,255,255,.12)}
+.nav.solid ul a:hover{background:var(--wash)}
+.lang{display:flex;border:1.5px solid currentColor;border-radius:999px;padding:2px;opacity:.9;flex:none}
+.lang button{font:600 12.5px/1 var(--mono);color:inherit;background:none;border:0;padding:7px 10px;border-radius:999px;cursor:pointer}
+.lang button[aria-pressed="true"]{background:var(--gold);color:var(--ink)}
+.nav .btn{padding:12px 18px;font-size:15px;flex:none}
+.menu-btn{display:none;background:none;border:0;color:inherit;padding:8px;cursor:pointer;margin-left:auto}
+.menu-btn svg{width:26px;height:26px}
+@media (max-width:1100px){.nav ul{display:none}.nav .btn{display:none}.menu-btn{display:block}.lang{margin-left:0}}
+.drawer{position:fixed;inset:0;z-index:60;background:var(--field);color:var(--on-red);display:none;flex-direction:column;padding:88px clamp(24px,6vw,48px) 40px}
+.drawer.open{display:flex}
+.drawer a{font:600 28px/1.35 var(--disp);text-decoration:none;padding:8px 0;border-bottom:1px solid rgba(255,236,228,.14)}
+.drawer .close{position:absolute;top:18px;right:18px;background:none;border:0;color:inherit;padding:10px;cursor:pointer}
+.drawer .btn{margin-top:28px;align-self:flex-start}
+
+/* ---------- hero ---------- */
+.hero{position:relative;min-height:100svh;background-color:var(--field);background-image:radial-gradient(120% 90% at 78% 70%,#8B0F25 0%,var(--field) 48%,var(--field-d) 100%);color:var(--on-red);overflow:hidden;isolation:isolate}
+.hero canvas{position:absolute;inset:0;width:100%;height:100%;z-index:0;touch-action:pan-y;cursor:crosshair}
+.hero .wrap{position:relative;z-index:1;min-height:100svh;display:flex;flex-direction:column;justify-content:center;padding:120px 0 96px;pointer-events:none}
+.hero .copy{max-width:min(600px,52%);pointer-events:auto}
+.hero h1{font-size:clamp(2.5rem,5.1vw,5.1rem);line-height:1.12;letter-spacing:-.015em}
+.hero h1 em{font-style:normal;color:var(--gold-l)}
+.hero h1 .ln{display:block;white-space:nowrap}
+@media (max-width:420px){.hero h1 .ln{white-space:normal}}
+.hero .lede{font-size:clamp(1.02rem,1.25vw,1.2rem);line-height:1.7;color:var(--on-red2);margin-top:26px;max-width:46ch}
+.hero .actions{display:flex;flex-wrap:wrap;align-items:center;gap:14px 22px;margin-top:36px}
+.seed{position:absolute;z-index:2;right:clamp(20px,4vw,56px);top:96px;display:flex;align-items:center;gap:14px;pointer-events:auto}
+.seed button{display:flex;align-items:center;gap:10px;font:500 12.5px/1 var(--mono);letter-spacing:.06em;color:var(--on-red);background:rgba(74,7,18,.55);border:1px solid rgba(243,212,138,.45);border-radius:999px;padding:10px 14px;cursor:pointer;transition:border-color .2s,background .2s}
+.seed button:hover{border-color:var(--gold);background:rgba(74,7,18,.8)}
+.seed button svg{width:14px;height:14px;transition:transform .6s var(--ease)}
+.seed button:hover svg{transform:rotate(180deg)}
+.hero .hint{display:flex;align-items:center;gap:10px;margin-top:30px;font:400 14px/1.5 var(--body);color:var(--on-red3)}
+.hero .hint::before{content:"";width:22px;height:22px;flex:none;border-radius:50%;border:1.5px dashed var(--gold-l);box-shadow:inset 0 0 0 5px rgba(110,11,28,1),inset 0 0 0 9px var(--gold)}
+.toast{position:absolute;z-index:3;pointer-events:none;font:500 12px/1 var(--mono);color:var(--gold-l);letter-spacing:.04em;transform:translate(-50%,-150%);opacity:0;white-space:nowrap}
+@media (max-width:860px){
+  .hero .wrap{justify-content:flex-start;padding-top:108px;padding-bottom:46svh}
+  .hero .copy{max-width:100%}
+  .seed{left:auto;right:20px;top:auto;bottom:20px}
+  .hero .hint{margin-top:22px}
+}
+
+/* ---------- sections ---------- */
+section{position:relative}
+.sec{padding:clamp(88px,11vw,150px) 0}
+.h2{font-size:clamp(2rem,4.2vw,3.6rem);line-height:1.15}
+.lead{font-size:clamp(1.05rem,1.35vw,1.22rem);line-height:1.75;color:var(--ink2);max-width:60ch;margin-top:22px}
+.red-field{background:var(--field);color:var(--on-red)}
+.red-field .lead{color:var(--on-red2)}
+
+/* brain vs hands */
+.brain-grid{display:grid;grid-template-columns:1fr 1.15fr;gap:clamp(40px,6vw,90px);align-items:center;margin-top:56px}
+.stack{display:flex;flex-direction:column;gap:8px;--b:.5}
+.layer{display:grid;grid-template-columns:52px 1fr auto;align-items:center;gap:16px;padding:18px 20px;border-radius:10px;position:relative;overflow:hidden;transition:background .5s var(--ease),color .5s var(--ease),transform .5s var(--ease)}
+.layer .L{font:600 20px/1 var(--mono)}
+.layer h3{font-size:18.5px;line-height:1.35;font-weight:600}
+.layer p{font-size:14.5px;line-height:1.5;margin-top:3px;opacity:.82}
+.layer .who{font:500 12.5px/1.2 var(--disp);white-space:nowrap;padding:6px 10px;border-radius:999px}
+.layer.hand{background:color-mix(in srgb,#ECE8E6 calc(100% - var(--b)*55%),#F7F5F4);color:color-mix(in srgb,var(--ink2) calc(100% - var(--b)*45%),#A79E9A)}
+.layer.hand .who{background:rgba(23,17,15,.06)}
+.layer.brn{background:color-mix(in srgb,var(--red) calc(var(--b)*100%),#F1ECEA);color:var(--ink2)}
+.stack.lit .layer.brn{color:var(--on-red)}
+.layer.brn.top{background:color-mix(in srgb,var(--red-d) calc(var(--b)*100%),#F1ECEA)}
+.layer.brn .who{background:color-mix(in srgb,var(--gold) calc(var(--b)*100%),rgba(23,17,15,.06));color:var(--ink)}
+.layer.brn svg.net{position:absolute;inset:0;width:100%;height:100%;opacity:calc(var(--b)*.9);pointer-events:none}
+.slider{margin-top:28px}
+.slider .ends{display:flex;justify-content:space-between;font:600 15px/1 var(--disp);margin-bottom:12px}
+.slider .ends span:last-child{color:var(--red)}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:28px;background:transparent;cursor:pointer}
+input[type=range]::-webkit-slider-runnable-track{height:6px;border-radius:6px;background:linear-gradient(90deg,#C9C1BD var(--pct,50%),var(--red) var(--pct,50%))}
+input[type=range]::-moz-range-track{height:6px;border-radius:6px;background:#C9C1BD}
+input[type=range]::-moz-range-progress{height:6px;border-radius:6px;background:var(--red)}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:28px;height:28px;margin-top:-11px;border-radius:50%;background:var(--paper);border:3px solid var(--gold);box-shadow:0 4px 10px -4px rgba(0,0,0,.35)}
+input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:var(--paper);border:3px solid var(--gold)}
+.readout{margin-top:18px;font:500 16px/1.6 var(--body);color:var(--ink2);min-height:3.2em}
+.readout b{color:var(--red);font-weight:600}
+.endorse{display:flex;gap:18px;align-items:baseline;margin-top:56px;padding-top:24px;border-top:1px solid var(--rule);font-size:15.5px;color:var(--ink2)}
+.endorse b{font:600 17px/1.4 var(--disp);color:var(--ink);white-space:nowrap}
+.endorse a{color:var(--red);font-weight:500;white-space:nowrap}
+@media (max-width:900px){.brain-grid{grid-template-columns:1fr}.endorse{flex-direction:column;gap:6px}}
+@media (max-width:600px){.layer{grid-template-columns:38px 1fr;gap:4px 12px;padding:14px 16px}.layer .who{grid-column:2;justify-self:start;margin-top:6px}.layer h3{font-size:16.5px}}
+
+/* engine (scroll-driven) */
+#engine{height:360vh;background:var(--field)}
+.engine-sticky{position:sticky;top:0;height:100svh;overflow:hidden;color:var(--on-red);display:grid;grid-template-rows:auto 1fr}
+.engine-head{padding-top:clamp(92px,11vh,120px)}
+.engine-head .lead{color:var(--on-red2)}
+.engine-body{display:grid;grid-template-columns:1.25fr 1fr;gap:clamp(24px,4vw,64px);align-items:center;min-height:0;padding-bottom:4vh}
+.stage-canvas{position:relative;height:100%;min-height:300px}
+.stage-canvas canvas{position:absolute;inset:0;width:100%;height:100%}
+.stage-note{position:absolute;left:0;bottom:6%;font:500 13px/1.4 var(--mono);color:var(--gold-l);letter-spacing:.03em}
+.stages{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.stage{padding:20px 22px;border-radius:12px;transition:background .5s var(--ease),opacity .5s var(--ease);opacity:.45}
+.stage.on{background:rgba(255,236,228,.08);opacity:1}
+.stage h3{font-size:clamp(1.35rem,2vw,1.75rem);display:flex;align-items:baseline;gap:12px}
+.stage h3 .mono{font-size:13px;font-weight:500;color:var(--gold-l);letter-spacing:.05em}
+.stage p{font-size:16px;line-height:1.65;color:var(--on-red2);margin-top:6px}
+.stage p b{color:var(--on-red);font-weight:600}
+.year{display:flex;align-items:center;gap:16px;margin-top:22px;padding-left:22px}
+.year svg{width:84px;height:84px;flex:none}
+.year p{font-size:14px;line-height:1.55;color:var(--on-red3)}
+.year p b{color:var(--on-red2);font-weight:500}
+@media (max-width:900px){
+  #engine{height:420vh}
+  .engine-body{grid-template-columns:1fr;grid-template-rows:38svh auto;align-content:start;gap:8px}
+  .stage{padding:12px 14px}.stage p{font-size:14.5px}
+  .stages .stage:not(.on){display:none}
+  .year{display:none}
+}
+
+/* care */
+.care-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:20px;margin-top:60px}
+.uc{position:relative;border-radius:14px;overflow:hidden;background:var(--wash);display:flex;flex-direction:column}
+.uc img{width:100%;height:auto;aspect-ratio:840/786;object-fit:cover;transition:transform .9s var(--ease)}
+.uc:hover img{transform:scale(1.035)}
+.uc .t{padding:18px 20px 22px}
+.uc h3{font-size:20px;line-height:1.35}
+.uc p{font-size:15px;line-height:1.6;color:var(--ink2);margin-top:6px}
+.uc .bot{font:500 12px/1 var(--mono);color:var(--red);letter-spacing:.04em;margin-bottom:8px;display:block}
+.uc:nth-child(1),.uc:nth-child(4){grid-column:span 7}
+.uc:nth-child(2),.uc:nth-child(3){grid-column:span 5}
+.uc:nth-child(1) img,.uc:nth-child(4) img{aspect-ratio:16/9}
+.uc:nth-child(2) img,.uc:nth-child(3) img{aspect-ratio:5/4}
+.principle{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px 24px;margin-top:28px;font-size:14px;color:var(--mute)}
+.principle b{font:600 18px/1.4 var(--disp);color:var(--red)}
+@media (max-width:900px){.care-grid{grid-template-columns:1fr 1fr}.uc:nth-child(n){grid-column:auto}.uc:nth-child(n) img{aspect-ratio:5/4}}
+@media (max-width:520px){.care-grid{grid-template-columns:1fr}}
+
+/* founders */
+.founders{background:var(--wash)}
+.f-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:clamp(40px,6vw,90px);margin-top:60px}
+.gets{list-style:none;margin:0;padding:0}
+.gets li{display:grid;grid-template-columns:34px 1fr;gap:14px;padding:16px 0;border-top:1px solid var(--rule)}
+.gets li:last-child{border-bottom:1px solid var(--rule)}
+.gets svg{width:30px;height:22px;margin-top:5px}
+.gets b{display:block;font:600 18px/1.4 var(--disp)}
+.gets span{font-size:15.5px;color:var(--ink2);line-height:1.6}
+.share{margin-top:44px}
+.share h3{font-size:22px}
+.share .bar{display:flex;height:54px;gap:3px;margin-top:16px;border-radius:10px;overflow:hidden;font:600 14px/1 var(--disp)}
+.share .bar div{display:flex;align-items:center;justify-content:center;transform-origin:left;transition:transform 1.1s var(--ease)}
+.share .bar div:nth-child(1){flex:15;background:var(--red);color:var(--on-red)}
+.share .bar div:nth-child(2){flex:65;background:var(--gold);color:var(--ink)}
+.share .bar div:nth-child(3){flex:20;background:var(--ink2);color:var(--on-red)}
+.share.pre .bar div{transform:scaleX(0)}
+.share p{font-size:15.5px;color:var(--ink2);line-height:1.65;margin-top:14px}
+.form{background:var(--paper);border-radius:18px;padding:clamp(24px,3vw,38px);box-shadow:0 30px 60px -40px rgba(0,0,0,.28);align-self:start;position:sticky;top:96px}
+.form h3{font-size:26px;line-height:1.3}
+.form .next{display:flex;align-items:center;gap:10px;margin-top:10px;font-size:15px;color:var(--ink2)}
+.form .next .mono{font-size:13px;background:var(--wash);padding:5px 9px;border-radius:6px;color:var(--red-d)}
+.field{display:flex;flex-direction:column;gap:6px;margin-top:18px}
+.field label,.field legend{font:600 14px/1.3 var(--disp);color:var(--ink)}
+.field input,.field textarea{font:400 16px/1.5 var(--body);color:var(--ink);background:var(--wash);border:1.5px solid transparent;border-radius:10px;padding:13px 14px;transition:border-color .2s,background .2s}
+.field input::placeholder,.field textarea::placeholder{color:#857873}
+.field input:hover,.field textarea:hover{border-color:var(--rule)}
+.field input:focus,.field textarea:focus{outline:0;border-color:var(--gold);background:var(--paper)}
+.field input[aria-invalid="true"]{border-color:var(--red)}
+.err{font-size:13.5px;color:var(--red);min-height:1em}
+fieldset.field{border:0;padding:0;margin:18px 0 0}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+.chips label{position:relative;font:500 14.5px/1 var(--body);color:var(--ink2);cursor:pointer}
+.chips input{position:absolute;opacity:0;inset:0}
+.chips span{display:block;padding:10px 14px;border-radius:999px;border:1.5px solid var(--rule);transition:all .2s}
+.chips input:checked+span{background:var(--red);border-color:var(--red);color:var(--on-red)}
+.chips input:focus-visible+span{outline:3px solid var(--gold);outline-offset:2px}
+.form .btn{margin-top:24px;width:100%;justify-content:center}
+.form small{display:block;margin-top:12px;font-size:13px;color:var(--mute);line-height:1.5}
+.targets{margin-top:44px;font-size:15px;color:var(--ink2);line-height:1.7}
+.targets b{font-family:var(--mono);font-weight:500;color:var(--red-d)}
+@media (max-width:900px){.f-grid{grid-template-columns:1fr}.form{position:static}}
+
+/* building */
+.floors{margin-top:56px;display:flex;flex-direction:column;border-top:1px solid var(--rule)}
+.floor{border-bottom:1px solid var(--rule)}
+.floor>button{all:unset;box-sizing:border-box;width:100%;display:grid;grid-template-columns:70px 1fr auto 28px;align-items:center;gap:20px;padding:22px 0;cursor:pointer}
+.floor>button:focus-visible{outline:3px solid var(--gold);outline-offset:4px;border-radius:6px}
+.floor .no{font:600 30px/1 var(--mono);color:var(--mute)}
+.floor .nm{font:700 clamp(1.4rem,2.6vw,2.2rem)/1.2 var(--disp)}
+.floor .ds{font-size:15.5px;color:var(--ink2);text-align:right}
+.floor .sw{width:46px;height:10px;border-radius:5px}
+.floor .chev{width:22px;height:22px;transition:transform .45s var(--ease)}
+.floor[open] .chev{transform:rotate(45deg)}
+.floor .panel{display:grid;grid-template-rows:0fr;transition:grid-template-rows .6s var(--ease)}
+.floor[open] .panel{grid-template-rows:1fr}
+.floor .panel>div{overflow:hidden}
+.floor .inner{display:grid;grid-template-columns:1.6fr 1fr;gap:32px;padding:4px 0 34px}
+.floor .inner img{width:100%;height:auto;border-radius:12px}
+.floor .inner ul{margin:0;padding:0;list-style:none}
+.floor .inner li{padding:10px 0;border-top:1px solid var(--rule);font-size:15.5px;line-height:1.6;color:var(--ink2)}
+.floor .inner li b{color:var(--ink);font-weight:600}
+.floor:hover .nm{color:var(--red)}
+.bnote{margin-top:22px;font-size:14px;color:var(--mute)}
+.bnote a{color:var(--red)}
+@media (max-width:760px){.floor>button{grid-template-columns:44px 1fr 22px}.floor .ds{display:none}.floor .sw{display:none}.floor .inner{grid-template-columns:1fr}}
+
+/* film */
+.film{background-color:var(--field-d);background-image:radial-gradient(90% 120% at 50% 0%,#7E0D21 0%,var(--field-d) 70%);color:var(--on-red)}
+.film .h2{max-width:20ch}
+.player{position:relative;margin-top:52px;border-radius:18px;overflow:hidden;box-shadow:0 40px 80px -40px rgba(0,0,0,.6);aspect-ratio:16/9;background:#1a0408}
+.player video{width:100%;height:100%;object-fit:cover}
+.player .play{position:absolute;inset:0;display:grid;place-items:center;background:none;border:0;cursor:pointer;color:var(--ink)}
+.player .play i{width:96px;height:96px;border-radius:50%;background:var(--gold);display:grid;place-items:center;transition:transform .35s var(--ease);box-shadow:0 18px 40px -16px rgba(0,0,0,.6)}
+.player .play:hover i{transform:scale(1.08)}
+.player .play svg{width:30px;height:30px;margin-left:5px}
+.player.playing .play{display:none}
+.film .meta{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-top:16px;font-size:14px;color:var(--on-red3)}
+
+/* contact + press */
+.c-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:clamp(28px,4vw,60px);margin-top:56px}
+.c-grid h3{font-size:19px;margin-bottom:14px}
+.c-grid ul{list-style:none;margin:0;padding:0}
+.c-grid li{padding:11px 0;border-top:1px solid var(--rule);font-size:15.5px;line-height:1.55;display:flex;justify-content:space-between;gap:12px}
+.c-grid li span:first-child{color:var(--mute)}
+.c-grid li a{color:var(--red);font-weight:500;text-decoration:none}
+.c-grid li a:hover{text-decoration:underline}
+.ph{font:500 13px/1.4 var(--mono);color:var(--gold-d);background:#FBF3DF;padding:2px 7px;border-radius:5px}
+@media (max-width:900px){.c-grid{grid-template-columns:1fr}}
+
+footer{background:var(--field-d);color:var(--on-red3);padding:56px 0 40px;font-size:14px}
+footer .wrap{display:flex;flex-wrap:wrap;gap:24px 40px;align-items:center;justify-content:space-between}
+footer .brand{color:var(--on-red)}
+footer p{line-height:1.6}
+
+/* reveal: content visible by default; JS adds .pre then removes it */
+.rv.pre{opacity:0;transform:translateY(18px);filter:blur(4px)}
+.rv{transition:opacity .9s var(--ease),transform .9s var(--ease),filter .9s var(--ease)}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .rv,.rv.pre{opacity:1;transform:none;filter:none;transition:none}
+  #engine{height:auto}.engine-sticky{position:relative;height:auto;padding-bottom:60px}
+  .engine-body{grid-template-rows:auto}.stage-canvas{height:46vh}
+  .stage{opacity:1}.stages .stage:not(.on){display:block}
+  .share.pre .bar div{transform:none}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main" data-en="Skip to content">ข้ามไปยังเนื้อหา</a>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-arrow" viewBox="0 0 20 20"><path d="M3 10h13M11 4.5 16.5 10 11 15.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-play" viewBox="0 0 20 20"><path d="M5 3.2v13.6L16.5 10z" fill="currentColor"/></symbol>
+    <symbol id="i-reseed" viewBox="0 0 20 20"><path d="M16 7.5A6.5 6.5 0 1 0 16.5 12M16 3v4.5h-4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 20 20"><path d="M10 3v14M3 10h14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+    <symbol id="i-node" viewBox="0 0 26 26"><path d="M5 20 13 5 21 20Z" fill="none" stroke="#C8102E" stroke-width="1.6" stroke-linejoin="round"/><path d="M13 5v15M9 20l4-7 4 7" fill="none" stroke="#E4B04A" stroke-width="1.4"/><circle cx="13" cy="5" r="2.6" fill="#fff" stroke="#E4B04A" stroke-width="1.6"/><circle cx="13" cy="13" r="2" fill="#E4B04A"/></symbol>
+    <symbol id="mark" viewBox="30 72 472 338"><path d="M56 400 L168 192 L244 282 L320 140 L456 400 Z" fill="currentColor"/><g stroke="#F3D48A" stroke-width="7" stroke-linecap="round" fill="none" opacity=".95"><path d="M168 192 L232 352 L320 140 M244 282 L300 236 M232 352 L352 320 L300 236 M352 320 L456 400 M56 400 L232 352 L220 400"/></g><circle cx="418" cy="118" r="30" fill="#E4B04A"/><g fill="#fff" stroke="#E4B04A" stroke-width="7"><circle cx="168" cy="192" r="13"/><circle cx="244" cy="282" r="11"/><circle cx="320" cy="140" r="14"/></g></symbol>
+  </defs>
+</svg>
+
+<header class="nav" id="nav">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="ARIC — หน้าแรก">
+      <svg aria-hidden="true" style="color:#E63A55"><use href="#mark"/></svg>
+      <div><b>ARIC</b><span data-en="AI &amp; Robotics Innovation Center · MFU">ศูนย์นวัตกรรม AI และหุ่นยนต์ มฟล.</span></div>
+    </a>
+    <nav aria-label="หลัก"><ul>
+      <li><a href="#brain" data-en="Idea">แนวคิด</a></li>
+      <li><a href="#engine" data-en="Engine">กลไก</a></li>
+      <li><a href="#care" data-en="Care">เพื่อการดูแล</a></li>
+      <li><a href="#founders" data-en="Founders">สำหรับผู้ก่อตั้ง</a></li>
+      <li><a href="#building" data-en="Building">อาคาร</a></li>
+      <li><a href="#film" data-en="Film">วิดีโอ</a></li>
+      <li><a href="#contact" data-en="Contact">ติดต่อ</a></li>
+    </ul></nav>
+    <div class="lang" role="group" aria-label="ภาษา / Language">
+      <button type="button" data-lang="th" aria-pressed="true">TH</button>
+      <button type="button" data-lang="en" aria-pressed="false">EN</button>
+    </div>
+    <a class="btn btn-gold" href="#join"><span data-en="Join Spark">ร่วมรอบ Spark</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+    <button class="menu-btn" type="button" aria-label="เมนู" aria-expanded="false" aria-controls="drawer"><svg viewBox="0 0 26 26" aria-hidden="true"><path d="M4 8h18M4 13h18M4 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+  </div>
+</header>
+<div class="drawer" id="drawer" role="dialog" aria-modal="true" aria-label="เมนู">
+  <button class="close" type="button" aria-label="ปิดเมนู"><svg viewBox="0 0 26 26" width="26" height="26" aria-hidden="true"><path d="M6 6l14 14M20 6 6 20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+  <a href="#brain" data-en="Idea">แนวคิด</a><a href="#engine" data-en="Engine">กลไก</a><a href="#care" data-en="Care">เพื่อการดูแล</a><a href="#founders" data-en="Founders">สำหรับผู้ก่อตั้ง</a><a href="#building" data-en="Building">อาคาร</a><a href="#film" data-en="Film">วิดีโอ</a><a href="#contact" data-en="Contact">ติดต่อ</a>
+  <a class="btn btn-gold" href="#join"><span data-en="Join the next Spark round">ร่วมรอบ Spark ถัดไป</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+</div>
+
+<main id="main">
+<!-- HERO -->
+<section class="hero" id="top">
+  <canvas id="heroCanvas" aria-label="ภูเขา ARIC ที่มีชีวิต แตะเพื่อเพิ่มโจทย์" role="img"></canvas>
+  <div class="wrap">
+    <div class="copy">
+      <h1 data-en="<span class=ln>We build the <em>brains</em></span> <span class=ln>robots need —</span> <span class=ln>from real problems</span> <span class=ln>in the North</span>"><span class="ln">สร้าง<em>สมอง</em>ให้หุ่นยนต์</span> <span class="ln">จากโจทย์จริง</span> <span class="ln">ของภาคเหนือ</span></h1>
+      <p class="lede" data-en="ARIC, the AI &amp; Robotics Innovation Center at Mae Fah Luang University, turns real problems from hospitals, industry and communities into AI that people use — and then into companies.">ARIC ศูนย์นวัตกรรมด้านปัญญาประดิษฐ์และหุ่นยนต์ มหาวิทยาลัยแม่ฟ้าหลวง เปลี่ยนโจทย์จริงของโรงพยาบาล อุตสาหกรรม และชุมชน ให้เป็น AI ที่คนใช้จริง แล้วต่อยอดเป็นบริษัท</p>
+      <div class="actions">
+        <a class="btn btn-gold" href="#join"><span data-en="Join the next Spark round">ร่วมรอบ Spark ถัดไป</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+        <a class="link-play" href="#film"><i><svg aria-hidden="true"><use href="#i-play"/></svg></i><span data-en="Watch the film · 1:29">ดูวิดีโอ · 1:29</span></a>
+      </div>
+      <p class="hint" data-en="Tap the mountain to add a problem and watch the network wire itself.">แตะภูเขาเพื่อเพิ่มโจทย์ แล้วดูโครงข่ายต่อเส้นใหม่</p>
+    </div>
+  </div>
+  <div class="seed">
+    <button type="button" id="reseed" aria-label="สุ่มภูเขารอบใหม่"><svg aria-hidden="true"><use href="#i-reseed"/></svg><span id="seedLabel">รอบ 01 · SEED ----</span></button>
+  </div>
+  <div class="toast" id="toast" aria-hidden="true"></div>
+</section>
+
+<!-- BRAIN NOT HANDS -->
+<section class="sec" id="brain">
+  <div class="wrap">
+    <h2 class="h2 rv" data-en="We build the brain, not the hands">สร้างสมอง ไม่สร้างมือกล</h2>
+    <p class="lead rv" data-en="Robot arms, motors and sensors can be bought from makers around the world. The layer that understands Thai language, data and real workplaces does not exist yet — that is the layer ARIC builds.">แขนกล มอเตอร์ และเซนเซอร์ ซื้อได้จากผู้ผลิตทั่วโลก แต่ชั้นที่ต้องเข้าใจภาษา ข้อมูล และหน้างานของไทย ยังไม่มีใครสร้าง — ARIC สร้างชั้นนั้น</p>
+    <div class="brain-grid">
+      <div class="rv">
+        <div class="slider">
+          <div class="ends"><span data-en="Hands">มือกล</span><span data-en="Brain">สมอง</span></div>
+          <label class="sr" for="brainRange" data-en="Move between hands and brain">เลื่อนระหว่างมือกลกับสมอง</label>
+          <input type="range" id="brainRange" min="0" max="100" value="30">
+        </div>
+        <p class="readout" id="readout" aria-live="polite"></p>
+      </div>
+      <div class="stack" id="stack">
+        <div class="layer brn top"><span class="L">L4</span><div><h3 data-en="Applied, context-aware intelligence">การประยุกต์และปัญญาเฉพาะบริบท</h3><p data-en="Problem-specific models · Thai language &amp; data · regulation">โมเดลเฉพาะโจทย์ · ภาษาและข้อมูลไทย · กฎระเบียบ</p></div><span class="who" data-en="ARIC builds">ARIC สร้าง</span>
+          <svg class="net" viewBox="0 0 400 80" preserveAspectRatio="none" aria-hidden="true"><path d="M250 10 L300 60 L340 22 L390 70 M300 60 L360 50" stroke="#F3D48A" stroke-width="1" fill="none"/><circle cx="340" cy="22" r="3" fill="#E4B04A"/><circle cx="300" cy="60" r="3" fill="#E4B04A"/></svg></div>
+        <div class="layer brn"><span class="L">L3</span><div><h3 data-en="Perception, planning &amp; control">การรับรู้ การวางแผน และการควบคุม</h3><p data-en="Computer vision · navigation · language models">computer vision · การนำทาง · โมเดลภาษา</p></div><span class="who" data-en="ARIC builds">ARIC สร้าง</span>
+          <svg class="net" viewBox="0 0 400 80" preserveAspectRatio="none" aria-hidden="true"><path d="M240 70 L290 18 L330 64 L380 12 M290 18 L350 30" stroke="#F3D48A" stroke-width="1" fill="none"/><circle cx="290" cy="18" r="3" fill="#E4B04A"/><circle cx="330" cy="64" r="3" fill="#E4B04A"/></svg></div>
+        <div class="layer hand"><span class="L">L2</span><div><h3 data-en="Sensors, compute &amp; data">เซนเซอร์ การประมวลผล และข้อมูล</h3><p data-en="Cameras · processors · cloud">กล้อง · หน่วยประมวลผล · คลาวด์</p></div><span class="who" data-en="Bought worldwide">ซื้อจากทั่วโลก</span></div>
+        <div class="layer hand"><span class="L">L1</span><div><h3 data-en="Mechanics &amp; manufacturing">กลไกและการผลิต</h3><p data-en="Robots · motors · arms: a market China leads">หุ่นยนต์ · มอเตอร์ · แขนกล ตลาดที่จีนครอง</p></div><span class="who" data-en="Bought worldwide">ซื้อจากทั่วโลก</span></div>
+      </div>
+    </div>
+    <div class="endorse rv"><b data-en="4 senior advisors agree">ผู้ทรงคุณวุฒิ 4 ท่านเห็นพ้อง</b><span data-en="“Thailand cannot out-build China on hardware; the value is in the application layer.” — summary of the June 2026 consultations">“ไทยแข่งฮาร์ดแวร์กับจีนไม่ได้ มูลค่าอยู่ที่ชั้นการประยุกต์” — สรุปจากการหารือ มิ.ย. 2569</span><a href="https://cnacha-mfu.github.io/aric-council-report/" target="_blank" rel="noopener" data-en="Read the report ↗">อ่านรายงาน ↗</a></div>
+  </div>
+</section>
+
+<!-- ENGINE -->
+<section id="engine" aria-labelledby="engineTitle">
+  <div class="engine-sticky">
+    <div class="wrap engine-head">
+      <h2 class="h2" id="engineTitle" data-en="One engine, three rounds a year">กลไกเดียว หมุนปีละ 3 รอบ</h2>
+      <p class="lead" data-en="Every round starts from a real problem and ends with customers, not just code. Each round grows a new mountain.">ทุกรอบเริ่มจากโจทย์จริง และจบที่ลูกค้า ไม่ใช่จบที่โค้ด — แต่ละรอบเติบโตเป็นภูเขาลูกใหม่</p>
+    </div>
+    <div class="wrap engine-body">
+      <div class="stage-canvas"><canvas id="stageCanvas" aria-hidden="true"></canvas><p class="stage-note" id="stageNote"></p></div>
+      <div>
+        <ol class="stages" id="stages">
+          <li class="stage on"><h3>Spark <span class="mono" data-en="1 MONTH">1 เดือน</span></h3><p data-en="<b>Ignite.</b> An open hackathon on real problems from hospitals, industry and communities; three teams are selected.">จุดประกายไอเดีย: แฮกกาธอนเปิดรับโจทย์จริงจากโรงพยาบาล อุตสาหกรรม และชุมชน <b>คัดเหลือ 3 ทีม</b></p></li>
+          <li class="stage"><h3>Forge <span class="mono" data-en="2 MONTHS">2 เดือน</span></h3><p data-en="<b>฿100,000 per team</b> plus industry mentors, a tech PM, NVIDIA DGX and AI coding agents to build an MVP and test it with real users.">หลอมไอเดียเป็นของจริง: <b>ทุนทีมละ ฿100,000</b> พร้อมที่ปรึกษาจากอุตสาหกรรม Tech PM เครื่อง DGX และ AI coding agent สร้าง MVP แล้วทดสอบกับผู้ใช้จริง</p></li>
+          <li class="stage"><h3>Launch <span class="mono" data-en="1 MONTH">1 เดือน</span></h3><p data-en="<b>To market.</b> Teams meet customers and investors at national events; the customers they meet become the next round's problems.">ส่งสู่ตลาด: พบลูกค้าและนักลงทุนในงานระดับประเทศ <b>ลูกค้าที่ได้พบกลายเป็นโจทย์ของรอบถัดไป</b></p></li>
+        </ol>
+        <div class="year">
+          <svg viewBox="0 0 84 84" id="yearRing" aria-hidden="true"></svg>
+          <p data-en="<b>3 rounds × 4 months.</b> 9 teams a year; phase 1 target: 10 working MVPs in 2 years.">3 รอบ × 4 เดือน · <b>ปีละ 9 ทีม</b> · เป้าหมายระยะที่ 1: MVP ที่ใช้งานได้ 10 ชิ้นใน 2 ปี</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CARE -->
+<section class="sec" id="care">
+  <div class="wrap">
+    <h2 class="h2 rv" data-en="First: brains for treatment and care">เริ่มจากสมองเพื่อการรักษาและดูแล</h2>
+    <p class="lead rv" data-en="One in five Thais is 60 or older (National Statistical Office, 2024). MFU already has schools of medicine, nursing and health science and its own hospital — the place where a brain for care can be built and tested for real.">คนไทยทุก 1 ใน 5 อายุ 60 ปีขึ้นไป (สำนักงานสถิติแห่งชาติ 2567) และ มฟล. มีทั้งสำนักวิชาแพทยศาสตร์ พยาบาลศาสตร์ วิทยาศาสตร์สุขภาพ และโรงพยาบาลของมหาวิทยาลัย — จุดที่สมองเพื่อการดูแลสร้างและทดสอบได้จริง</p>
+    <div class="care-grid">
+      <article class="uc rv"><img src="assets/img/uc_ward.jpg" alt="หุ่นยนต์ฮิวแมนนอยด์ในหอผู้ป่วย" width="840" height="786" loading="lazy"><div class="t"><span class="bot">AgiBot X2 Ultra</span><h3 data-en="A nurse's assistant on the ward">ผู้ช่วยพยาบาลในหอผู้ป่วย</h3><p data-en="Fetches and delivers medicines and supplies between the nurses' station and the beds, moving safely around people.">รับ–ส่งยาและเวชภัณฑ์ระหว่างเคาน์เตอร์พยาบาลกับเตียง เดินในหอและหลบคนอย่างปลอดภัย</p></div></article>
+      <article class="uc rv"><img src="assets/img/uc_talk.jpg" alt="หุ่นยนต์คุยกับผู้สูงอายุบนเตียง" width="840" height="786" loading="lazy"><div class="t"><span class="bot">AgiBot X2 Ultra</span><h3 data-en="A companion that speaks Northern Thai">เพื่อนคุยภาษาเหนือ เตือนกินยา</h3><p data-en="Chats in the local dialect, reminds patients about medicine, and sends a summary to the nurse or family.">คุยด้วยภาษาเหนือ เตือนยาตามเวลา แล้วสรุปอาการส่งพยาบาลหรือญาติ</p></div></article>
+      <article class="uc rv"><img src="assets/img/uc_night.jpg" alt="หุ่นยนต์สี่ขาเดินตรวจตอนกลางคืน" width="840" height="786" loading="lazy"><div class="t"><span class="bot">AgiBot D1 Edu</span><h3 data-en="A night round that spots falls">เวรดึก ตรวจจับการล้ม</h3><p data-en="Patrols an elderly-care home at night and alerts the nurse to a fall or a patient leaving bed.">เดินตรวจสถานดูแลผู้สูงอายุ เห็นการล้มหรือการลุกจากเตียง แล้วแจ้งพยาบาลทันที</p></div></article>
+      <article class="uc rv"><img src="assets/img/uc_coach.jpg" alt="หุ่นยนต์โค้ชออกกำลังผู้สูงวัย" width="840" height="786" loading="lazy"><div class="t"><span class="bot">AgiBot X2 Ultra</span><h3 data-en="An exercise coach for older adults">โค้ชออกกำลังผู้สูงวัย</h3><p data-en="Demonstrates exercises, counts repetitions, watches posture through its camera and adjusts the level for each person.">สาธิตท่า นับจำนวนครั้ง ดูท่าทางผ่านกล้อง และปรับระดับให้เหมาะกับแต่ละคน</p></div></article>
+    </div>
+    <div class="principle rv"><b data-en="Help nurses, never replace them.">ช่วยพยาบาล ไม่แทนพยาบาล</b><span data-en="Examples of what ARIC teams can build, not delivered products. Real AgiBot robots on AI-generated scenes.">ตัวอย่างงานที่ทีม ARIC สร้างได้ ยังไม่ใช่ผลงานที่ส่งมอบ · ภาพหุ่นยนต์จริง (AgiBot) บนฉากที่สร้างด้วย AI</span></div>
+  </div>
+</section>
+
+<!-- FOUNDERS -->
+<section class="sec founders" id="founders">
+  <div class="wrap">
+    <h2 class="h2 rv" data-en="For founders, students and developers">สำหรับผู้ก่อตั้ง นักศึกษา และนักพัฒนา</h2>
+    <p class="lead rv" data-en="Bring an idea, or pick up a real problem at Spark. ARIC gives you what a small team in the North rarely gets: money, mentors, serious compute, and a way to customers.">มาพร้อมไอเดีย หรือหยิบโจทย์จริงในรอบ Spark แล้ว ARIC ให้สิ่งที่ทีมเล็กในภาคเหนือหาได้ยาก ทั้งเงินทุน ที่ปรึกษา เครื่องประมวลผลระดับสูง และทางไปสู่ลูกค้า</p>
+    <div class="f-grid">
+      <div>
+        <ul class="gets rv">
+          <li><svg aria-hidden="true" style="color:#C8102E"><use href="#mark"/></svg><div><b data-en="฿100,000 per team">ทุนทีมละ ฿100,000</b><span data-en="For the two-month Forge round: mentor time, a developer, and materials.">สำหรับรอบ Forge 2 เดือน: ค่าที่ปรึกษา นักพัฒนา และวัสดุ</span></div></li>
+          <li><svg aria-hidden="true" style="color:#C8102E"><use href="#mark"/></svg><div><b data-en="Mentors who know the work">ที่ปรึกษาที่รู้หน้างาน</b><span data-en="Industry experts, MFU doctors and nurses, and ADT faculty.">ผู้เชี่ยวชาญจากอุตสาหกรรม แพทย์และพยาบาล มฟล. และอาจารย์สำนักวิชาเทคโนโลยีดิจิทัลประยุกต์</span></div></li>
+          <li><svg aria-hidden="true" style="color:#C8102E"><use href="#mark"/></svg><div><b data-en="NVIDIA DGX and AI coding agents">เครื่อง NVIDIA DGX และ AI coding agent</b><span data-en="Shared, so a small budget goes a long way, plus a tech PM beside every team.">ใช้ร่วมจากส่วนกลาง งบทีมเล็กจึงพอ พร้อม Tech PM ประกบทุกทีม</span></div></li>
+          <li><svg aria-hidden="true" style="color:#C8102E"><use href="#mark"/></svg><div><b data-en="Real users and a path to customers">ผู้ใช้จริงและทางไปสู่ลูกค้า</b><span data-en="Test with hospitals and partners, then meet customers and investors at national events.">ทดสอบกับโรงพยาบาลและพันธมิตร แล้วพบลูกค้าและนักลงทุนในงานระดับประเทศ</span></div></li>
+        </ul>
+        <div class="share pre" id="share">
+          <h3 data-en="Your company stays yours">บริษัทยังเป็นของทีม</h3>
+          <div class="bar" role="img" aria-label="MFX 15% ทีมผู้ก่อตั้ง 65–75% ที่ปรึกษา 10–20%"><div>MFX 15%</div><div data-en="Founding team 65–75%">ทีมผู้ก่อตั้ง 65–75%</div><div data-en="Advisors 10–20%">ที่ปรึกษา 10–20%</div></div>
+          <p data-en="When a team forms a company, MFX (Mae Fah Luang University's holding company) takes a fixed 15%, paid for with the centre's resources, not cash, and does not control the board. Terms are announced before the competition; shares vest over 4 years with a 1-year cliff; centre staff hold no personal shares.">เมื่อทีมตั้งบริษัท MFX บริษัทโฮลดิ้งของมหาวิทยาลัยแม่ฟ้าหลวง ถือหุ้นคงที่ 15% ชำระด้วยทรัพยากรของศูนย์ ไม่ใช่เงินสด และไม่คุมบอร์ด · เงื่อนไขประกาศก่อนแข่ง · หุ้น vest 4 ปี cliff 1 ปี · ทีมงานศูนย์ไม่ถือหุ้นส่วนตัว</p>
+        </div>
+        <p class="targets rv" data-en="Five-year targets (2027–2031): <b>45</b> teams incubated · <b>19</b> paying pilot projects · <b>8</b> new companies. These are targets, not results.">เป้าหมาย 5 ปี (2570–2574): บ่มเพาะ <b>45</b> ทีม · โครงการนำร่องที่มีผู้จ่ายเงิน <b>19</b> โครงการ · บริษัทใหม่ <b>8</b> บริษัท — เป็นเป้าหมาย ยังไม่ใช่ผลงาน</p>
+      </div>
+      <form class="form" id="join" novalidate>
+        <h3 data-en="Get notified when Spark opens">รับแจ้งเมื่อเปิดรอบ Spark</h3>
+        <p class="next"><span data-en="First round:">รอบแรก:</span> <span class="mono" data-en="date to be announced">รอประกาศวันที่</span></p>
+        <div class="field"><label for="fName" data-en="Your name">ชื่อ</label><input id="fName" name="name" autocomplete="name" required></div>
+        <div class="field"><label for="fEmail" data-en="Email">อีเมล</label><input id="fEmail" name="email" type="email" autocomplete="email" required inputmode="email" data-en-ph="you@example.com" placeholder="you@example.com"><span class="err" id="fEmailErr" aria-live="polite"></span></div>
+        <fieldset class="field"><legend data-en="I am">ฉันคือ</legend>
+          <div class="chips">
+            <label><input type="radio" name="role" value="student" checked><span data-en="Student">นักศึกษา</span></label>
+            <label><input type="radio" name="role" value="founder"><span data-en="Founder">ผู้ก่อตั้ง</span></label>
+            <label><input type="radio" name="role" value="developer"><span data-en="Developer">นักพัฒนา</span></label>
+            <label><input type="radio" name="role" value="org"><span data-en="An organisation with a problem">องค์กรที่มีโจทย์</span></label>
+          </div>
+        </fieldset>
+        <div class="field"><label for="fNote" data-en="Your idea or problem (optional)">ไอเดียหรือโจทย์ของคุณ (ไม่บังคับ)</label><textarea id="fNote" name="note" rows="3"></textarea></div>
+        <button class="btn btn-gold" type="submit"><span data-en="Send by email">ส่งทางอีเมล</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></button>
+        <small data-en="Opens your email app with the details filled in. Nothing is stored on this site.">ระบบจะเปิดแอปอีเมลของคุณพร้อมข้อมูลที่กรอก เว็บไซต์นี้ไม่เก็บข้อมูลใด ๆ</small>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- BUILDING -->
+<section class="sec" id="building">
+  <div class="wrap">
+    <h2 class="h2 rv" data-en="The ARIC building, four floors">อาคาร ARIC สี่ชั้น</h2>
+    <p class="lead rv" data-en="Open at the bottom, protected at the top: the public walks into Launchpad; research stays quiet on Engine.">เปิดที่ชั้นล่าง ปิดที่ชั้นบน: คนทั่วไปเดินเข้า Launchpad ได้ ส่วนงานวิจัยเงียบสงบอยู่ที่ Engine</p>
+    <div class="floors" id="floors">
+      <div class="floor"><button type="button" aria-expanded="false"><span class="no">4</span><span class="nm">Bridge</span><span class="ds" data-en="Executives &amp; partners">ผู้บริหารและพันธมิตร</span><svg class="chev" viewBox="0 0 20 20" aria-hidden="true"><use href="#i-plus"/></svg></button>
+        <div class="panel"><div><div class="inner"><img src="assets/img/floor4.jpg" alt="ภาพแนวคิดชั้น 4 Bridge" width="1531" height="655" loading="lazy"><ul><li data-en="<b>Partner Map</b> of partners and portfolio companies across the North, the Mekong region and the world"><b>Partner Map</b> พันธมิตรและบริษัทในพอร์ต ทั้งภาคเหนือ ลุ่มน้ำโขง และทั่วโลก</li><li data-en="<b>Board room</b> and a signing table for partnerships"><b>ห้องประชุมผู้บริหาร</b> และโต๊ะลงนามความร่วมมือ</li><li data-en="<b>Office</b> for the centre team and visiting researchers"><b>สำนักงาน</b> ทีมศูนย์และนักวิจัยรับเชิญ</li></ul></div></div></div></div>
+      <div class="floor"><button type="button" aria-expanded="false"><span class="no">3</span><span class="nm">Engine</span><span class="ds" data-en="Research labs &amp; robotics arena">ห้องวิจัยและสนามหุ่นยนต์</span><svg class="chev" viewBox="0 0 20 20" aria-hidden="true"><use href="#i-plus"/></svg></button>
+        <div class="panel"><div><div class="inner"><img src="assets/img/floor3.jpg" alt="ภาพแนวคิดชั้น 3 Engine" width="1536" height="1024" loading="lazy"><ul><li data-en="<b>AI research studio</b> for 16 researchers"><b>ห้องวิจัย AI</b> สำหรับนักวิจัย 16 คน</li><li data-en="<b>Robotics &amp; drone arena</b> with a viewing gallery"><b>สนามหุ่นยนต์และโดรน</b> พร้อมระเบียงชม</li><li data-en="<b>GPU machine room</b> and a multimedia studio"><b>ห้องเครื่อง GPU</b> และสตูดิโอสื่อผสม</li></ul></div></div></div></div>
+      <div class="floor"><button type="button" aria-expanded="false"><span class="no">2</span><span class="nm">Academy</span><span class="ds" data-en="Six training rooms, up to 120 seats">ห้องฝึกอบรม 6 ห้อง รวม 120 ที่นั่ง</span><svg class="chev" viewBox="0 0 20 20" aria-hidden="true"><use href="#i-plus"/></svg></button>
+        <div class="panel"><div><div class="inner"><img src="assets/img/floor2.jpg" alt="ภาพแนวคิดชั้น 2 Academy" width="1531" height="655" loading="lazy"><ul><li data-en="<b>Computer, network and electrical</b> training rooms, 20 seats each"><b>ห้องคอมพิวเตอร์ เครือข่าย และไฟฟ้า</b> ห้องละ 20 ที่นั่ง</li><li data-en="Glass walls open to join rooms into <b>60 or 120 seats</b>">ผนังเปิดรวมห้องเป็น <b>60 หรือ 120 ที่นั่ง</b></li><li data-en="<b>Short courses and certificates</b> for students and industry"><b>หลักสูตรระยะสั้นและประกาศนียบัตร</b> สำหรับนักศึกษาและภาคอุตสาหกรรม</li></ul></div></div></div></div>
+      <div class="floor" open><button type="button" aria-expanded="true"><span class="no">1</span><span class="nm">Launchpad</span><span class="ds" data-en="Incubator, exhibitions &amp; café">บ่มเพาะ นิทรรศการ และคาเฟ่</span><svg class="chev" viewBox="0 0 20 20" aria-hidden="true"><use href="#i-plus"/></svg></button>
+        <div class="panel"><div><div class="inner"><img src="assets/img/floor1.jpg" alt="ภาพแนวคิดชั้น 1 Launchpad" width="1536" height="1024"><ul><li data-en="<b>Co-working and team rooms</b> for incubated startups"><b>พื้นที่ทำงานร่วมและห้องทีม</b> สำหรับสตาร์ทอัพที่บ่มเพาะ</li><li data-en="<b>Demo Day stage</b>, rotating exhibitions and computing-heritage corners"><b>เวที Demo Day</b> นิทรรศการหมุนเวียน และมุมมรดกคอมพิวเตอร์</li><li data-en="<b>Coffee &amp; tea bar</b> with Doi Tung coffee for every visitor"><b>บาร์กาแฟและชา</b> กาแฟดอยตุงต้อนรับผู้มาเยือน</li></ul></div></div></div></div>
+    </div>
+    <p class="bnote rv" data-en="Concept images generated with AI; the building is being planned. <a href='https://cnacha-mfu.github.io/IIC/' target='_blank' rel='noopener'>See the full space plan ↗</a>">ภาพแนวคิดที่สร้างด้วย AI อาคารอยู่ระหว่างการวางแผน · <a href="https://cnacha-mfu.github.io/IIC/" target="_blank" rel="noopener">ดูแผนการใช้พื้นที่ฉบับเต็ม ↗</a></p>
+  </div>
+</section>
+
+<!-- FILM -->
+<section class="sec film" id="film">
+  <div class="wrap">
+    <h2 class="h2 rv" data-en="The North can build its own digital future">ภาคเหนือสร้างอนาคตดิจิทัลของตัวเองได้</h2>
+    <div class="player rv" id="player">
+      <video id="video" src="assets/film/aric_film.mp4" poster="assets/film/poster.jpg" preload="none" playsinline controls></video>
+      <button class="play" type="button" aria-label="เล่นวิดีโอแนะนำ ARIC"><i><svg aria-hidden="true"><use href="#i-play"/></svg></i></button>
+    </div>
+    <div class="meta"><span data-en="ARIC brand film · 1:29 · Thai narration with Thai captions">วิดีโอแนะนำ ARIC · 1:29 · บรรยายภาษาไทยพร้อมคำบรรยายบนจอ</span><span data-en="Some scenes were generated with AI">บางฉากในวิดีโอสร้างด้วย AI</span></div>
+  </div>
+</section>
+
+<!-- CONTACT + PRESS -->
+<section class="sec" id="contact">
+  <div class="wrap">
+    <h2 class="h2 rv" data-en="Contact and press">ติดต่อและข้อมูลสำหรับสื่อ</h2>
+    <div class="c-grid">
+      <div class="rv">
+        <h3 data-en="Contact">ติดต่อ</h3>
+        <ul>
+          <li><span data-en="Email">อีเมล</span><span data-slot="email"></span></li>
+          <li><span data-en="Phone">โทร</span><span data-slot="phone"></span></li>
+          <li><span data-en="Address">ที่อยู่</span><span data-en="333 Moo 1, Tha Sut, Mueang Chiang Rai 57100" style="text-align:right">333 หมู่ 1 ต.ท่าสุด อ.เมือง จ.เชียงราย 57100</span></li>
+          <li><span>Facebook</span><span data-slot="facebook"></span></li>
+          <li><span>LINE</span><span data-slot="line"></span></li>
+          <li><span>YouTube</span><span data-slot="youtube"></span></li>
+        </ul>
+      </div>
+      <div class="rv">
+        <h3 data-en="Press kit">ชุดข้อมูลสำหรับสื่อ</h3>
+        <ul>
+          <li><span data-en="Logo mark">โลโก้ (สัญลักษณ์)</span><a href="assets/logo/aric_logo_mark.svg" download>SVG</a></li>
+          <li><span data-en="Logo, horizontal">โลโก้ (แนวนอน)</span><a href="assets/logo/aric_logo_horizontal.png" download>PNG</a></li>
+          <li><span data-en="Logo on dark">โลโก้ (พื้นเข้ม)</span><a href="assets/logo/aric_logo_horizontal_black.png" download>PNG</a></li>
+          <li><span data-en="Brand film, 720p">วิดีโอแนะนำ 720p</span><a href="assets/film/aric_film.mp4" download>MP4</a></li>
+        </ul>
+      </div>
+      <div class="rv">
+        <h3 data-en="Learn more">ข้อมูลเพิ่มเติม</h3>
+        <ul>
+          <li><span data-en="Concept plan">แผนแนวคิดการจัดตั้ง</span><a href="https://cnacha-mfu.github.io/aric-plan-deck/" target="_blank" rel="noopener" data-en="Open ↗">เปิด ↗</a></li>
+          <li><span data-en="Brains for care robots">สมองหุ่นยนต์เพื่อการดูแล</span><a href="https://cnacha-mfu.github.io/aric-robot-wellness/" target="_blank" rel="noopener" data-en="Open ↗">เปิด ↗</a></li>
+          <li><span data-en="Advisors' report">รายงานผู้ทรงคุณวุฒิ</span><a href="https://cnacha-mfu.github.io/aric-council-report/" target="_blank" rel="noopener" data-en="Open ↗">เปิด ↗</a></li>
+          <li><span data-en="Building space plan">แผนการใช้พื้นที่อาคาร</span><a href="https://cnacha-mfu.github.io/IIC/" target="_blank" rel="noopener" data-en="Open ↗">เปิด ↗</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <a class="brand" href="#top"><svg aria-hidden="true" style="color:#E63A55"><use href="#mark"/></svg><div><b>ARIC</b><span data-en="AI &amp; Robotics Innovation Center">ศูนย์นวัตกรรมด้านปัญญาประดิษฐ์และหุ่นยนต์</span></div></a>
+    <p data-en="Mae Fah Luang University · operated by the School of Applied Digital Technology · Chiang Rai, Thailand">มหาวิทยาลัยแม่ฟ้าหลวง · ดำเนินงานโดยสำนักวิชาเทคโนโลยีดิจิทัลประยุกต์ · เชียงราย</p>
+  </div>
+</footer>
+
+<script>
+/* ===== real facts still to be supplied — leave '' to show a marked placeholder ===== */
+const CONTACT = { email: '', phone: '', facebook: '', line: '', youtube: '' };
+
+(() => {
+'use strict';
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
+
+/* ---------------- i18n ---------------- */
+let lang = (new URLSearchParams(location.search).get('lang') || localStorage.getItem('aric-lang') || 'th');
+const TXT = {
+  th: { seed: 'รอบ', toast: '+ โจทย์ใหม่', readHand: '<b>ส่วนที่ซื้อได้</b> — ตัวหุ่น มอเตอร์ เซนเซอร์ และหน่วยประมวลผล มีผู้ผลิตระดับโลกทำอยู่แล้ว',
+        readMid: 'หุ่นยนต์ทุกตัวต้องมีทั้งสองส่วน — แต่ <b>มูลค่าอยู่ที่สมอง</b>',
+        readBrain: '<b>ส่วนที่ ARIC สร้าง</b> — สมองที่เข้าใจภาษา ข้อมูล และหน้างานของไทย',
+        notes: ['จุด = ไอเดียและทีมจากรอบ Spark', 'เส้น = ที่ปรึกษา เครื่องมือ และผู้ใช้จริง', 'ผิวที่ลอยขึ้น = บริษัทใหม่'],
+        ph: 'รอข้อมูล', mailSubj: 'สนใจรอบ Spark — ARIC', errEmail: 'กรุณากรอกอีเมลให้ถูกต้อง เช่น you@example.com', errName: 'กรุณากรอกชื่อ',
+        noMail: 'ยังไม่ได้ตั้งค่าอีเมลติดต่อของศูนย์ — กรุณาติดต่อภายหลัง', roles: { student: 'นักศึกษา', founder: 'ผู้ก่อตั้ง', developer: 'นักพัฒนา', org: 'องค์กรที่มีโจทย์' } },
+  en: { seed: 'ROUND', toast: '+ new problem', readHand: '<b>What can be bought</b> — robot bodies, motors, sensors and processors are already made by global manufacturers.',
+        readMid: 'Every robot needs both — but <b>the value is in the brain</b>.',
+        readBrain: '<b>What ARIC builds</b> — a brain that understands Thai language, data and real workplaces.',
+        notes: ['Points = ideas and teams from Spark', 'Lines = mentors, tools and real users', 'Lifted facets = new companies'],
+        ph: 'to be added', mailSubj: 'Interested in Spark — ARIC', errEmail: 'Please enter a valid email, e.g. you@example.com', errName: 'Please enter your name',
+        noMail: "The centre's contact email is not set yet — please check back soon.", roles: { student: 'Student', founder: 'Founder', developer: 'Developer', org: 'Organisation with a problem' } }
+};
+const t = k => TXT[lang][k];
+$$('[data-en]').forEach(el => { el.dataset.th = el.innerHTML; });
+function applyLang(l) {
+  lang = l; document.documentElement.lang = l; localStorage.setItem('aric-lang', l);
+  $$('[data-en]').forEach(el => { el.innerHTML = l === 'en' ? el.dataset.en : el.dataset.th; });
+  $$('.lang button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.lang === l)));
+  renderSlots(); updateSeedLabel(); readout(); setStageNote();
+}
+$$('.lang button').forEach(b => b.addEventListener('click', () => applyLang(b.dataset.lang)));
+
+function renderSlots() {
+  $$('[data-slot]').forEach(el => {
+    const v = CONTACT[el.dataset.slot];
+    if (!v) { el.innerHTML = `<span class="ph">[${t('ph')}]</span>`; return; }
+    const href = el.dataset.slot === 'email' ? 'mailto:' + v : el.dataset.slot === 'phone' ? 'tel:' + v.replace(/\s/g, '') : v;
+    const label = el.dataset.slot === 'email' || el.dataset.slot === 'phone' ? v : v.replace(/^https?:\/\/(www\.)?/, '');
+    el.innerHTML = `<a href="${href}" ${/^http/.test(href) ? 'target="_blank" rel="noopener"' : ''}>${label}</a>`;
+  });
+}
+
+/* ---------------- nav ---------------- */
+const nav = $('#nav'), hero = $('#top');
+const onScroll = () => nav.classList.toggle('solid', scrollY > hero.offsetHeight - 80);
+addEventListener('scroll', onScroll, { passive: true }); onScroll();
+const drawer = $('#drawer'), menuBtn = $('.menu-btn');
+const setDrawer = open => { drawer.classList.toggle('open', open); menuBtn.setAttribute('aria-expanded', String(open)); document.body.style.overflow = open ? 'hidden' : ''; if (open) $('.close', drawer).focus(); else menuBtn.focus(); };
+menuBtn.addEventListener('click', () => setDrawer(true));
+$('.close', drawer).addEventListener('click', () => setDrawer(false));
+$$('a', drawer).forEach(a => a.addEventListener('click', () => setDrawer(false)));
+addEventListener('keydown', e => { if (e.key === 'Escape' && drawer.classList.contains('open')) setDrawer(false); });
+
+/* ---------------- mountain geometry ---------------- */
+const POLY = [[56, 400], [168, 192], [244, 282], [320, 140], [456, 400]];
+const PEAKS = [[168, 192, 1.0], [320, 140, 1.3], [244, 282, .62]];
+const SUN = [418, 118, 30];
+function inPoly(x, y) { let c = false; for (let i = 0, j = POLY.length - 1; i < POLY.length; j = i++) { const [xi, yi] = POLY[i], [xj, yj] = POLY[j]; if ((yi > y) !== (yj > y) && x < (xj - xi) * (y - yi) / (yj - yi) + xi) c = !c; } return c; }
+function rng(a) { return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+function height(x, y, n) { let h = 0; for (const [px, py, ph] of PEAKS) h = Math.max(h, ph * (1 - Math.hypot(x - px, (y - py) * 1.15) / 250)); return Math.max(0, h) + n; }
+function genPoints(seed, nInterior) {
+  const r = rng(seed), pts = [];
+  POLY.forEach(([x, y]) => pts.push({ x, y, fixed: true }));
+  for (let i = 0; i < POLY.length; i++) {          // samples along the silhouette
+    const [ax, ay] = POLY[i], [bx, by] = POLY[(i + 1) % POLY.length], k = i === POLY.length - 1 ? 5 : 3;
+    for (let j = 1; j <= k; j++) { const u = j / (k + 1) + (r() - .5) * .08; pts.push({ x: ax + (bx - ax) * u, y: ay + (by - ay) * u, fixed: true }); }
+  }
+  let guard = 0;
+  while (pts.length < POLY.length + 17 + nInterior && guard++ < 5000) {
+    const x = 60 + r() * 392, y = 150 + r() * 246;
+    if (!inPoly(x, y)) continue;
+    if (pts.some(p => Math.hypot(p.x - x, p.y - y) < 22)) continue;
+    pts.push({ x, y });
+  }
+  pts.forEach(p => { p.n = (r() - .5) * .12; });
+  return pts;
+}
+/* Bowyer–Watson */
+function delaunay(P) {
+  const n = P.length, big = 4000, V = P.concat([{ x: -big, y: -big }, { x: big * 2, y: -big }, { x: 250, y: big * 2 }]);
+  let tris = [[n, n + 1, n + 2]];
+  const cc = (t) => { const [a, b, c] = t.map(i => V[i]); const d = 2 * (a.x * (b.y - c.y) + b.x * (c.y - a.y) + c.x * (a.y - b.y)); if (!d) return { x: 0, y: 0, r: Infinity };
+    const ux = ((a.x * a.x + a.y * a.y) * (b.y - c.y) + (b.x * b.x + b.y * b.y) * (c.y - a.y) + (c.x * c.x + c.y * c.y) * (a.y - b.y)) / d;
+    const uy = ((a.x * a.x + a.y * a.y) * (c.x - b.x) + (b.x * b.x + b.y * b.y) * (a.x - c.x) + (c.x * c.x + c.y * c.y) * (b.x - a.x)) / d;
+    return { x: ux, y: uy, r: (ux - a.x) ** 2 + (uy - a.y) ** 2 }; };
+  let circ = tris.map(cc);
+  for (let i = 0; i < n; i++) {
+    const p = V[i], bad = [], keep = [], keepC = [];
+    tris.forEach((tr, k) => { const c = circ[k]; ((p.x - c.x) ** 2 + (p.y - c.y) ** 2 < c.r ? bad : keep).push(tr); if ((p.x - c.x) ** 2 + (p.y - c.y) ** 2 >= c.r) keepC.push(c); });
+    const edges = new Map();
+    bad.forEach(tr => [[tr[0], tr[1]], [tr[1], tr[2]], [tr[2], tr[0]]].forEach(([a, b]) => { const key = a < b ? a + ',' + b : b + ',' + a; edges.set(key, edges.has(key) ? null : [a, b]); }));
+    tris = keep; circ = keepC;
+    edges.forEach(e => { if (e) { const tr = [e[0], e[1], i]; tris.push(tr); circ.push(cc(tr)); } });
+  }
+  return tris.filter(tr => tr.every(i => i < n));
+}
+
+/* ---------------- living mountain (shared renderer) ---------------- */
+class Mountain {
+  constructor(canvas, opts) {
+    this.c = canvas; this.g = canvas.getContext('2d'); this.o = opts;
+    this.seed = opts.seed; this.pts = genPoints(this.seed, opts.n).map(p => ({ ...p, ox: 0, oy: 0 }));
+    this.user = []; this.pulses = []; this.ptr = null; this.morph = null; this.visible = true; this.t0 = performance.now();
+    this.resize(); new ResizeObserver(() => this.resize()).observe(canvas);
+    new IntersectionObserver(es => { this.visible = es[0].isIntersecting; }, { threshold: 0 }).observe(canvas);
+  }
+  resize() {
+    const r = this.c.getBoundingClientRect(), dpr = Math.min(devicePixelRatio || 1, 2);
+    this.w = r.width; this.h = r.height; this.c.width = Math.round(r.width * dpr); this.c.height = Math.round(r.height * dpr); this.dpr = dpr;
+    this.fit = this.o.fit(this.w, this.h);
+  }
+  toLogo(px, py) { const f = this.fit; return [(px - f.x) / f.s, (py - f.y) / f.s]; }
+  all() { return this.pts.concat(this.user); }
+  reseed(seed) {
+    const next = genPoints(seed, this.o.n);
+    this.morph = { from: this.pts.map(p => ({ x: p.x, y: p.y })), to: next, t: performance.now() };
+    this.seed = seed; this.user = [];
+  }
+  addPoint(lx, ly) {
+    if (!inPoly(lx, ly)) return false;
+    this.user.push({ x: lx, y: ly, ox: 0, oy: 0, n: .04, born: performance.now() });
+    if (this.user.length > 30) this.user.shift();
+    this.pending = this.pts.length + this.user.length - 1;   // pulse from it after next triangulation
+    return true;
+  }
+  wave(src, depth, gap) {
+    const adj = this.adj; if (!adj || !adj[src]) return;
+    const seen = new Set([src]); let front = [src]; const now = performance.now();
+    for (let d = 0; d < depth; d++) {
+      const nxt = [];
+      front.forEach(u => adj[u].forEach(v => { if (seen.has(v)) return; seen.add(v); nxt.push(v); this.pulses.push({ a: u, b: v, s: now + d * gap, dur: 460 }); }));
+      front = nxt;
+    }
+  }
+  frame(now) {
+    const g = this.g, f = this.fit, P = this.all(), o = this.o;
+    if (this.morph) {                                  // reseed morph
+      const k = Math.min(1, (now - this.morph.t) / 1100), e = 1 - Math.pow(1 - k, 3);
+      this.pts.forEach((p, i) => { const a = this.morph.from[i], b = this.morph.to[i] || a; p.x = a.x + (b.x - a.x) * e; p.y = a.y + (b.y - a.y) * e; if (k === 1) { p.fixed = b.fixed; p.n = b.n; } });
+      if (k === 1) this.morph = null;
+    }
+    // pointer repel (spring)
+    let pl = null; if (this.ptr) pl = this.toLogo(this.ptr.x, this.ptr.y);
+    P.forEach(p => {
+      let tx = 0, ty = 0;
+      if (pl && !p.fixed) { const dx = p.x - pl[0], dy = p.y - pl[1], d = Math.hypot(dx, dy), R = 70; if (d < R && d > .01) { const s = (1 - d / R) * 13; tx = dx / d * s; ty = dy / d * s; } }
+      if (!reduce && !p.fixed) { tx += Math.sin(now / 1700 + p.x * .05) * 1.3; ty += Math.cos(now / 2100 + p.y * .05) * 1.1; }
+      p.ox += (tx - p.ox) * .12; p.oy += (ty - p.oy) * .12;
+    });
+    const Q = P.map(p => ({ x: p.x + p.ox, y: p.y + p.oy, z: height(p.x, p.y, p.n || 0) }));
+    const tris = delaunay(Q).filter(tr => { const cx = (Q[tr[0]].x + Q[tr[1]].x + Q[tr[2]].x) / 3, cy = (Q[tr[0]].y + Q[tr[1]].y + Q[tr[2]].y) / 3; return inPoly(cx, cy); });
+    const adj = P.map(() => new Set());
+    tris.forEach(([a, b, c]) => { adj[a].add(b); adj[b].add(a); adj[b].add(c); adj[c].add(b); adj[a].add(c); adj[c].add(a); });
+    this.adj = adj.map(s => [...s]);
+    if (this.pending != null) { this.wave(this.pending, 5, 95); this.pending = null; }
+
+    g.setTransform(this.dpr, 0, 0, this.dpr, 0, 0); g.clearRect(0, 0, this.w, this.h);
+    g.save(); g.translate(f.x, f.y); g.scale(f.s, f.s);
+    const stage = o.stage ? o.stage() : null;   // {spark, forge, lift} 0..1 for the engine canvas
+    // sun
+    const pulse = reduce ? 0 : Math.sin(now / 900) * 1.5;
+    g.fillStyle = '#E4B04A'; g.globalAlpha = stage ? Math.min(1, stage.forge * 1.5) : 1;
+    g.beginPath(); g.arc(SUN[0], SUN[1], SUN[2] + pulse, 0, 7); g.fill(); g.globalAlpha = 1;
+    // facets
+    const L = [.52, -.62, .58], hue = o.hue();
+    g.save(); g.beginPath(); POLY.forEach(([x, y], i) => i ? g.lineTo(x, y) : g.moveTo(x, y)); g.closePath(); g.clip();
+    const lifted = stage ? this.liftSet(tris, Q) : null;
+    tris.forEach((tr, ti) => {
+      const [A, B, C] = tr.map(i => Q[i]);
+      const ux = B.x - A.x, uy = B.y - A.y, uz = (B.z - A.z) * 520, vx = C.x - A.x, vy = C.y - A.y, vz = (C.z - A.z) * 520;
+      let nx = uy * vz - uz * vy, ny = uz * vx - ux * vz, nz = ux * vy - uy * vx; const nl = Math.hypot(nx, ny, nz) || 1; if (nz < 0) { nx = -nx; ny = -ny; nz = -nz; }
+      const sh = Math.max(0, Math.min(1, (nx * L[0] + ny * L[1] + nz * L[2]) / nl));
+      const lit = .3 + .7 * Math.pow(sh, 1.2);
+      let a = 1; if (stage) a = Math.min(1, Math.max(0, stage.forge * 1.6 - (ti % 7) * .08));
+      if (lifted && lifted.has(ti)) a = a * (1 - stage.lift);
+      if (a <= 0) return;
+      g.globalAlpha = a;
+      g.fillStyle = `hsl(${hue + (1 - lit) * 5} ${70 + lit * 12}% ${18 + lit * 40}%)`;
+      g.beginPath(); g.moveTo(A.x, A.y); g.lineTo(B.x, B.y); g.lineTo(C.x, C.y); g.closePath(); g.fill();
+    });
+    g.globalAlpha = 1;
+    // network edges
+    const ea = stage ? stage.forge : 1;
+    if (ea > 0) {
+      g.lineWidth = 1.15; g.strokeStyle = `rgba(243,212,138,${.42 * ea})`; g.beginPath();
+      let k = 0; const lim = stage ? Math.floor(adj.length * 3 * stage.forge) : Infinity;
+      adj.forEach((s, a) => s.forEach(b => { if (b > a && k++ < lim) { g.moveTo(Q[a].x, Q[a].y); g.lineTo(Q[b].x, Q[b].y); } }));
+      g.stroke();
+    }
+    // pulses
+    this.pulses = this.pulses.filter(pu => now < pu.s + pu.dur);
+    this.pulses.forEach(pu => {
+      const k = (now - pu.s) / pu.dur; if (k < 0) return; const A = Q[pu.a], B = Q[pu.b]; if (!A || !B) return;
+      g.strokeStyle = `rgba(255,236,170,${.9 * (1 - k)})`; g.lineWidth = 2.4; g.beginPath(); g.moveTo(A.x, A.y); g.lineTo(B.x, B.y); g.stroke();
+      const x = A.x + (B.x - A.x) * k, y = A.y + (B.y - A.y) * k; g.fillStyle = '#FFF6D8'; g.beginPath(); g.arc(x, y, 2.6, 0, 7); g.fill();
+    });
+    g.restore();
+    // lifted facets (Launch = companies)
+    if (lifted && stage.lift > 0) {
+      let i = 0;
+      lifted.forEach(ti => {
+        const tr = tris[ti]; if (!tr) return; const cx0 = (Q[tr[0]].x + Q[tr[1]].x + Q[tr[2]].x) / 3, cy0 = (Q[tr[0]].y + Q[tr[1]].y + Q[tr[2]].y) / 3; const tx = [96, 222, 352][i], ty = [104, 62, 40][i], L = stage.lift, k = 1 - .3 * L, mx = cx0 + (tx - cx0) * L, my = cy0 + (ty - cy0) * L;
+        g.save(); g.globalAlpha = Math.min(1, stage.lift * 2);   // already in logo space
+        g.fillStyle = '#E4B04A'; g.strokeStyle = '#FFF2C8'; g.lineWidth = 2;
+        g.beginPath(); tr.forEach((pi, j) => { const X = mx + (Q[pi].x - cx0) * k, Y = my + (Q[pi].y - cy0) * k; j ? g.lineTo(X, Y) : g.moveTo(X, Y); }); g.closePath(); g.fill(); g.stroke(); g.restore();
+        if (stage.lift > .6) {
+          g.save(); g.globalAlpha = (stage.lift - .6) / .4; g.fillStyle = '#FFF4EF'; g.font = `600 ${(14 / f.s).toFixed(2)}px "Martian Mono", monospace`;
+          const label = (lang === 'en' ? 'COMPANY ' : 'บริษัท ') + (i + 1), tw = g.measureText(label).width, right = (this.w - f.x) / f.s - 4;
+          const lx = tx + 24 + tw <= right ? tx + 24 : tx - 24 - tw;   // right of the facet, or left if it would leave the canvas
+          g.textAlign = 'left'; g.fillText(label, lx, ty + 6); g.restore();
+        }
+        i++;
+      });
+    }
+    // nodes
+    g.globalAlpha = stage ? Math.min(1, stage.spark * 1.4) : 1;
+    P.forEach((p, i) => {
+      const q = Q[i], deg = adj[i].size;
+      if (stage && stage.forge < .05) { const tw = reduce ? 1 : .55 + .45 * Math.sin(now / 260 + i * 1.7); g.fillStyle = `rgba(255,226,150,${tw})`; g.beginPath(); g.arc(q.x, q.y, 3.4, 0, 7); g.fill(); return; }
+      if (i === 1 || i === 2 || i === 3) { g.fillStyle = '#fff'; g.strokeStyle = '#E4B04A'; g.lineWidth = 4.5; g.beginPath(); g.arc(q.x, q.y, i === 3 ? 12.5 : i === 1 ? 11.5 : 9.5, 0, 7); g.fill(); g.stroke(); return; }
+      if (p.born) { const k = Math.min(1, (now - p.born) / 900); g.strokeStyle = `rgba(255,236,170,${1 - k})`; g.lineWidth = 2; g.beginPath(); g.arc(q.x, q.y, 6 + 26 * k, 0, 7); g.stroke(); g.fillStyle = '#F3D48A'; g.beginPath(); g.arc(q.x, q.y, 5.5, 0, 7); g.fill(); return; }
+      if (!p.fixed && deg >= 7) { g.fillStyle = '#E4B04A'; g.beginPath(); g.arc(q.x, q.y, 4.6, 0, 7); g.fill(); }
+    });
+    g.globalAlpha = 1;
+    // reach: the network leans toward the pointer
+    if (pl && this.o.reach) {
+      const near = Q.map((q, i) => [Math.hypot(q.x - pl[0], q.y - pl[1]), i]).sort((a, b) => a[0] - b[0]).slice(0, 3);
+      if (near[0][0] < 180) {
+        g.save();
+        near.forEach(([d, i]) => { g.strokeStyle = `rgba(243,212,138,${.55 * (1 - d / 180)})`; g.lineWidth = 1.2; g.setLineDash([3, 5]); g.beginPath(); g.moveTo(pl[0], pl[1]); g.lineTo(Q[i].x, Q[i].y); g.stroke(); });
+        g.setLineDash([]); g.strokeStyle = 'rgba(243,212,138,.9)'; g.lineWidth = 1.6; g.beginPath(); g.arc(pl[0], pl[1], 7, 0, 7); g.stroke(); g.restore();
+      }
+    }
+    g.restore();   // closes the logo-space transform opened after clearRect
+  }
+  liftSet(tris, Q) {   // three high facets near the peaks become companies
+    if (this._lift && this._liftN === tris.length) return this._lift;
+    const area = tr => Math.abs((Q[tr[1]].x - Q[tr[0]].x) * (Q[tr[2]].y - Q[tr[0]].y) - (Q[tr[2]].x - Q[tr[0]].x) * (Q[tr[1]].y - Q[tr[0]].y)) / 2;
+    const cen = tr => [(Q[tr[0]].x + Q[tr[1]].x + Q[tr[2]].x) / 3, (Q[tr[0]].y + Q[tr[1]].y + Q[tr[2]].y) / 3];
+    let scored = tris.map((tr, i) => [area(tr), i, cen(tr)]).filter(s => s[2][1] < 360 && s[2][0] > 110 && s[2][0] < 400).sort((a, b) => b[0] - a[0]); scored = scored.slice(Math.floor(scored.length * .2));
+    const pick = [];
+    for (const sc of scored) { if (pick.length === 3) break; if (pick.every(o => Math.hypot(o[2][0] - sc[2][0], o[2][1] - sc[2][1]) > 48)) pick.push(sc); }
+    pick.sort((a, b) => a[2][0] - b[2][0]);
+    this._lift = new Set(pick.map(s => s[1])); this._liftN = tris.length; return this._lift;
+  }
+}
+
+/* ---------------- hero ---------------- */
+let seedN = 0x2570A1;
+const hex = n => (n >>> 0).toString(16).toUpperCase().slice(-4).padStart(4, '0');
+let round = 1;
+function updateSeedLabel() { $('#seedLabel').textContent = `${t('seed')} ${String(round).padStart(2, '0')} · SEED ${hex(seedN)}`; }
+const heroM = new Mountain($('#heroCanvas'), {
+  seed: seedN, n: 26, reach: true,
+  hue: () => 350 + ((seedN % 9) - 4) * .9,
+  fit: (w, h) => {
+    if (w < 860) { const s = Math.min(w / 440, h * .42 / 280); return { s, x: w / 2 - 256 * s, y: h - 404 * s }; }
+    const s = Math.min(w * .5 / 420, (h - 150) / 300); return { s, x: w - 480 * s - w * .015, y: h - 410 * s };
+  }
+});
+updateSeedLabel();
+const toast = $('#toast');
+function popToast(x, y) {
+  toast.textContent = t('toast'); toast.style.left = x + 'px'; toast.style.top = y + 'px';
+  if (reduce) return;
+  toast.animate([{ opacity: 0, transform: 'translate(-50%,-110%)' }, { opacity: 1, transform: 'translate(-50%,-170%)', offset: .25 }, { opacity: 0, transform: 'translate(-50%,-260%)' }], { duration: 1300, easing: 'cubic-bezier(.16,1,.3,1)' });
+}
+const hc = $('#heroCanvas');
+hc.addEventListener('pointermove', e => { const r = hc.getBoundingClientRect(); heroM.ptr = { x: e.clientX - r.left, y: e.clientY - r.top }; });
+hc.addEventListener('pointerleave', () => { heroM.ptr = null; });
+hc.addEventListener('pointerdown', e => {
+  const r = hc.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top, [lx, ly] = heroM.toLogo(x, y);
+  if (heroM.addPoint(lx, ly)) popToast(x, y);
+});
+$('#reseed').addEventListener('click', () => {
+  seedN = (Math.imul(seedN ^ (Date.now() & 0xffff), 2654435761) >>> 0) || 1; round = round % 3 + 1; heroM.reseed(seedN); updateSeedLabel();
+  document.documentElement.style.setProperty('--seed-h', heroM.o.hue());
+});
+// idle signals from the summit so the brain is visibly alive
+if (!reduce) setInterval(() => { if (heroM.visible && document.visibilityState === 'visible') heroM.wave([1, 3, 2][Math.floor(Math.random() * 3)], 3, 140); }, 3200);
+
+/* ---------------- engine (scroll-driven) ---------------- */
+const engine = $('#engine'), stagesEl = $$('#stages .stage');
+let prog = reduce ? 1 : 0;
+const smooth = x => x <= 0 ? 0 : x >= 1 ? 1 : x * x * (3 - 2 * x);
+const stageM = new Mountain($('#stageCanvas'), {
+  seed: 0x9A71C3, n: 24, reach: false, hue: () => 352,
+  fit: (w, h) => { const s = Math.min(w / 500, h / 410); return { s, x: w / 2 - 256 * s, y: h - 408 * s }; },
+  stage: () => { const p = prog * 3; return { spark: smooth(p * 2), forge: smooth(p - 1), lift: smooth((p - 2) * 1.3) }; }
+});
+// Spark: points start scattered and gather
+const scatter = stageM.pts.map(() => ({ dx: (Math.random() - .5) * 520, dy: (Math.random() - .5) * 380 }));
+const baseP = stageM.pts.map(p => ({ x: p.x, y: p.y }));
+function stageFrame() {
+  const p = prog * 3, gather = smooth(Math.min(1, p * 1.2));
+  stageM.pts.forEach((pt, i) => { pt.x = baseP[i].x + scatter[i].dx * (1 - gather); pt.y = baseP[i].y + scatter[i].dy * (1 - gather); });
+}
+let curStage = -1;
+function setStageNote() { const i = Math.max(0, curStage); $('#stageNote').textContent = t('notes')[i]; }
+function onEngineScroll() {
+  if (reduce) return;
+  const r = engine.getBoundingClientRect(), span = engine.offsetHeight - innerHeight;
+  prog = Math.max(0, Math.min(1, -r.top / span));
+  const s = Math.min(2, Math.floor(prog * 3 * .999));
+  if (s !== curStage) { curStage = s; stagesEl.forEach((el, i) => el.classList.toggle('on', i === s)); setStageNote(); drawYear(s); }
+}
+addEventListener('scroll', onEngineScroll, { passive: true });
+// year ring: 3 rounds × (Spark 1 · Forge 2 · Launch 1 month)
+function drawYear(active) {
+  const svg = $('#yearRing'); let h = ''; const cx = 42, cy = 42, R = 32;
+  for (let m = 0; m < 12; m++) {
+    const st = [0, 1, 1, 2][m % 4], a0 = (m / 12) * Math.PI * 2 - Math.PI / 2 + .04, a1 = ((m + 1) / 12) * Math.PI * 2 - Math.PI / 2 - .04;
+    const x0 = cx + R * Math.cos(a0), y0 = cy + R * Math.sin(a0), x1 = cx + R * Math.cos(a1), y1 = cy + R * Math.sin(a1);
+    const col = st === active ? '#F3D48A' : 'rgba(255,236,228,.22)';
+    h += `<path d="M${x0.toFixed(1)} ${y0.toFixed(1)} A${R} ${R} 0 0 1 ${x1.toFixed(1)} ${y1.toFixed(1)}" stroke="${col}" stroke-width="7" fill="none"/>`;
+  }
+  h += `<text x="42" y="47" text-anchor="middle" font-family="Martian Mono" font-size="15" fill="#FFF4EF">×3</text>`;
+  svg.innerHTML = h;
+}
+if (reduce) { curStage = 2; stagesEl.forEach(el => el.classList.add('on')); drawYear(2); setStageNote(); } else { onEngineScroll(); }
+
+/* ---------------- render loop (both canvases, paused off-screen) ---------------- */
+function loop(now) {
+  if (heroM.visible) heroM.frame(now);
+  if (stageM.visible) { stageFrame(); stageM.frame(now); }
+  if (!reduce) requestAnimationFrame(loop);
+}
+requestAnimationFrame(loop);
+if (reduce) { addEventListener('resize', () => { heroM.frame(performance.now()); stageM.frame(performance.now()); }); }
+
+/* ---------------- brain vs hands ---------------- */
+const range = $('#brainRange'), stack = $('#stack');
+function readout() {
+  const v = +range.value; stack.style.setProperty('--b', (v / 100).toFixed(2)); stack.classList.toggle('lit', v >= 45); range.style.setProperty('--pct', v + '%');
+  $('#readout').innerHTML = v < 35 ? t('readHand') : v > 65 ? t('readBrain') : t('readMid');
+}
+range.addEventListener('input', readout); readout();
+// one gentle demonstration the first time it comes into view
+if (!reduce) new IntersectionObserver((es, ob) => { if (!es[0].isIntersecting) return; ob.disconnect(); const t0 = performance.now(), from = +range.value;
+  const step = n => { const k = Math.min(1, (n - t0) / 1600), e = 1 - Math.pow(1 - k, 3); range.value = Math.round(from + (88 - from) * e); readout(); if (k < 1) requestAnimationFrame(step); }; setTimeout(() => requestAnimationFrame(step), 400); }, { threshold: .6 }).observe(stack);
+
+/* ---------------- building floors (one open at a time) ---------------- */
+$$('#floors .floor').forEach(fl => $('button', fl).addEventListener('click', () => {
+  const open = !fl.hasAttribute('open');
+  $$('#floors .floor').forEach(o => { o.removeAttribute('open'); $('button', o).setAttribute('aria-expanded', 'false'); });
+  if (open) { fl.setAttribute('open', ''); $('button', fl).setAttribute('aria-expanded', 'true'); }
+}));
+
+/* ---------------- film ---------------- */
+const player = $('#player'), video = $('#video');
+$('.play', player).addEventListener('click', () => { video.play(); });
+video.addEventListener('play', () => player.classList.add('playing'));
+
+/* ---------------- sign-up (mailto) ---------------- */
+const form = $('#join');
+form.addEventListener('submit', e => {
+  e.preventDefault();
+  const name = $('#fName'), email = $('#fEmail'); let ok = true;
+  name.setAttribute('aria-invalid', String(!name.value.trim()));
+  const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim());
+  email.setAttribute('aria-invalid', String(!emailOk)); $('#fEmailErr').textContent = emailOk ? '' : t('errEmail');
+  if (!name.value.trim()) { ok = false; name.focus(); } else if (!emailOk) { ok = false; email.focus(); }
+  if (!ok) return;
+  if (!CONTACT.email) { $('#fEmailErr').textContent = t('noMail'); return; }
+  const role = t('roles')[form.role.value];
+  const body = `${name.value.trim()}\n${email.value.trim()}\n${role}\n\n${$('#fNote').value.trim()}`;
+  location.href = `mailto:${CONTACT.email}?subject=${encodeURIComponent(t('mailSubj'))}&body=${encodeURIComponent(body)}`;
+});
+
+/* ---------------- reveals + share bar ---------------- */
+if (!reduce) {
+  const io = new IntersectionObserver(es => es.forEach(en => { if (en.isIntersecting) { en.target.classList.remove('pre'); io.unobserve(en.target); } }), { threshold: .15, rootMargin: '0px 0px -6% 0px' });
+  $$('.rv').forEach((el, i) => { if (el.getBoundingClientRect().top > innerHeight) { el.classList.add('pre'); el.style.transitionDelay = (i % 4) * 70 + 'ms'; io.observe(el); } });
+  io.observe($('#share'));
+} else { $('#share').classList.remove('pre'); }
+
+applyLang(lang);
+})();
+</script>
+</body>
+</html>

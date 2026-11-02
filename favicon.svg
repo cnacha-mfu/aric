@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="MFU-ARIC logo mark">
+  <title>MFU-ARIC — AI &amp; Robotics Innovation Center</title>
+  <defs>
+    <linearGradient id="range" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#C8102E"/>
+      <stop offset="1" stop-color="#7A0C1E"/>
+    </linearGradient>
+  </defs>
+
+  <!-- sun -->
+  <circle cx="418" cy="118" r="30" fill="#E4B04A"/>
+
+  <!-- mountain range: one silhouette, two peaks -->
+  <path d="M56 400 L168 192 L244 282 L320 140 L456 400 Z" fill="url(#range)"/>
+  <g>
+    <path d="M56 400 L168 192 L232 352 Z" fill="#000000" fill-opacity="0.09"/>
+    <path d="M56 400 L232 352 L220 400 Z" fill="#000000" fill-opacity="0.225"/>
+    <path d="M168 192 L244 282 L232 352 Z" fill="#FFFFFF" fill-opacity="0.09"/>
+    <path d="M244 282 L300 236 L232 352 Z" fill="#000000" fill-opacity="0.135"/>
+    <path d="M244 282 L320 140 L300 236 Z" fill="#FFFFFF" fill-opacity="0.125"/>
+    <path d="M320 140 L352 320 L300 236 Z" fill="#000000" fill-opacity="0.165"/>
+    <path d="M320 140 L456 400 L352 320 Z" fill="#000000" fill-opacity="0.255"/>
+    <path d="M300 236 L352 320 L232 352 Z" fill="#000000" fill-opacity="0.105"/>
+    <path d="M232 352 L352 320 L352 400 Z" fill="#000000" fill-opacity="0.195"/>
+    <path d="M232 352 L352 400 L220 400 Z" fill="#000000" fill-opacity="0.285"/>
+    <path d="M352 320 L456 400 L352 400 Z" fill="#000000" fill-opacity="0.3"/>
+  </g>
+  <g stroke="#F3D48A" stroke-width="3" stroke-linecap="round" fill="none" opacity="0.85">
+    <path d="M56 400 L168 192"/>
+    <path d="M168 192 L232 352"/>
+    <path d="M56 400 L232 352"/>
+    <path d="M220 400 L232 352"/>
+    <path d="M168 192 L244 282"/>
+    <path d="M232 352 L244 282"/>
+    <path d="M244 282 L300 236"/>
+    <path d="M232 352 L300 236"/>
+    <path d="M244 282 L320 140"/>
+    <path d="M300 236 L320 140"/>
+    <path d="M320 140 L352 320"/>
+    <path d="M300 236 L352 320"/>
+    <path d="M320 140 L456 400"/>
+    <path d="M352 320 L456 400"/>
+    <path d="M232 352 L352 320"/>
+    <path d="M352 320 L352 400"/>
+    <path d="M232 352 L352 400"/>
+  </g>
+  <g fill="#E4B04A">
+    <circle cx="300" cy="236" r="7.2"/>
+    <circle cx="232" cy="352" r="7.2"/>
+    <circle cx="352" cy="320" r="7.2"/>
+  </g>
+  <g fill="#FFFFFF" stroke="#E4B04A" stroke-width="5">
+    <circle cx="168" cy="192" r="12"/>
+    <circle cx="244" cy="282" r="10"/>
+    <circle cx="320" cy="140" r="13"/>
+  </g>
+
+</svg>
