@@ -334,6 +334,9 @@ fieldset.field{border:0;padding:0;margin:18px 0 0}
 .c-grid li span+span{min-width:0;overflow-wrap:anywhere;text-align:right}
 .c-grid li a{color:var(--red);font-weight:500;text-decoration:none}
 .c-grid li a:hover{text-decoration:underline}
+.c-grid li a.yt{display:block;line-height:0;transition:transform .2s var(--ease)}
+.c-grid li a.yt svg{width:34px;height:24px}
+.c-grid li a.yt:hover{transform:scale(1.08)}
 .ph{font:500 13px/1.4 var(--mono);color:var(--gold-d);background:#FBF3DF;padding:2px 7px;border-radius:5px}
 @media (max-width:900px){.c-grid{grid-template-columns:1fr}}
 
@@ -729,7 +732,8 @@ function renderSlots() {
     const v = CONTACT[el.dataset.slot];
     if (!v) { el.innerHTML = `<span class="ph">[${t('ph')}]</span>`; return; }
     const href = el.dataset.slot === 'email' ? 'mailto:' + v : el.dataset.slot === 'phone' ? 'tel:' + v.replace(/\s/g, '') : v;
-    const label = el.dataset.slot === 'email' || el.dataset.slot === 'phone' ? v : el.dataset.slot === 'youtube' ? (v.match(/@[\w.-]+/) || [v])[0] : v.replace(/^https?:\/\/(www\.)?/, '');
+    if (el.dataset.slot === 'youtube') { el.innerHTML = `<a class="yt" href="${v}" target="_blank" rel="noopener" aria-label="YouTube"><svg viewBox="0 0 28 20" aria-hidden="true"><rect width="28" height="20" rx="5" fill="#FF0000"/><path d="M11 5.5v9l7.8-4.5z" fill="#fff"/></svg></a>`; return; }
+    const label = el.dataset.slot === 'email' || el.dataset.slot === 'phone' ? v : v.replace(/^https?:\/\/(www\.)?/, '');
     el.innerHTML = `<a href="${href}" ${/^http/.test(href) ? 'target="_blank" rel="noopener"' : ''}>${label}</a>`;
   });
 }
