@@ -173,23 +173,23 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
   .year{display:none}
 }
 
-/* care */
-.care-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:20px;margin-top:60px}
-.uc{position:relative;border-radius:14px;overflow:hidden;background:var(--wash);display:flex;flex-direction:column}
-.uc img{width:100%;height:auto;aspect-ratio:840/786;object-fit:cover;transition:transform .9s var(--ease)}
-.uc:hover img{transform:scale(1.035)}
-.uc .t{padding:18px 20px 22px}
-.uc h3{font-size:20px;line-height:1.35}
-.uc p{font-size:15px;line-height:1.6;color:var(--ink2);margin-top:6px}
-.uc .bot{font:500 12px/1 var(--mono);color:var(--red);letter-spacing:.04em;margin-bottom:8px;display:block}
-.uc:nth-child(1),.uc:nth-child(4){grid-column:span 7}
-.uc:nth-child(2),.uc:nth-child(3){grid-column:span 5}
-.uc:nth-child(1) img,.uc:nth-child(4) img{aspect-ratio:16/9}
-.uc:nth-child(2) img,.uc:nth-child(3) img{aspect-ratio:5/4}
-.principle{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px 24px;margin-top:28px;font-size:14px;color:var(--mute)}
-.principle b{font:600 18px/1.4 var(--disp);color:var(--red)}
-@media (max-width:900px){.care-grid{grid-template-columns:1fr 1fr}.uc:nth-child(n){grid-column:auto}.uc:nth-child(n) img{aspect-ratio:5/4}}
-@media (max-width:520px){.care-grid{grid-template-columns:1fr}}
+/* showcase */
+.show-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:56px}
+.vid{display:flex;flex-direction:column;gap:12px}
+.vframe{position:relative;aspect-ratio:16/9;border-radius:14px;overflow:hidden;background:#1a0408;box-shadow:0 0 0 1px var(--rule)}
+.vframe button{all:unset;position:absolute;inset:0;cursor:pointer;display:block}
+.vframe img{width:100%;height:100%;object-fit:cover;transition:transform .9s var(--ease),filter .4s}
+.vframe button:hover img{transform:scale(1.035);filter:brightness(.92)}
+.vframe button:focus-visible{outline:3px solid var(--gold);outline-offset:-3px}
+.vframe .pl{position:absolute;right:12px;top:12px;display:flex;align-items:center;gap:10px;font:600 14px/1 var(--disp);color:#fff;background:rgba(23,17,15,.72);padding:9px 14px 9px 10px;border-radius:999px}
+.vframe .pl i{width:26px;height:26px;border-radius:50%;background:var(--gold);color:var(--ink);display:grid;place-items:center}
+.vframe .pl svg{width:10px;height:10px;margin-left:2px}
+.vframe iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.vid h3{font-size:21px;line-height:1.3;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.vid h3 span{font:500 12.5px var(--mono);color:var(--red);letter-spacing:.04em}
+.vid p{font-size:15.5px;line-height:1.6;color:var(--ink2)}
+.show-note{margin-top:26px;font-size:14px;color:var(--mute)}
+@media (max-width:900px){.show-grid{grid-template-columns:1fr;gap:36px}}
 
 /* founders */
 .founders{background:var(--wash)}
@@ -340,7 +340,7 @@ footer p{line-height:1.6}
     <nav aria-label="หลัก"><ul>
       <li><a href="#brain" data-en="Idea">แนวคิด</a></li>
       <li><a href="#engine" data-en="Engine">กลไก</a></li>
-      <li><a href="#care" data-en="Care">เพื่อการดูแล</a></li>
+      <li><a href="#showcase" data-en="Showcase">ผลงาน</a></li>
       <li><a href="#founders" data-en="Founders">สำหรับผู้ก่อตั้ง</a></li>
       <li><a href="#building" data-en="Building">อาคาร</a></li>
       <li><a href="#film" data-en="Film">วิดีโอ</a></li>
@@ -356,7 +356,7 @@ footer p{line-height:1.6}
 </header>
 <div class="drawer" id="drawer" role="dialog" aria-modal="true" aria-label="เมนู">
   <button class="close" type="button" aria-label="ปิดเมนู"><svg viewBox="0 0 26 26" width="26" height="26" aria-hidden="true"><path d="M6 6l14 14M20 6 6 20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
-  <a href="#brain" data-en="Idea">แนวคิด</a><a href="#engine" data-en="Engine">กลไก</a><a href="#care" data-en="Care">เพื่อการดูแล</a><a href="#founders" data-en="Founders">สำหรับผู้ก่อตั้ง</a><a href="#building" data-en="Building">อาคาร</a><a href="#film" data-en="Film">วิดีโอ</a><a href="#contact" data-en="Contact">ติดต่อ</a>
+  <a href="#brain" data-en="Idea">แนวคิด</a><a href="#engine" data-en="Engine">กลไก</a><a href="#showcase" data-en="Showcase">ผลงาน</a><a href="#founders" data-en="Founders">สำหรับผู้ก่อตั้ง</a><a href="#building" data-en="Building">อาคาร</a><a href="#film" data-en="Film">วิดีโอ</a><a href="#contact" data-en="Contact">ติดต่อ</a>
   <a class="btn btn-gold" href="#join"><span data-en="Join the next Spark round">ร่วมรอบ Spark ถัดไป</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
 </div>
 
@@ -432,18 +432,29 @@ footer p{line-height:1.6}
   </div>
 </section>
 
-<!-- CARE -->
-<section class="sec" id="care">
+<!-- SHOWCASE -->
+<section class="sec" id="showcase">
   <div class="wrap">
-    <h2 class="h2 rv" data-en="First: brains for treatment and care">เริ่มจากสมองเพื่อการรักษาและดูแล</h2>
-    <p class="lead rv" data-en="One in five Thais is 60 or older (National Statistical Office, 2024). MFU already has schools of medicine, nursing and health science and its own hospital — the place where a brain for care can be built and tested for real.">คนไทยทุก 1 ใน 5 อายุ 60 ปีขึ้นไป (สำนักงานสถิติแห่งชาติ 2567) และ มฟล. มีทั้งสำนักวิชาแพทยศาสตร์ พยาบาลศาสตร์ วิทยาศาสตร์สุขภาพ และโรงพยาบาลของมหาวิทยาลัย — จุดที่สมองเพื่อการดูแลสร้างและทดสอบได้จริง</p>
-    <div class="care-grid">
-      <article class="uc rv"><img src="assets/img/uc_ward.jpg" alt="หุ่นยนต์ฮิวแมนนอยด์ในหอผู้ป่วย" width="840" height="786" loading="lazy"><div class="t"><span class="bot">AgiBot X2 Ultra</span><h3 data-en="A nurse's assistant on the ward">ผู้ช่วยพยาบาลในหอผู้ป่วย</h3><p data-en="Fetches and delivers medicines and supplies between the nurses' station and the beds, moving safely around people.">รับ–ส่งยาและเวชภัณฑ์ระหว่างเคาน์เตอร์พยาบาลกับเตียง เดินในหอและหลบคนอย่างปลอดภัย</p></div></article>
-      <article class="uc rv"><img src="assets/img/uc_talk.jpg" alt="หุ่นยนต์คุยกับผู้สูงอายุบนเตียง" width="840" height="786" loading="lazy"><div class="t"><span class="bot">AgiBot X2 Ultra</span><h3 data-en="A companion that speaks the local dialect">เพื่อนคุยภาษาถิ่น เตือนกินยา</h3><p data-en="Chats in the local dialect, reminds patients about medicine, and sends a summary to the nurse or family.">คุยด้วยภาษาถิ่น เตือนยาตามเวลา แล้วสรุปอาการส่งพยาบาลหรือญาติ</p></div></article>
-      <article class="uc rv"><img src="assets/img/uc_night.jpg" alt="หุ่นยนต์สี่ขาเดินตรวจตอนกลางคืน" width="840" height="786" loading="lazy"><div class="t"><span class="bot">AgiBot D1 Edu</span><h3 data-en="A night round that spots falls">เวรดึก ตรวจจับการล้ม</h3><p data-en="Patrols an elderly-care home at night and alerts the nurse to a fall or a patient leaving bed.">เดินตรวจสถานดูแลผู้สูงอายุ เห็นการล้มหรือการลุกจากเตียง แล้วแจ้งพยาบาลทันที</p></div></article>
-      <article class="uc rv"><img src="assets/img/uc_coach.jpg" alt="หุ่นยนต์โค้ชออกกำลังผู้สูงวัย" width="840" height="786" loading="lazy"><div class="t"><span class="bot">AgiBot X2 Ultra</span><h3 data-en="An exercise coach for older adults">โค้ชออกกำลังผู้สูงวัย</h3><p data-en="Demonstrates exercises, counts repetitions, watches posture through its camera and adjusts the level for each person.">สาธิตท่า นับจำนวนครั้ง ดูท่าทางผ่านกล้อง และปรับระดับให้เหมาะกับแต่ละคน</p></div></article>
+    <h2 class="h2 rv" data-en="Showcase: MediHack 2026">ผลงานจาก MediHack 2026</h2>
+    <p class="lead rv" data-en="Prototypes teams built from real hospital problems at MediHack 2026: a glimpse of what ARIC incubates.">ต้นแบบที่ทีมสร้างจากโจทย์จริงของโรงพยาบาลในงาน MediHack 2026 ตัวอย่างของสิ่งที่ ARIC บ่มเพาะ</p>
+    <div class="show-grid">
+      <article class="vid rv">
+        <div class="vframe"><button type="button" data-yt="C2mGUTi46cA" data-t="10" aria-label="เล่นวิดีโอ Care Mind"><img src="assets/show/C2mGUTi46cA.jpg" alt="Care Mind — Medical Coder" width="960" height="540" loading="lazy"><span class="pl"><i><svg aria-hidden="true"><use href="#i-play"/></svg></i><span data-en="Watch demo">ดูเดโม</span></span></button></div>
+        <h3>Care Mind <span>Medical Coder</span></h3>
+        <p data-en="AI that helps assign medical codes from patient records, cutting paperwork for hospital staff.">AI ช่วยลงรหัสทางการแพทย์จากเวชระเบียน ลดงานเอกสารของบุคลากรโรงพยาบาล</p>
+      </article>
+      <article class="vid rv">
+        <div class="vframe"><button type="button" data-yt="aG9yRBE7HKU" data-t="5" aria-label="เล่นวิดีโอ Mali AI"><img src="assets/show/aG9yRBE7HKU.jpg" alt="Mali AI — Pre-screening AI Agent" width="960" height="540" loading="lazy"><span class="pl"><i><svg aria-hidden="true"><use href="#i-play"/></svg></i><span data-en="Watch demo">ดูเดโม</span></span></button></div>
+        <h3>Mali AI <span>Pre-screening AI Agent</span></h3>
+        <p data-en="An AI agent that pre-screens patients before they see a doctor.">AI agent ช่วยคัดกรองผู้ป่วยเบื้องต้นก่อนพบแพทย์</p>
+      </article>
+      <article class="vid rv">
+        <div class="vframe"><button type="button" data-yt="br000T3QmZE" data-t="15" aria-label="เล่นวิดีโอ Cura AI"><img src="assets/show/br000T3QmZE.jpg" alt="Cura AI — Medical Coding AI" width="960" height="540" loading="lazy"><span class="pl"><i><svg aria-hidden="true"><use href="#i-play"/></svg></i><span data-en="Watch demo">ดูเดโม</span></span></button></div>
+        <h3>Cura AI <span>Medical Coding AI</span></h3>
+        <p data-en="Another team’s take on AI for medical coding, from the same real problem.">AI สำหรับลงรหัสทางการแพทย์ อีกแนวทางหนึ่งจากโจทย์เดียวกัน</p>
+      </article>
     </div>
-    <div class="principle rv"><b data-en="Help nurses, never replace them.">ช่วยพยาบาล ไม่แทนพยาบาล</b><span data-en="Examples of what ARIC teams can build, not delivered products. Real AgiBot robots on AI-generated scenes.">ตัวอย่างงานที่ทีม ARIC สร้างได้ ยังไม่ใช่ผลงานที่ส่งมอบ · ภาพหุ่นยนต์จริง (AgiBot) บนฉากที่สร้างด้วย AI</span></div>
+    <p class="show-note rv" data-en="Prototypes from a hackathon, not finished products.">ต้นแบบจากแฮกกาธอน ยังไม่ใช่ผลิตภัณฑ์ที่เปิดใช้งานจริง</p>
   </div>
 </section>
 
@@ -915,6 +926,14 @@ $$('#floors .floor').forEach(fl => $('button', fl).addEventListener('click', () 
   const open = !fl.hasAttribute('open');
   $$('#floors .floor').forEach(o => { o.removeAttribute('open'); $('button', o).setAttribute('aria-expanded', 'false'); });
   if (open) { fl.setAttribute('open', ''); $('button', fl).setAttribute('aria-expanded', 'true'); }
+}));
+
+/* ---------------- showcase: click-to-load YouTube ---------------- */
+$$('.vframe button[data-yt]').forEach(b => b.addEventListener('click', () => {
+  const f = document.createElement('iframe');
+  f.src = `https://www.youtube-nocookie.com/embed/${b.dataset.yt}?start=${b.dataset.t}&autoplay=1&rel=0`;
+  f.title = b.getAttribute('aria-label'); f.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen'; f.allowFullscreen = true;
+  b.replaceWith(f);
 }));
 
 /* ---------------- film ---------------- */
