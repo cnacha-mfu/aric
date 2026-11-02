@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ARIC — ศูนย์นวัตกรรมด้านปัญญาประดิษฐ์และหุ่นยนต์ มหาวิทยาลัยแม่ฟ้าหลวง</title>
-<meta name="description" content="ARIC สร้างสมองให้หุ่นยนต์จากโจทย์จริงของภาคเหนือ — ศูนย์นวัตกรรมด้านปัญญาประดิษฐ์และหุ่นยนต์ มหาวิทยาลัยแม่ฟ้าหลวง เชียงราย">
-<meta property="og:title" content="ARIC — สร้างสมองให้หุ่นยนต์ จากโจทย์จริงของภาคเหนือ">
+<meta name="description" content="ARIC ศูนย์บ่มเพาะโซลูชัน AI และหุ่นยนต์จากโจทย์จริง — ศูนย์นวัตกรรมด้านปัญญาประดิษฐ์และหุ่นยนต์ มหาวิทยาลัยแม่ฟ้าหลวง เชียงราย">
+<meta property="og:title" content="ARIC — ศูนย์บ่มเพาะโซลูชัน AI และหุ่นยนต์ จากโจทย์จริง">
 <meta property="og:description" content="ศูนย์นวัตกรรมด้านปัญญาประดิษฐ์และหุ่นยนต์ มหาวิทยาลัยแม่ฟ้าหลวง · รอบ Spark → Forge → Launch ทุก 4 เดือน">
 <meta property="og:image" content="https://cnacha-mfu.github.io/aric/assets/og.jpg">
 <meta property="og:type" content="website">
@@ -193,22 +193,42 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
 
 /* founders */
 .founders{background:var(--wash)}
-.f-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:clamp(40px,6vw,90px);margin-top:60px}
-.gets{list-style:none;margin:0;padding:0}
-.gets li{display:grid;grid-template-columns:34px 1fr;gap:14px;padding:16px 0;border-top:1px solid var(--rule)}
-.gets li:last-child{border-bottom:1px solid var(--rule)}
-.gets svg{width:30px;height:22px;margin-top:5px}
-.gets b{display:block;font:600 18px/1.4 var(--disp)}
-.gets span{font-size:15.5px;color:var(--ink2);line-height:1.6}
-.share{margin-top:44px}
-.share h3{font-size:22px}
-.share .bar{display:flex;height:54px;gap:3px;margin-top:16px;border-radius:10px;overflow:hidden;font:600 14px/1 var(--disp)}
-.share .bar div{display:flex;align-items:center;justify-content:center;transform-origin:left;transition:transform 1.1s var(--ease)}
-.share .bar div:nth-child(1){flex:15;background:var(--red);color:var(--on-red)}
-.share .bar div:nth-child(2){flex:65;background:var(--gold);color:var(--ink)}
-.share .bar div:nth-child(3){flex:20;background:var(--ink2);color:var(--on-red)}
-.share.pre .bar div{transform:scaleX(0)}
-.share p{font-size:15.5px;color:var(--ink2);line-height:1.65;margin-top:14px}
+.f-grid{display:grid;grid-template-columns:1.25fr 1fr;gap:clamp(40px,6vw,90px);margin-top:60px}
+.sup{position:relative}
+.sup>svg{width:100%;height:auto;display:block;overflow:visible}
+.sup .edge{fill:none;stroke:#D9CFCB;stroke-width:1.6;transition:stroke .35s,stroke-width .35s}
+.sup .mesh{fill:none;stroke:#E7E1DE;stroke-width:1.2}
+.sup .edge.on{stroke:var(--gold);stroke-width:3}
+.sup .spark{fill:none;stroke:var(--gold-l);stroke-width:5;stroke-linecap:round;stroke-dasharray:14 900;stroke-dashoffset:14;opacity:0}
+.sup .edge.on+.spark{opacity:1;animation:sup-run 1.1s cubic-bezier(.16,1,.3,1) infinite}
+@keyframes sup-run{to{stroke-dashoffset:-260}}
+.sup .node{cursor:pointer;outline:none}
+.sup .node circle{transition:r .35s cubic-bezier(.16,1,.3,1),stroke-width .3s}
+.sup .node text{font:500 15px var(--disp);fill:var(--ink2);transition:fill .3s}
+.sup .node:hover text,.sup .node.on text{fill:var(--ink)}
+.sup .node.on circle{r:13}
+.sup .node:focus-visible circle{stroke:var(--gold);stroke-width:4}
+.sup .g-tools circle{fill:var(--gold)}
+.sup .g-pool circle{fill:#fff;stroke:var(--red);stroke-width:3}
+.sup .g-people circle{fill:var(--red-d)}
+.sup .glabel{font:600 13px var(--mono);letter-spacing:.06em;text-transform:uppercase}
+.sup .hub-t{font:700 20px var(--disp);fill:var(--ink)}
+.sup .hub-s{font:400 13px var(--body);fill:var(--mute)}
+.sup .dim .node:not(.in) text{fill:#B9AEA9}
+.sup .dim .node:not(.in) circle{opacity:.35}
+.sup-groups{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+@media (max-width:600px){.sup .node text{display:none}.sup .node circle{r:13}.sup .node.on circle{r:17}.sup .hub-t{font-size:24px}}
+.sup-groups button{display:flex;align-items:center;gap:8px;font:600 14.5px/1 var(--disp);color:var(--ink2);background:var(--paper);border:1.5px solid var(--rule);border-radius:999px;padding:10px 14px;cursor:pointer;transition:border-color .2s,color .2s,background .2s}
+.sup-groups button i{width:12px;height:12px;border-radius:50%;display:block}
+.sup-groups button[aria-pressed="true"]{border-color:var(--ink);color:var(--ink)}
+.sup-cap{margin-top:18px;min-height:96px;padding:18px 20px;border-radius:14px;background:var(--paper);border:1px solid var(--rule)}
+.sup-cap .k{font:600 12.5px var(--mono);letter-spacing:.06em;color:var(--red)}
+.sup-cap b{display:block;font:600 20px/1.35 var(--disp);margin-top:4px}
+.sup-cap p{font-size:15.5px;line-height:1.6;color:var(--ink2);margin-top:4px}
+.pool-cta{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 20px;margin-top:22px;padding:18px 20px;border-radius:14px;background:var(--field);color:var(--on-red)}
+.pool-cta p{font-size:15.5px;line-height:1.55;color:var(--on-red2)}
+.pool-cta p b{color:var(--on-red);font:600 17px/1.4 var(--disp);display:block}
+.pool-cta .btn{padding:14px 20px;font-size:15.5px}
 .form{background:var(--paper);border-radius:18px;padding:clamp(24px,3vw,38px);box-shadow:0 30px 60px -40px rgba(0,0,0,.28);align-self:start;position:sticky;top:96px}
 .form h3{font-size:26px;line-height:1.3}
 .form .next{display:flex;align-items:center;gap:10px;margin-top:10px;font-size:15px;color:var(--ink2)}
@@ -230,8 +250,6 @@ fieldset.field{border:0;padding:0;margin:18px 0 0}
 .chips input:focus-visible+span{outline:3px solid var(--gold);outline-offset:2px}
 .form .btn{margin-top:24px;width:100%;justify-content:center}
 .form small{display:block;margin-top:12px;font-size:13px;color:var(--mute);line-height:1.5}
-.targets{margin-top:44px;font-size:15px;color:var(--ink2);line-height:1.7}
-.targets b{font-family:var(--mono);font-weight:500;color:var(--red-d)}
 @media (max-width:900px){.f-grid{grid-template-columns:1fr}.form{position:static}}
 
 /* building */
@@ -295,7 +313,7 @@ footer p{line-height:1.6}
   #engine{height:auto}.engine-sticky{position:relative;height:auto;padding-bottom:60px}
   .engine-body{grid-template-rows:auto}.stage-canvas{height:46vh}
   .stage{opacity:1}.stages .stage:not(.on){display:block}
-  .share.pre .bar div{transform:none}
+  .sup .spark{display:none}
 }
 </style>
 </head>
@@ -348,8 +366,8 @@ footer p{line-height:1.6}
   <canvas id="heroCanvas" aria-label="ภูเขา ARIC ที่มีชีวิต แตะเพื่อเพิ่มโจทย์" role="img"></canvas>
   <div class="wrap">
     <div class="copy">
-      <h1 data-en="<span class=ln>We build the <em>brains</em></span> <span class=ln>robots need —</span> <span class=ln>from real problems</span> <span class=ln>in the North</span>"><span class="ln">สร้าง<em>สมอง</em>ให้หุ่นยนต์</span> <span class="ln">จากโจทย์จริง</span> <span class="ln">ของภาคเหนือ</span></h1>
-      <p class="lede" data-en="ARIC, the AI &amp; Robotics Innovation Center at Mae Fah Luang University, turns real problems from hospitals, industry and communities into AI that people use — and then into companies.">ARIC ศูนย์นวัตกรรมด้านปัญญาประดิษฐ์และหุ่นยนต์ มหาวิทยาลัยแม่ฟ้าหลวง เปลี่ยนโจทย์จริงของโรงพยาบาล อุตสาหกรรม และชุมชน ให้เป็น AI ที่คนใช้จริง แล้วต่อยอดเป็นบริษัท</p>
+      <h1 data-en="<span class=ln>We incubate</span> <span class=ln><em>AI &amp; robotics</em></span> <span class=ln>solutions from</span> <span class=ln>real problems</span>"><span class="ln">บ่มเพาะโซลูชัน</span> <span class="ln"><em>AI และหุ่นยนต์</em></span> <span class="ln">จากโจทย์จริง</span></h1>
+      <p class="lede" data-en="ARIC, the AI &amp; Robotics Innovation Center at Mae Fah Luang University, is an incubator. We take real problems from hospitals, industry and communities, back each team with tools, mentors and a pool of student talent, and grow the best solutions into companies.">ARIC ศูนย์นวัตกรรมด้านปัญญาประดิษฐ์และหุ่นยนต์ มหาวิทยาลัยแม่ฟ้าหลวง คือศูนย์บ่มเพาะ เรารับโจทย์จริงจากโรงพยาบาล อุตสาหกรรม และชุมชน หนุนทุกทีมด้วยเครื่องมือ ที่ปรึกษา และ Resource Pool นักศึกษา แล้วต่อยอดโซลูชันที่ดีที่สุดเป็นบริษัท</p>
       <div class="actions">
         <a class="btn btn-gold" href="#join"><span data-en="Join the next Spark round">ร่วมรอบ Spark ถัดไป</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
         <a class="link-play" href="#film"><i><svg aria-hidden="true"><use href="#i-play"/></svg></i><span data-en="Watch the film · 1:29">ดูวิดีโอ · 1:29</span></a>
@@ -402,7 +420,7 @@ footer p{line-height:1.6}
       <div>
         <ol class="stages" id="stages">
           <li class="stage on"><h3>Spark <span class="mono" data-en="1 MONTH">1 เดือน</span></h3><p data-en="<b>Ignite.</b> An open hackathon on real problems from hospitals, industry and communities; three teams are selected.">จุดประกายไอเดีย: แฮกกาธอนเปิดรับโจทย์จริงจากโรงพยาบาล อุตสาหกรรม และชุมชน <b>คัดเหลือ 3 ทีม</b></p></li>
-          <li class="stage"><h3>Forge <span class="mono" data-en="2 MONTHS">2 เดือน</span></h3><p data-en="<b>฿100,000 per team</b> plus industry mentors, a tech PM, NVIDIA DGX and AI coding agents to build an MVP and test it with real users.">หลอมไอเดียเป็นของจริง: <b>ทุนทีมละ ฿100,000</b> พร้อมที่ปรึกษาจากอุตสาหกรรม Tech PM เครื่อง DGX และ AI coding agent สร้าง MVP แล้วทดสอบกับผู้ใช้จริง</p></li>
+          <li class="stage"><h3>Forge <span class="mono" data-en="2 MONTHS">2 เดือน</span></h3><p data-en="<b>Forge it into something real.</b> Tools, students from the Resource Pool, industry mentors and a tech PM help each team build an MVP and test it with real users.">หลอมไอเดียเป็นของจริง: <b>เครื่องมือ นักศึกษาจาก Resource Pool</b> ที่ปรึกษาจากอุตสาหกรรม และ Tech PM ช่วยทีมสร้าง MVP แล้วทดสอบกับผู้ใช้จริง</p></li>
           <li class="stage"><h3>Launch <span class="mono" data-en="1 MONTH">1 เดือน</span></h3><p data-en="<b>To market.</b> Teams meet customers and investors at national events; the customers they meet become the next round's problems.">ส่งสู่ตลาด: พบลูกค้าและนักลงทุนในงานระดับประเทศ <b>ลูกค้าที่ได้พบกลายเป็นโจทย์ของรอบถัดไป</b></p></li>
         </ol>
         <div class="year">
@@ -421,7 +439,7 @@ footer p{line-height:1.6}
     <p class="lead rv" data-en="One in five Thais is 60 or older (National Statistical Office, 2024). MFU already has schools of medicine, nursing and health science and its own hospital — the place where a brain for care can be built and tested for real.">คนไทยทุก 1 ใน 5 อายุ 60 ปีขึ้นไป (สำนักงานสถิติแห่งชาติ 2567) และ มฟล. มีทั้งสำนักวิชาแพทยศาสตร์ พยาบาลศาสตร์ วิทยาศาสตร์สุขภาพ และโรงพยาบาลของมหาวิทยาลัย — จุดที่สมองเพื่อการดูแลสร้างและทดสอบได้จริง</p>
     <div class="care-grid">
       <article class="uc rv"><img src="assets/img/uc_ward.jpg" alt="หุ่นยนต์ฮิวแมนนอยด์ในหอผู้ป่วย" width="840" height="786" loading="lazy"><div class="t"><span class="bot">AgiBot X2 Ultra</span><h3 data-en="A nurse's assistant on the ward">ผู้ช่วยพยาบาลในหอผู้ป่วย</h3><p data-en="Fetches and delivers medicines and supplies between the nurses' station and the beds, moving safely around people.">รับ–ส่งยาและเวชภัณฑ์ระหว่างเคาน์เตอร์พยาบาลกับเตียง เดินในหอและหลบคนอย่างปลอดภัย</p></div></article>
-      <article class="uc rv"><img src="assets/img/uc_talk.jpg" alt="หุ่นยนต์คุยกับผู้สูงอายุบนเตียง" width="840" height="786" loading="lazy"><div class="t"><span class="bot">AgiBot X2 Ultra</span><h3 data-en="A companion that speaks Northern Thai">เพื่อนคุยภาษาเหนือ เตือนกินยา</h3><p data-en="Chats in the local dialect, reminds patients about medicine, and sends a summary to the nurse or family.">คุยด้วยภาษาเหนือ เตือนยาตามเวลา แล้วสรุปอาการส่งพยาบาลหรือญาติ</p></div></article>
+      <article class="uc rv"><img src="assets/img/uc_talk.jpg" alt="หุ่นยนต์คุยกับผู้สูงอายุบนเตียง" width="840" height="786" loading="lazy"><div class="t"><span class="bot">AgiBot X2 Ultra</span><h3 data-en="A companion that speaks the local dialect">เพื่อนคุยภาษาถิ่น เตือนกินยา</h3><p data-en="Chats in the local dialect, reminds patients about medicine, and sends a summary to the nurse or family.">คุยด้วยภาษาถิ่น เตือนยาตามเวลา แล้วสรุปอาการส่งพยาบาลหรือญาติ</p></div></article>
       <article class="uc rv"><img src="assets/img/uc_night.jpg" alt="หุ่นยนต์สี่ขาเดินตรวจตอนกลางคืน" width="840" height="786" loading="lazy"><div class="t"><span class="bot">AgiBot D1 Edu</span><h3 data-en="A night round that spots falls">เวรดึก ตรวจจับการล้ม</h3><p data-en="Patrols an elderly-care home at night and alerts the nurse to a fall or a patient leaving bed.">เดินตรวจสถานดูแลผู้สูงอายุ เห็นการล้มหรือการลุกจากเตียง แล้วแจ้งพยาบาลทันที</p></div></article>
       <article class="uc rv"><img src="assets/img/uc_coach.jpg" alt="หุ่นยนต์โค้ชออกกำลังผู้สูงวัย" width="840" height="786" loading="lazy"><div class="t"><span class="bot">AgiBot X2 Ultra</span><h3 data-en="An exercise coach for older adults">โค้ชออกกำลังผู้สูงวัย</h3><p data-en="Demonstrates exercises, counts repetitions, watches posture through its camera and adjusts the level for each person.">สาธิตท่า นับจำนวนครั้ง ดูท่าทางผ่านกล้อง และปรับระดับให้เหมาะกับแต่ละคน</p></div></article>
     </div>
@@ -433,25 +451,26 @@ footer p{line-height:1.6}
 <section class="sec founders" id="founders">
   <div class="wrap">
     <h2 class="h2 rv" data-en="For founders, students and developers">สำหรับผู้ก่อตั้ง นักศึกษา และนักพัฒนา</h2>
-    <p class="lead rv" data-en="Bring an idea, or pick up a real problem at Spark. ARIC gives you what a small team in the North rarely gets: money, mentors, serious compute, and a way to customers.">มาพร้อมไอเดีย หรือหยิบโจทย์จริงในรอบ Spark แล้ว ARIC ให้สิ่งที่ทีมเล็กในภาคเหนือหาได้ยาก ทั้งเงินทุน ที่ปรึกษา เครื่องประมวลผลระดับสูง และทางไปสู่ลูกค้า</p>
+    <p class="lead rv" data-en="Bring an idea, or pick up a real problem at Spark. You won't build alone: ARIC surrounds every team with tools, a pool of MFU students to fill the skills you're missing, and people who know the real work.">มาพร้อมไอเดีย หรือหยิบโจทย์จริงในรอบ Spark แล้วคุณจะไม่ต้องสร้างคนเดียว ARIC ล้อมทุกทีมด้วยเครื่องมือ Resource Pool นักศึกษา มฟล. ที่เติมทักษะที่ทีมยังขาด และคนที่รู้หน้างานจริง</p>
     <div class="f-grid">
       <div>
-        <ul class="gets rv">
-          <li><svg aria-hidden="true" style="color:#C8102E"><use href="#mark"/></svg><div><b data-en="฿100,000 per team">ทุนทีมละ ฿100,000</b><span data-en="For the two-month Forge round: mentor time, a developer, and materials.">สำหรับรอบ Forge 2 เดือน: ค่าที่ปรึกษา นักพัฒนา และวัสดุ</span></div></li>
-          <li><svg aria-hidden="true" style="color:#C8102E"><use href="#mark"/></svg><div><b data-en="Mentors who know the work">ที่ปรึกษาที่รู้หน้างาน</b><span data-en="Industry experts, MFU doctors and nurses, and ADT faculty.">ผู้เชี่ยวชาญจากอุตสาหกรรม แพทย์และพยาบาล มฟล. และอาจารย์สำนักวิชาเทคโนโลยีดิจิทัลประยุกต์</span></div></li>
-          <li><svg aria-hidden="true" style="color:#C8102E"><use href="#mark"/></svg><div><b data-en="NVIDIA DGX and AI coding agents">เครื่อง NVIDIA DGX และ AI coding agent</b><span data-en="Shared, so a small budget goes a long way, plus a tech PM beside every team.">ใช้ร่วมจากส่วนกลาง งบทีมเล็กจึงพอ พร้อม Tech PM ประกบทุกทีม</span></div></li>
-          <li><svg aria-hidden="true" style="color:#C8102E"><use href="#mark"/></svg><div><b data-en="Real users and a path to customers">ผู้ใช้จริงและทางไปสู่ลูกค้า</b><span data-en="Test with hospitals and partners, then meet customers and investors at national events.">ทดสอบกับโรงพยาบาลและพันธมิตร แล้วพบลูกค้าและนักลงทุนในงานระดับประเทศ</span></div></li>
-        </ul>
-        <div class="share pre" id="share">
-          <h3 data-en="Your company stays yours">บริษัทยังเป็นของทีม</h3>
-          <div class="bar" role="img" aria-label="MFX 15% ทีมผู้ก่อตั้ง 65–75% ที่ปรึกษา 10–20%"><div>MFX 15%</div><div data-en="Founding team 65–75%">ทีมผู้ก่อตั้ง 65–75%</div><div data-en="Advisors 10–20%">ที่ปรึกษา 10–20%</div></div>
-          <p data-en="When a team forms a company, MFX (Mae Fah Luang University's holding company) takes a fixed 15%, paid for with the centre's resources, not cash, and does not control the board. Terms are announced before the competition; shares vest over 4 years with a 1-year cliff; centre staff hold no personal shares.">เมื่อทีมตั้งบริษัท MFX บริษัทโฮลดิ้งของมหาวิทยาลัยแม่ฟ้าหลวง ถือหุ้นคงที่ 15% ชำระด้วยทรัพยากรของศูนย์ ไม่ใช่เงินสด และไม่คุมบอร์ด · เงื่อนไขประกาศก่อนแข่ง · หุ้น vest 4 ปี cliff 1 ปี · ทีมงานศูนย์ไม่ถือหุ้นส่วนตัว</p>
+        <div class="sup rv" id="sup">
+          <div class="sup-groups" role="group" aria-label="กลุ่มการสนับสนุน">
+            <button type="button" data-g="tools" aria-pressed="false"><i style="background:var(--gold)"></i><span data-en="Tools">เครื่องมือ</span></button>
+            <button type="button" data-g="pool" aria-pressed="false"><i style="background:#fff;border:2.5px solid var(--red)"></i><span data-en="Resource Pool">Resource Pool</span></button>
+            <button type="button" data-g="people" aria-pressed="false"><i style="background:var(--red-d)"></i><span data-en="People who know the work">คนที่รู้หน้างาน</span></button>
+          </div>
+          <svg viewBox="0 0 640 520" id="supSvg" role="group" aria-label="ทีมของคุณอยู่ตรงกลาง ล้อมด้วยเครื่องมือ Resource Pool และคนที่รู้หน้างาน"></svg>
+          <div class="sup-cap" aria-live="polite"><span class="k" id="capK"></span><b id="capT"></b><p id="capD"></p></div>
+          <div class="pool-cta">
+            <p><b data-en="MFU student? Apply for ARIC Intern Program 2027">นักศึกษา มฟล.? สมัคร ARIC Intern Program 2027</b><span data-en="January – April 2027 · four tracks · paid per round">มกราคม – เมษายน 2570 · 4 สายงาน · มีค่าตอบแทนตามรอบงาน</span></p>
+            <a class="btn btn-gold" id="poolApply" href="mailto:nacha.cho@mfu.ac.th?subject=ARIC%3A%20apply%20for%20Intern%20Program%202027"><span data-en="Apply by email">สมัครทางอีเมล</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          </div>
         </div>
-        <p class="targets rv" data-en="Five-year targets (2027–2031): <b>45</b> teams incubated · <b>19</b> paying pilot projects · <b>8</b> new companies. These are targets, not results.">เป้าหมาย 5 ปี (2570–2574): บ่มเพาะ <b>45</b> ทีม · โครงการนำร่องที่มีผู้จ่ายเงิน <b>19</b> โครงการ · บริษัทใหม่ <b>8</b> บริษัท — เป็นเป้าหมาย ยังไม่ใช่ผลงาน</p>
       </div>
       <form class="form" id="join" novalidate>
         <h3 data-en="Get notified when Spark opens">รับแจ้งเมื่อเปิดรอบ Spark</h3>
-        <p class="next"><span data-en="First round:">รอบแรก:</span> <span class="mono" data-en="date to be announced">รอประกาศวันที่</span></p>
+        <p class="next"><span data-en="First round:">รอบแรก:</span> <span class="mono" data-en="Jan – Apr 2027">ม.ค. – เม.ย. 2570</span></p>
         <div class="field"><label for="fName" data-en="Your name">ชื่อ</label><input id="fName" name="name" autocomplete="name" required></div>
         <div class="field"><label for="fEmail" data-en="Email">อีเมล</label><input id="fEmail" name="email" type="email" autocomplete="email" required inputmode="email" data-en-ph="you@example.com" placeholder="you@example.com"><span class="err" id="fEmailErr" aria-live="polite"></span></div>
         <fieldset class="field"><legend data-en="I am">ฉันคือ</legend>
@@ -477,7 +496,7 @@ footer p{line-height:1.6}
     <p class="lead rv" data-en="Open at the bottom, protected at the top: the public walks into Launchpad; research stays quiet on Engine.">เปิดที่ชั้นล่าง ปิดที่ชั้นบน: คนทั่วไปเดินเข้า Launchpad ได้ ส่วนงานวิจัยเงียบสงบอยู่ที่ Engine</p>
     <div class="floors" id="floors">
       <div class="floor"><button type="button" aria-expanded="false"><span class="no">4</span><span class="nm">Bridge</span><span class="ds" data-en="Executives &amp; partners">ผู้บริหารและพันธมิตร</span><svg class="chev" viewBox="0 0 20 20" aria-hidden="true"><use href="#i-plus"/></svg></button>
-        <div class="panel"><div><div class="inner"><img src="assets/img/floor4.jpg" alt="ภาพแนวคิดชั้น 4 Bridge" width="1531" height="655" loading="lazy"><ul><li data-en="<b>Partner Map</b> of partners and portfolio companies across the North, the Mekong region and the world"><b>Partner Map</b> พันธมิตรและบริษัทในพอร์ต ทั้งภาคเหนือ ลุ่มน้ำโขง และทั่วโลก</li><li data-en="<b>Board room</b> and a signing table for partnerships"><b>ห้องประชุมผู้บริหาร</b> และโต๊ะลงนามความร่วมมือ</li><li data-en="<b>Office</b> for the centre team and visiting researchers"><b>สำนักงาน</b> ทีมศูนย์และนักวิจัยรับเชิญ</li></ul></div></div></div></div>
+        <div class="panel"><div><div class="inner"><img src="assets/img/floor4.jpg" alt="ภาพแนวคิดชั้น 4 Bridge" width="1531" height="655" loading="lazy"><ul><li data-en="<b>Partner Map</b> of partners and portfolio companies in Thailand and abroad"><b>Partner Map</b> พันธมิตรและบริษัทในพอร์ต ทั้งในประเทศและต่างประเทศ</li><li data-en="<b>Board room</b> and a signing table for partnerships"><b>ห้องประชุมผู้บริหาร</b> และโต๊ะลงนามความร่วมมือ</li><li data-en="<b>Office</b> for the centre team and visiting researchers"><b>สำนักงาน</b> ทีมศูนย์และนักวิจัยรับเชิญ</li></ul></div></div></div></div>
       <div class="floor"><button type="button" aria-expanded="false"><span class="no">3</span><span class="nm">Engine</span><span class="ds" data-en="Research labs &amp; robotics arena">ห้องวิจัยและสนามหุ่นยนต์</span><svg class="chev" viewBox="0 0 20 20" aria-hidden="true"><use href="#i-plus"/></svg></button>
         <div class="panel"><div><div class="inner"><img src="assets/img/floor3.jpg" alt="ภาพแนวคิดชั้น 3 Engine" width="1536" height="1024" loading="lazy"><ul><li data-en="<b>AI research studio</b> for 16 researchers"><b>ห้องวิจัย AI</b> สำหรับนักวิจัย 16 คน</li><li data-en="<b>Robotics &amp; drone arena</b> with a viewing gallery"><b>สนามหุ่นยนต์และโดรน</b> พร้อมระเบียงชม</li><li data-en="<b>GPU machine room</b> and a multimedia studio"><b>ห้องเครื่อง GPU</b> และสตูดิโอสื่อผสม</li></ul></div></div></div></div>
       <div class="floor"><button type="button" aria-expanded="false"><span class="no">2</span><span class="nm">Academy</span><span class="ds" data-en="Six training rooms, up to 120 seats">ห้องฝึกอบรม 6 ห้อง รวม 120 ที่นั่ง</span><svg class="chev" viewBox="0 0 20 20" aria-hidden="true"><use href="#i-plus"/></svg></button>
@@ -492,7 +511,7 @@ footer p{line-height:1.6}
 <!-- FILM -->
 <section class="sec film" id="film">
   <div class="wrap">
-    <h2 class="h2 rv" data-en="The North can build its own digital future">ภาคเหนือสร้างอนาคตดิจิทัลของตัวเองได้</h2>
+    <h2 class="h2 rv" data-en="From real problems to real companies">จากโจทย์จริง สู่บริษัทจริง</h2>
     <div class="player rv" id="player">
       <video id="video" src="assets/film/aric_film.mp4" poster="assets/film/poster.jpg" preload="none" playsinline controls></video>
       <button class="play" type="button" aria-label="เล่นวิดีโอแนะนำ ARIC"><i><svg aria-hidden="true"><use href="#i-play"/></svg></i></button>
@@ -578,7 +597,7 @@ function applyLang(l) {
   lang = l; document.documentElement.lang = l; localStorage.setItem('aric-lang', l);
   $$('[data-en]').forEach(el => { el.innerHTML = l === 'en' ? el.dataset.en : el.dataset.th; });
   $$('.lang button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.lang === l)));
-  renderSlots(); updateSeedLabel(); readout(); setStageNote();
+  renderSlots(); updateSeedLabel(); readout(); setStageNote(); if (typeof buildSup === 'function' && supSvg) buildSup();
 }
 $$('.lang button').forEach(b => b.addEventListener('click', () => applyLang(b.dataset.lang)));
 
@@ -903,6 +922,66 @@ const player = $('#player'), video = $('#video');
 $('.play', player).addEventListener('click', () => { video.play(); });
 video.addEventListener('play', () => player.classList.add('playing'));
 
+
+/* ---------------- support network (founders) ---------------- */
+const SUP = [
+  { g: 'tools', th: ['NVIDIA DGX', 'เครื่องประมวลผล AI ระดับสูง ใช้ร่วมจากส่วนกลาง ทีมเล็กก็เทรนโมเดลจริงได้'], en: ['NVIDIA DGX', 'High-end AI compute shared from the centre, so even a small team can train real models.'] },
+  { g: 'tools', th: ['AI coding agent', 'ผู้ช่วยเขียนโค้ดที่ทำให้ทีมสองสามคนสร้างงานได้เร็วเท่าทีมใหญ่'], en: ['AI coding agents', 'Coding assistants that let a team of two or three build at the pace of a much larger one.'] },
+  { g: 'tools', th: ['ห้องปฏิบัติการและพื้นที่ทดสอบ', 'พื้นที่ทำงาน แพลตฟอร์มหุ่นยนต์ และเซนเซอร์สำหรับทดลองกับของจริง'], en: ['Labs & test space', 'Workspace, robot platforms and sensors to try ideas on real hardware.'] },
+  { g: 'pool', th: ['AI & Software', 'นักศึกษาที่ช่วยสร้างโมเดล AI ข้อมูล เว็บ และแอป'], en: ['AI & Software', 'Students who help build AI models, data pipelines, web and apps.'], track: 'AI & Software' },
+  { g: 'pool', th: ['หุ่นยนต์และระบบ', 'นักศึกษาที่ช่วยงาน ROS 2 ระบบมองเห็น IoT และดูแลเครื่อง GPU'], en: ['Robotics & Systems', 'Students for ROS 2, computer vision, IoT and keeping the GPUs running.'], track: 'Robotics & Systems' },
+  { g: 'pool', th: ['ออกแบบและสื่อสาร', 'นักศึกษาที่ช่วยออกแบบ UX/UI กราฟิก คอนเทนต์ และวิดีโอเดโม'], en: ['Design & Communications', 'Students for UX/UI, graphics, content and demo videos.'], track: 'Design & Communications' },
+  { g: 'pool', th: ['กิจกรรมและธุรกิจ', 'นักศึกษาที่ช่วยงานแฮกกาธอน บูธ ชุมชน และการพบลูกค้า'], en: ['Events & Business', 'Students for hackathons, booths, community and customer meetings.'], track: 'Events & Business' },
+  { g: 'people', th: ['Tech PM ประกบทุกทีม', 'คนที่อยู่กับทีมทุกวัน ช่วยวางแผน ปลดล็อกปัญหา และส่งงานให้ทัน'], en: ['A tech PM beside every team', 'Someone with the team every day: planning, unblocking and keeping delivery on track.'] },
+  { g: 'people', th: ['ที่ปรึกษาจากอุตสาหกรรม', 'ผู้เชี่ยวชาญที่รู้ว่าลูกค้าจริงต้องการอะไร'], en: ['Industry mentors', 'Experts who know what real customers need.'] },
+  { g: 'people', th: ['แพทย์และพยาบาล มฟล.', 'ผู้รู้หน้างานด้านการดูแลผู้ป่วย ช่วยให้สมองหุ่นยนต์ปลอดภัยและใช้ได้จริง'], en: ['MFU doctors & nurses', 'Care professionals who keep robot brains safe and genuinely useful.'] },
+  { g: 'people', th: ['ผู้ใช้และลูกค้าจริง', 'โรงพยาบาลและพันธมิตรให้ทดสอบ แล้วพบลูกค้าและนักลงทุนในงานระดับประเทศ'], en: ['Real users & customers', 'Hospitals and partners to test with, then customers and investors at national events.'] },
+];
+const GNAME = { tools: ['เครื่องมือ', 'TOOLS'], pool: ['RESOURCE POOL', 'RESOURCE POOL'], people: ['คนที่รู้หน้างาน', 'PEOPLE'] };
+const GCOL = { tools: '#9A6C14', pool: '#C8102E', people: '#7A0C1E' };
+const supSvg = $('#supSvg'), CX = 320, CY = 262, R = 182;
+// angles (deg, 0 = right, clockwise): three arcs with gaps
+const ANG = { tools: [-150, -120, -90], pool: [-48, -16, 16, 48], people: [96, 128, 160, 192] };
+let supActive = -1, supGroup = null, supAuto = true;
+function polar(a, r) { const t = a * Math.PI / 180; return [CX + r * Math.cos(t), CY + r * Math.sin(t)]; }
+function buildSup() {
+  let h = '', idx = { tools: 0, pool: 0, people: 0 };
+  const pos = SUP.map(n => polar(ANG[n.g][idx[n.g]++], R));
+  // mesh between neighbours in each group
+  Object.keys(ANG).forEach(g => { const ids = SUP.map((n, i) => n.g === g ? i : -1).filter(i => i >= 0);
+    for (let k = 0; k < ids.length - 1; k++) h += `<path class="mesh" d="M${pos[ids[k]][0]} ${pos[ids[k]][1]} L${pos[ids[k + 1]][0]} ${pos[ids[k + 1]][1]}"/>`; });
+  SUP.forEach((n, i) => { const [x, y] = pos[i], mx = (CX + x) / 2 + (y - CY) * .12, my = (CY + y) / 2 - (x - CX) * .12;
+    h += `<path class="edge" id="se${i}" d="M${CX} ${CY} Q${mx.toFixed(1)} ${my.toFixed(1)} ${x.toFixed(1)} ${y.toFixed(1)}"/><path class="spark" d="M${CX} ${CY} Q${mx.toFixed(1)} ${my.toFixed(1)} ${x.toFixed(1)} ${y.toFixed(1)}"/>`; });
+  SUP.forEach((n, i) => { const [x, y] = pos[i], right = x > CX + 4, left = x < CX - 4, lab = n[lang][0];
+    const tx = right ? x + 18 : left ? x - 18 : x, ty = y + (Math.abs(x - CX) < 40 ? (y > CY ? 30 : -20) : 5);
+    h += `<g class="node g-${n.g}" data-i="${i}" tabindex="0" role="button" aria-label="${lab}"><circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="10"/><text x="${tx.toFixed(1)}" y="${ty.toFixed(1)}" text-anchor="${right ? 'start' : left ? 'end' : 'middle'}">${lab}</text></g>`; });
+  h += `<g aria-hidden="true"><circle cx="${CX}" cy="${CY}" r="74" fill="#fff" stroke="#E7E1DE" stroke-width="1.5"/><svg x="${CX - 38}" y="${CY - 58}" width="76" height="54" viewBox="30 72 472 338" style="color:#C8102E"><use href="#mark"/></svg>
+    <text class="hub-t" x="${CX}" y="${CY + 22}" text-anchor="middle">${lang === 'en' ? 'Your team' : 'ทีมของคุณ'}</text><text class="hub-s" x="${CX}" y="${CY + 42}" text-anchor="middle">founder · tech lead · dev</text></g>`;
+  supSvg.innerHTML = h;
+  $$('.node', supSvg).forEach(el => {
+    const i = +el.dataset.i, go = () => { supAuto = false; setSup(i); };
+    el.addEventListener('mouseenter', go); el.addEventListener('click', go); el.addEventListener('focus', go);
+    el.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); } });
+  });
+  setSup(supActive < 0 ? 0 : supActive, true);
+}
+function setSup(i, quiet) {
+  supActive = i; const n = SUP[i], g = n.g;
+  $$('.edge', supSvg).forEach((e, k) => e.classList.toggle('on', k === i));
+  $$('.node', supSvg).forEach((e, k) => { e.classList.toggle('on', k === i); e.classList.toggle('in', supGroup ? SUP[k].g === supGroup : true); });
+  supSvg.classList.toggle('dim', !!supGroup);
+  $('#capK').textContent = GNAME[g][lang === 'en' ? 1 : 0]; $('#capT').textContent = n[lang][0]; $('#capD').textContent = n[lang][1];
+  const track = n.track || 'Student Pool';
+  $('#poolApply').href = 'mailto:nacha.cho@mfu.ac.th?subject=' + encodeURIComponent('ARIC: apply for ' + track);
+}
+$$('.sup-groups button').forEach(b => b.addEventListener('click', () => {
+  supAuto = false; const g = b.dataset.g; supGroup = supGroup === g ? null : g;
+  $$('.sup-groups button').forEach(o => o.setAttribute('aria-pressed', String(o.dataset.g === supGroup)));
+  setSup(supGroup ? SUP.findIndex(n => n.g === supGroup) : supActive);
+}));
+// gentle tour until the visitor touches it
+if (!reduce) setInterval(() => { if (!supAuto) return; const r = $('#sup').getBoundingClientRect(); if (r.top < innerHeight && r.bottom > 0) setSup((supActive + 1) % SUP.length); }, 2600);
+
 /* ---------------- sign-up (mailto) ---------------- */
 const form = $('#join');
 form.addEventListener('submit', e => {
@@ -923,9 +1002,9 @@ form.addEventListener('submit', e => {
 if (!reduce) {
   const io = new IntersectionObserver(es => es.forEach(en => { if (en.isIntersecting) { en.target.classList.remove('pre'); io.unobserve(en.target); } }), { threshold: .15, rootMargin: '0px 0px -6% 0px' });
   $$('.rv').forEach((el, i) => { if (el.getBoundingClientRect().top > innerHeight) { el.classList.add('pre'); el.style.transitionDelay = (i % 4) * 70 + 'ms'; io.observe(el); } });
-  io.observe($('#share'));
-} else { $('#share').classList.remove('pre'); }
+}
 
+buildSup();
 applyLang(lang);
 })();
 </script>
