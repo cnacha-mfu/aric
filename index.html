@@ -72,7 +72,8 @@ p{margin:0;text-wrap:pretty}
 .nav .btn{padding:12px 18px;font-size:15px;flex:none}
 .menu-btn{display:none;background:none;border:0;color:inherit;padding:8px;cursor:pointer;margin-left:auto}
 .menu-btn svg{width:26px;height:26px}
-@media (max-width:1240px){.nav ul{display:none}.nav .btn{display:none}.menu-btn{display:block}.lang{margin-left:0}}
+@media (max-width:600px){.brand span{display:none}.nav .wrap{gap:12px}}
+@media (max-width:1240px){.nav ul{display:none}.nav .btn{display:none}.menu-btn{display:block}.lang{margin-left:auto}.menu-btn{margin-left:0}}
 .drawer{position:fixed;inset:0;z-index:60;background:var(--field);color:var(--on-red);display:none;flex-direction:column;padding:88px clamp(24px,6vw,48px) 40px}
 .drawer.open{display:flex}
 .drawer a{font:600 28px/1.35 var(--disp);text-decoration:none;padding:8px 0;border-bottom:1px solid rgba(255,236,228,.14)}
@@ -90,18 +91,12 @@ p{margin:0;text-wrap:pretty}
 @media (max-width:420px){.hero h1 .ln{white-space:normal}}
 .hero .lede{font-size:clamp(1.02rem,1.25vw,1.2rem);line-height:1.7;color:var(--on-red2);margin-top:26px;max-width:46ch}
 .hero .actions{display:flex;flex-wrap:wrap;align-items:center;gap:14px 22px;margin-top:36px}
-.seed{position:absolute;z-index:2;right:clamp(20px,4vw,56px);top:96px;display:flex;align-items:center;gap:14px;pointer-events:auto}
-.seed button{display:flex;align-items:center;gap:10px;font:500 12.5px/1 var(--mono);letter-spacing:.06em;color:var(--on-red);background:rgba(74,7,18,.55);border:1px solid rgba(243,212,138,.45);border-radius:999px;padding:10px 14px;cursor:pointer;transition:border-color .2s,background .2s}
-.seed button:hover{border-color:var(--gold);background:rgba(74,7,18,.8)}
-.seed button svg{width:14px;height:14px;transition:transform .6s var(--ease)}
-.seed button:hover svg{transform:rotate(180deg)}
 .hero .hint{display:flex;align-items:center;gap:10px;margin-top:30px;font:400 14px/1.5 var(--body);color:var(--on-red3)}
 .hero .hint::before{content:"";width:22px;height:22px;flex:none;border-radius:50%;border:1.5px dashed var(--gold-l);box-shadow:inset 0 0 0 5px rgba(110,11,28,1),inset 0 0 0 9px var(--gold)}
 .toast{position:absolute;z-index:3;pointer-events:none;font:500 12px/1 var(--mono);color:var(--gold-l);letter-spacing:.04em;transform:translate(-50%,-150%);opacity:0;white-space:nowrap}
 @media (max-width:860px){
   .hero .wrap{justify-content:flex-start;padding-top:108px;padding-bottom:46svh}
   .hero .copy{max-width:100%}
-  .seed{left:auto;right:20px;top:auto;bottom:20px}
   .hero .hint{margin-top:22px}
 }
 
@@ -194,7 +189,7 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
 /* interns */
 .interns{background:var(--wash)}
 .it-kicker{font-size:13px;letter-spacing:.06em;color:var(--red);margin-bottom:14px}
-.it-facts{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:48px;border-top:1px solid var(--rule)}
+.it-facts{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:48px;border-top:1px solid var(--rule)}
 .it-facts>div{padding:20px 22px 4px 0}
 .it-facts>div+div{padding-left:22px;border-left:1px solid var(--rule)}
 .it-facts dt{font:600 12.5px var(--mono);letter-spacing:.06em;color:var(--red)}
@@ -326,7 +321,7 @@ fieldset.field{border:0;padding:0;margin:18px 0 0}
 .film .meta{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-top:16px;font-size:14px;color:var(--on-red3)}
 
 /* contact + press */
-.c-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(28px,4vw,60px);margin-top:56px}
+.c-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(28px,4vw,60px);margin-top:56px}
 .c-grid h3{font-size:19px;margin-bottom:14px}
 .c-grid ul{list-style:none;margin:0;padding:0}
 .c-grid li{padding:11px 0;border-top:1px solid var(--rule);font-size:15.5px;line-height:1.55;display:flex;justify-content:space-between;gap:12px}
@@ -365,7 +360,6 @@ footer p{line-height:1.6}
   <defs>
     <symbol id="i-arrow" viewBox="0 0 20 20"><path d="M3 10h13M11 4.5 16.5 10 11 15.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
     <symbol id="i-play" viewBox="0 0 20 20"><path d="M5 3.2v13.6L16.5 10z" fill="currentColor"/></symbol>
-    <symbol id="i-reseed" viewBox="0 0 20 20"><path d="M16 7.5A6.5 6.5 0 1 0 16.5 12M16 3v4.5h-4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
     <symbol id="i-plus" viewBox="0 0 20 20"><path d="M10 3v14M3 10h14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
     <symbol id="i-node" viewBox="0 0 26 26"><path d="M5 20 13 5 21 20Z" fill="none" stroke="#C8102E" stroke-width="1.6" stroke-linejoin="round"/><path d="M13 5v15M9 20l4-7 4 7" fill="none" stroke="#E4B04A" stroke-width="1.4"/><circle cx="13" cy="5" r="2.6" fill="#fff" stroke="#E4B04A" stroke-width="1.6"/><circle cx="13" cy="13" r="2" fill="#E4B04A"/></symbol>
     <symbol id="mark" viewBox="30 72 472 338"><path d="M56 400 L168 192 L244 282 L320 140 L456 400 Z" fill="currentColor"/><g stroke="#F3D48A" stroke-width="7" stroke-linecap="round" fill="none" opacity=".95"><path d="M168 192 L232 352 L320 140 M244 282 L300 236 M232 352 L352 320 L300 236 M352 320 L456 400 M56 400 L232 352 L220 400"/></g><circle cx="418" cy="118" r="30" fill="#E4B04A"/><g fill="#fff" stroke="#E4B04A" stroke-width="7"><circle cx="168" cy="192" r="13"/><circle cx="244" cy="282" r="11"/><circle cx="320" cy="140" r="14"/></g></symbol>
@@ -408,17 +402,14 @@ footer p{line-height:1.6}
   <canvas id="heroCanvas" aria-label="ภูเขา ARIC ที่มีชีวิต แตะเพื่อเพิ่มโจทย์" role="img"></canvas>
   <div class="wrap">
     <div class="copy">
-      <h1 data-en="<span class=ln>We incubate</span> <span class=ln><em>AI &amp; robotics</em></span> <span class=ln>solutions from</span> <span class=ln>real problems</span>"><span class="ln">บ่มเพาะโซลูชัน</span> <span class="ln"><em>AI และหุ่นยนต์</em></span> <span class="ln">จากโจทย์จริง</span></h1>
-      <p class="lede" data-en="ARIC, the AI &amp; Robotics Innovation Center at Mae Fah Luang University, is an incubator. We take real problems from hospitals, industry and communities, back each team with tools, mentors and a pool of student talent, and grow the best solutions into companies.">ARIC ศูนย์นวัตกรรมด้านปัญญาประดิษฐ์และหุ่นยนต์ มหาวิทยาลัยแม่ฟ้าหลวง คือศูนย์บ่มเพาะ เรารับโจทย์จริงจากโรงพยาบาล อุตสาหกรรม และชุมชน หนุนทุกทีมด้วยเครื่องมือ ที่ปรึกษา และ Resource Pool นักศึกษา แล้วต่อยอดโซลูชันที่ดีที่สุดเป็นบริษัท</p>
+      <h1 data-en="<span class=ln>We incubate</span> <span class=ln><em>AI &amp; robotics</em></span> <span class=ln>for real problems</span>"><span class="ln">บ่มเพาะโซลูชัน</span> <span class="ln"><em>AI และหุ่นยนต์</em></span> <span class="ln">จากโจทย์จริง</span></h1>
+      <p class="lede" data-en="ARIC is Mae Fah Luang University's AI &amp; robotics incubator. We back teams solving real problems with tools, mentors and student talent, and grow the best into companies.">ARIC ศูนย์นวัตกรรมด้านปัญญาประดิษฐ์และหุ่นยนต์ มหาวิทยาลัยแม่ฟ้าหลวง คือศูนย์บ่มเพาะ เรารับโจทย์จริงจากโรงพยาบาล อุตสาหกรรม และชุมชน หนุนทุกทีมด้วยเครื่องมือ ที่ปรึกษา และ Resource Pool นักศึกษา แล้วต่อยอดโซลูชันที่ดีที่สุดเป็นบริษัท</p>
       <div class="actions">
         <a class="btn btn-gold" href="#join"><span data-en="Join the next Spark round">ร่วมรอบ Spark ถัดไป</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
         <a class="link-play" href="#film"><i><svg aria-hidden="true"><use href="#i-play"/></svg></i><span data-en="Watch the film · 1:29">ดูวิดีโอ · 1:29</span></a>
       </div>
       <p class="hint" data-en="Tap the mountain to add a problem and watch the network wire itself.">แตะภูเขาเพื่อเพิ่มโจทย์ แล้วดูโครงข่ายต่อเส้นใหม่</p>
     </div>
-  </div>
-  <div class="seed">
-    <button type="button" id="reseed" aria-label="สุ่มภูเขารอบใหม่"><svg aria-hidden="true"><use href="#i-reseed"/></svg><span id="seedLabel">รอบ 01 · SEED ----</span></button>
   </div>
   <div class="toast" id="toast" aria-hidden="true"></div>
 </section>
@@ -516,7 +507,7 @@ footer p{line-height:1.6}
           <svg viewBox="0 0 640 520" id="supSvg" role="group" aria-label="ทีมของคุณอยู่ตรงกลาง ล้อมด้วยเครื่องมือ Resource Pool และคนที่รู้หน้างาน"></svg>
           <div class="sup-cap" aria-live="polite"><span class="k" id="capK"></span><b id="capT"></b><p id="capD"></p></div>
           <div class="pool-cta">
-            <p><b data-en="MFU fourth-year student? Apply for ARIC Intern Program 2027">นักศึกษา มฟล. ปี 4? สมัคร ARIC Intern Program 2027</b><span data-en="January – April 2027 · four tracks · paid per round">มกราคม – เมษายน 2570 · 4 สายงาน · มีค่าตอบแทนตามรอบงาน</span></p>
+            <p><b data-en="MFU fourth-year student? Apply for ARIC Intern Program 2027">นักศึกษา มฟล. ปี 4? สมัคร ARIC Intern Program 2027</b><span data-en="January – April 2027 · four tracks">มกราคม – เมษายน 2570 · 4 สายงาน</span></p>
             <a class="btn btn-gold" id="poolApply" href="#interns"><span data-en="See the tracks">ดูสายงานและสมัคร</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
           </div>
         </div>
@@ -551,7 +542,6 @@ footer p{line-height:1.6}
     <dl class="it-facts rv">
       <div><dt data-en="Who can apply">ใครสมัครได้</dt><dd data-en="MFU fourth-year students in their internship semester, from any school">นักศึกษา มฟล. ชั้นปีที่ 4 ที่อยู่ในภาคการศึกษาฝึกงาน ทุกสำนักวิชา</dd></div>
       <div><dt data-en="First round">ฝึกงานรอบแรก</dt><dd data-en="January – April 2027: one 4-month round, Spark → Forge → Launch">มกราคม – เมษายน 2570 หนึ่งรอบ 4 เดือน Spark → Forge → Launch</dd></div>
-      <div><dt data-en="Pay">ค่าตอบแทน</dt><dd data-en="Paid per round or per task, plus a certificate of work">มีค่าตอบแทนตามรอบงานหรือตามงาน พร้อมหนังสือรับรองการทำงาน</dd></div>
       <div><dt data-en="How to apply">วิธีสมัคร</dt><dd data-en="Email nacha.cho@mfu.ac.th with the subject “ARIC: apply for [track]”">อีเมลถึง nacha.cho@mfu.ac.th หัวข้อ “ARIC: apply for [ชื่อสาย]”</dd></div>
     </dl>
     <div class="it-box rv">
@@ -571,7 +561,7 @@ footer p{line-height:1.6}
         <div class="it-cols">
           <div><h4 data-en="What you'll do">สิ่งที่คุณจะทำ</h4><ul><li data-en="Join a team building an MVP from real problems brought by hospitals, communities and industry">ร่วมทีมสร้าง MVP จากโจทย์จริงของโรงพยาบาล ชุมชน และภาคอุตสาหกรรม</li><li data-en="Build the AI side: systems that understand Thai and local dialects, or the brain of an elderly-care robot">พัฒนาส่วน AI เช่น ระบบที่เข้าใจภาษาไทยและภาษาถิ่น หรือ "สมอง" ของหุ่นยนต์ดูแลผู้สูงอายุ</li><li data-en="Prepare and manage data, handling it with proper privacy care">เตรียมและจัดการข้อมูล โดยใช้ข้อมูลอย่างถูกต้องตามหลักความเป็นส่วนตัว</li><li data-en="Build web apps, mobile apps and dashboards that nurses, carers or customers actually use">ทำเว็บ แอป และแดชบอร์ดที่พยาบาล ผู้ดูแล หรือลูกค้าใช้ได้จริง</li></ul></div>
           <div><h4 data-en="Who we look for">เรามองหา</h4><ul><li data-en="Any major, if you can code and have something to show">ทุกสาขา ที่เขียนโปรแกรมได้และมีผลงานให้ดูสักชิ้น</li><li data-en="Especially welcome: ML, NLP, web or app experience, or solid Python / JavaScript">ยินดีเป็นพิเศษถ้าเคยทำ ML, NLP, เว็บหรือแอป หรือใช้ Python / JavaScript ได้คล่อง</li></ul></div>
-          <div><h4 data-en="What you get">สิ่งที่คุณจะได้</h4><ul><li data-en="Real problems and real users">โจทย์จริงและผู้ใช้จริง</li><li data-en="Mentors from industry and MFU&#x27;s health schools">พี่เลี้ยงจากภาคอุตสาหกรรมและสำนักวิชาด้านสุขภาพของ มฟล.</li><li data-en="NVIDIA DGX and AI coding agents during the round">ใช้เครื่อง NVIDIA DGX และ AI coding agent ระหว่างรอบ</li><li data-en="Portfolio work and a certificate of work">ผลงานใส่ portfolio และหนังสือรับรองการทำงาน</li><li data-en="Paid per round">มีค่าตอบแทนตามรอบงาน</li></ul></div>
+          <div><h4 data-en="What you get">สิ่งที่คุณจะได้</h4><ul><li data-en="Real problems and real users">โจทย์จริงและผู้ใช้จริง</li><li data-en="Mentors from industry and MFU&#x27;s health schools">พี่เลี้ยงจากภาคอุตสาหกรรมและสำนักวิชาด้านสุขภาพของ มฟล.</li><li data-en="NVIDIA DGX and AI coding agents during the round">ใช้เครื่อง NVIDIA DGX และ AI coding agent ระหว่างรอบ</li><li data-en="Portfolio work and a certificate of work">ผลงานใส่ portfolio และหนังสือรับรองการทำงาน</li></ul></div>
         </div>
       </div>
       <div class="it-panel" role="tabpanel" id="itPanel2" aria-labelledby="itTab2" hidden>
@@ -584,7 +574,7 @@ footer p{line-height:1.6}
         <div class="it-cols">
           <div><h4 data-en="What you'll do">สิ่งที่คุณจะทำ</h4><ul><li data-en="Write robot software (e.g. ROS 2) linking AI to navigation and manipulation, on target platforms such as the AgiBot X2 Ultra and D1 Edu">เขียนซอฟต์แวร์หุ่นยนต์ (เช่น ROS 2) เชื่อม AI เข้ากับการเคลื่อนที่และการหยิบจับ บนแพลตฟอร์มเป้าหมาย เช่น AgiBot X2 Ultra และ D1 Edu</li><li data-en="Build vision systems, such as detecting falls or the posture of older people">พัฒนาระบบมองเห็น เช่น ตรวจจับการล้มหรือท่าทางของผู้สูงอายุ</li><li data-en="Connect sensors and IoT devices to care systems">ต่อเซนเซอร์และอุปกรณ์ IoT เข้ากับระบบดูแล</li><li data-en="With ADT staff, look after the NVIDIA DGX machines every team shares">ร่วมกับเจ้าหน้าที่ ADT ดูแลเครื่อง NVIDIA DGX ที่ทุกทีมใช้ร่วมกัน</li></ul></div>
           <div><h4 data-en="Who we look for">เรามองหา</h4><ul><li data-en="Any major, if you like getting hands-on with robots, hardware or Linux systems">ทุกสาขา ที่ชอบลงมือกับหุ่นยนต์ ฮาร์ดแวร์ หรือระบบ Linux</li><li data-en="Especially welcome: ROS, OpenCV, Arduino/ESP32, competition robots, or running a server">ยินดีเป็นพิเศษถ้าเคยทำ ROS, OpenCV, Arduino/ESP32, หุ่นยนต์แข่งขัน หรือดูแลเซิร์ฟเวอร์</li></ul></div>
-          <div><h4 data-en="What you get">สิ่งที่คุณจะได้</h4><ul><li data-en="Real problems from patient and elderly care">โจทย์จริงจากงานดูแลผู้ป่วยและผู้สูงอายุ</li><li data-en="Mentors from industry and MFU&#x27;s health schools">พี่เลี้ยงจากภาคอุตสาหกรรมและสำนักวิชาด้านสุขภาพของ มฟล.</li><li data-en="NVIDIA DGX and AI coding agents during the round">ใช้เครื่อง NVIDIA DGX และ AI coding agent ระหว่างรอบ</li><li data-en="Portfolio work and a certificate of work">ผลงานใส่ portfolio และหนังสือรับรองการทำงาน</li><li data-en="Paid per round">มีค่าตอบแทนตามรอบงาน</li></ul></div>
+          <div><h4 data-en="What you get">สิ่งที่คุณจะได้</h4><ul><li data-en="Real problems from patient and elderly care">โจทย์จริงจากงานดูแลผู้ป่วยและผู้สูงอายุ</li><li data-en="Mentors from industry and MFU&#x27;s health schools">พี่เลี้ยงจากภาคอุตสาหกรรมและสำนักวิชาด้านสุขภาพของ มฟล.</li><li data-en="NVIDIA DGX and AI coding agents during the round">ใช้เครื่อง NVIDIA DGX และ AI coding agent ระหว่างรอบ</li><li data-en="Portfolio work and a certificate of work">ผลงานใส่ portfolio และหนังสือรับรองการทำงาน</li></ul></div>
         </div>
       </div>
       <div class="it-panel" role="tabpanel" id="itPanel3" aria-labelledby="itTab3" hidden>
@@ -597,7 +587,7 @@ footer p{line-height:1.6}
         <div class="it-cols">
           <div><h4 data-en="What you'll do">สิ่งที่คุณจะทำ</h4><ul><li data-en="Design booth graphics, hackathon posters and social media visuals">ออกแบบกราฟิกบูธ โปสเตอร์ประกาศรับสมัครแฮกกาธอน และภาพสำหรับโซเชียลมีเดีย</li><li data-en="Design UX/UI for the teams&#x27; apps so older people and nurses can really use them">ออกแบบ UX/UI ของแอปที่ทีมสร้าง ให้ผู้สูงอายุและพยาบาลใช้ได้จริง</li><li data-en="Write content in Thai and English, and shoot and edit the teams&#x27; demo videos">เขียนคอนเทนต์ภาษาไทยและอังกฤษ ถ่ายและตัดต่อคลิปเดโมของทีม</li><li data-en="Help teams lay out their slides for Launch day">ช่วยทีมจัดหน้าสไลด์สำหรับวัน Launch</li></ul></div>
           <div><h4 data-en="Who we look for">เรามองหา</h4><ul><li data-en="Any major; we judge by your portfolio">ทุกสาขา ดูจากผลงานเป็นหลัก</li><li data-en="Especially welcome: Figma, Illustrator, Canva or video editing, and good Thai typography">ยินดีเป็นพิเศษถ้าใช้ Figma, Illustrator, Canva หรือโปรแกรมตัดต่อได้ และจัดตัวอักษรภาษาไทยได้สวย</li></ul></div>
-          <div><h4 data-en="What you get">สิ่งที่คุณจะได้</h4><ul><li data-en="Work used at national expos and in apps with real users">ผลงานที่ได้ใช้จริงในงานแสดงระดับประเทศและในแอปที่มีผู้ใช้จริง</li><li data-en="A close view of teams building AI and robots">ทำงานใกล้ชิดกับทีมที่สร้าง AI และหุ่นยนต์</li><li data-en="Portfolio work and a certificate of work">ผลงานใส่ portfolio และหนังสือรับรองการทำงาน</li><li data-en="Paid per task">มีค่าตอบแทนตามงาน</li></ul></div>
+          <div><h4 data-en="What you get">สิ่งที่คุณจะได้</h4><ul><li data-en="Work used at national expos and in apps with real users">ผลงานที่ได้ใช้จริงในงานแสดงระดับประเทศและในแอปที่มีผู้ใช้จริง</li><li data-en="A close view of teams building AI and robots">ทำงานใกล้ชิดกับทีมที่สร้าง AI และหุ่นยนต์</li><li data-en="Portfolio work and a certificate of work">ผลงานใส่ portfolio และหนังสือรับรองการทำงาน</li></ul></div>
         </div>
       </div>
       <div class="it-panel" role="tabpanel" id="itPanel4" aria-labelledby="itTab4" hidden>
@@ -610,7 +600,7 @@ footer p{line-height:1.6}
         <div class="it-cols">
           <div><h4 data-en="What you'll do">สิ่งที่คุณจะทำ</h4><ul><li data-en="Help run the Spark hackathon, from sign-ups and team matching to timekeeping on the day">ช่วยจัดแฮกกาธอน Spark ตั้งแต่รับสมัคร จับคู่ทีม จนถึงคุมเวลาในวันงาน</li><li data-en="Help prepare and staff booths at national events such as SITE, Techsauce Global Summit and DigiTech ASEAN Thailand">ช่วยเตรียมและดูแลบูธในงานระดับประเทศ เช่น SITE, Techsauce Global Summit และ DigiTech ASEAN Thailand</li><li data-en="Look after the student and supporter community: news, updates and answering questions">ดูแลชุมชนนักศึกษาและผู้สนใจ ส่งข่าวสารและตอบคำถาม</li><li data-en="Support partnerships and sales: collecting contacts and preparing material before meetings with hospitals or companies">ช่วยงานความร่วมมือและการขาย เช่น เก็บรายชื่อผู้สนใจ เตรียมข้อมูลก่อนพบโรงพยาบาลหรือบริษัท</li></ul></div>
           <div><h4 data-en="Who we look for">เรามองหา</h4><ul><li data-en="Any major, if you enjoy meeting people and are organised and on time">ทุกสาขา ที่ชอบพบคน เป็นระเบียบ และตรงเวลา</li><li data-en="Especially welcome: event or student-club experience, spoken English, interest in business and startups">ยินดีเป็นพิเศษถ้าเคยจัดกิจกรรมหรือทำงานชมรม สื่อสารภาษาอังกฤษได้ หรือสนใจธุรกิจและสตาร์ทอัพ</li></ul></div>
-          <div><h4 data-en="What you get">สิ่งที่คุณจะได้</h4><ul><li data-en="Experience at national technology events, meeting founders, investors and government agencies">ประสบการณ์ในงานเทคโนโลยีระดับประเทศ ได้พบผู้ประกอบการ นักลงทุน และหน่วยงานรัฐ</li><li data-en="A front-row view of real problems from hospitals and communities, and how ideas become businesses">ได้เห็นโจทย์จริงจากโรงพยาบาลและชุมชน และวิธีที่ไอเดียกลายเป็นธุรกิจ</li><li data-en="A certificate of work">หนังสือรับรองการทำงาน</li><li data-en="Paid per task">มีค่าตอบแทนตามงาน</li></ul></div>
+          <div><h4 data-en="What you get">สิ่งที่คุณจะได้</h4><ul><li data-en="Experience at national technology events, meeting founders, investors and government agencies">ประสบการณ์ในงานเทคโนโลยีระดับประเทศ ได้พบผู้ประกอบการ นักลงทุน และหน่วยงานรัฐ</li><li data-en="A front-row view of real problems from hospitals and communities, and how ideas become businesses">ได้เห็นโจทย์จริงจากโรงพยาบาลและชุมชน และวิธีที่ไอเดียกลายเป็นธุรกิจ</li><li data-en="A certificate of work">หนังสือรับรองการทำงาน</li></ul></div>
         </div>
       </div>
     </div>
@@ -671,15 +661,6 @@ footer p{line-height:1.6}
           <li><span data-en="Brand film, 720p">วิดีโอแนะนำ 720p</span><a href="assets/film/aric_film.mp4" download>MP4</a></li>
         </ul>
       </div>
-      <div class="rv">
-        <h3 data-en="Learn more">ข้อมูลเพิ่มเติม</h3>
-        <ul>
-          <li><span data-en="Concept plan">แผนแนวคิดการจัดตั้ง</span><a href="https://cnacha-mfu.github.io/aric-plan-deck/" target="_blank" rel="noopener" data-en="Open ↗">เปิด ↗</a></li>
-          <li><span data-en="Brains for care robots">สมองหุ่นยนต์เพื่อการดูแล</span><a href="https://cnacha-mfu.github.io/aric-robot-wellness/" target="_blank" rel="noopener" data-en="Open ↗">เปิด ↗</a></li>
-          <li><span data-en="Advisors' report">รายงานผู้ทรงคุณวุฒิ</span><a href="https://cnacha-mfu.github.io/aric-council-report/" target="_blank" rel="noopener" data-en="Open ↗">เปิด ↗</a></li>
-          <li><span data-en="Building space plan">แผนการใช้พื้นที่อาคาร</span><a href="https://cnacha-mfu.github.io/IIC/" target="_blank" rel="noopener" data-en="Open ↗">เปิด ↗</a></li>
-        </ul>
-      </div>
     </div>
   </div>
 </section>
@@ -723,7 +704,7 @@ function applyLang(l) {
   lang = l; document.documentElement.lang = l; localStorage.setItem('aric-lang', l);
   $$('[data-en]').forEach(el => { el.innerHTML = l === 'en' ? el.dataset.en : el.dataset.th; });
   $$('.lang button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.lang === l)));
-  renderSlots(); updateSeedLabel(); readout(); setStageNote(); if (typeof buildSup === 'function' && supSvg) buildSup();
+  renderSlots(); readout(); setStageNote(); if (typeof buildSup === 'function' && supSvg) buildSup();
 }
 $$('.lang button').forEach(b => b.addEventListener('click', () => applyLang(b.dataset.lang)));
 
@@ -962,7 +943,6 @@ class Mountain {
 let seedN = 0x2570A1;
 const hex = n => (n >>> 0).toString(16).toUpperCase().slice(-4).padStart(4, '0');
 let round = 1;
-function updateSeedLabel() { $('#seedLabel').textContent = `${t('seed')} ${String(round).padStart(2, '0')} · SEED ${hex(seedN)}`; }
 const heroM = new Mountain($('#heroCanvas'), {
   seed: seedN, n: 34, reach: true,
   hue: () => 350 + ((seedN % 9) - 4) * .9,
@@ -971,7 +951,6 @@ const heroM = new Mountain($('#heroCanvas'), {
     const s = Math.min(w * .5 / 470, (h - 150) / 300); return { s, x: w - 540 * s - w * .01, y: h - 410 * s };
   }
 });
-updateSeedLabel();
 const toast = $('#toast');
 function popToast(x, y) {
   toast.textContent = t('toast'); toast.style.left = x + 'px'; toast.style.top = y + 'px';
@@ -984,10 +963,6 @@ hc.addEventListener('pointerleave', () => { heroM.ptr = null; });
 hc.addEventListener('pointerdown', e => {
   const r = hc.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top, [lx, ly] = heroM.toLogo(x, y);
   if (heroM.addPoint(lx, ly)) popToast(x, y);
-});
-$('#reseed').addEventListener('click', () => {
-  seedN = (Math.imul(seedN ^ (Date.now() & 0xffff), 2654435761) >>> 0) || 1; round = round % 3 + 1; heroM.reseed(seedN); updateSeedLabel();
-  document.documentElement.style.setProperty('--seed-h', heroM.o.hue());
 });
 // idle signals from the summit so the brain is visibly alive
 if (!reduce) setInterval(() => {
