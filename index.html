@@ -153,7 +153,7 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
 .engine-body{display:grid;grid-template-columns:1.25fr 1fr;gap:clamp(24px,4vw,64px);align-items:center;min-height:0;padding-bottom:4vh}
 .stage-canvas{position:relative;height:100%;min-height:300px}
 .stage-canvas canvas{position:absolute;inset:0;width:100%;height:100%}
-.stage-note{position:absolute;left:0;bottom:6%;font:500 13px/1.4 var(--mono);color:var(--gold-l);letter-spacing:.03em}
+.stage-note{position:absolute;left:0;bottom:0;font:500 13px/1.4 var(--mono);color:var(--gold-l);letter-spacing:.03em}
 .stages{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
 .stage{padding:20px 22px;border-radius:12px;transition:background .5s var(--ease),opacity .5s var(--ease);opacity:.45}
 .stage.on{background:rgba(255,236,228,.08);opacity:1}
@@ -747,7 +747,7 @@ $$('a', drawer).forEach(a => a.addEventListener('click', () => setDrawer(false))
 addEventListener('keydown', e => { if (e.key === 'Escape' && drawer.classList.contains('open')) setDrawer(false); });
 
 /* ---------------- mountain geometry ---------------- */
-const POLY = [[56, 400], [168, 192], [244, 282], [320, 140], [456, 400]];
+const POLY = [[-14, 400], [168, 192], [244, 282], [320, 140], [526, 400]];   // base widened (website only; logo masters unchanged)
 const PEAKS = [[168, 192, 1.0], [320, 140, 1.3], [244, 282, .62]];
 const SUN = [418, 118, 30];
 function inPoly(x, y) { let c = false; for (let i = 0, j = POLY.length - 1; i < POLY.length; j = i++) { const [xi, yi] = POLY[i], [xj, yj] = POLY[j]; if ((yi > y) !== (yj > y) && x < (xj - xi) * (y - yi) / (yj - yi) + xi) c = !c; } return c; }
@@ -757,12 +757,12 @@ function genPoints(seed, nInterior) {
   const r = rng(seed), pts = [];
   POLY.forEach(([x, y]) => pts.push({ x, y, fixed: true }));
   for (let i = 0; i < POLY.length; i++) {          // samples along the silhouette
-    const [ax, ay] = POLY[i], [bx, by] = POLY[(i + 1) % POLY.length], k = i === POLY.length - 1 ? 5 : 3;
+    const [ax, ay] = POLY[i], [bx, by] = POLY[(i + 1) % POLY.length], k = i === POLY.length - 1 ? 7 : 4;
     for (let j = 1; j <= k; j++) { const u = j / (k + 1) + (r() - .5) * .08; pts.push({ x: ax + (bx - ax) * u, y: ay + (by - ay) * u, fixed: true }); }
   }
   let guard = 0;
   while (pts.length < POLY.length + 17 + nInterior && guard++ < 5000) {
-    const x = 60 + r() * 392, y = 150 + r() * 246;
+    const x = -10 + r() * 532, y = 150 + r() * 246;
     if (!inPoly(x, y)) continue;
     if (pts.some(p => Math.hypot(p.x - x, p.y - y) < 22)) continue;
     pts.push({ x, y });
@@ -961,11 +961,11 @@ const hex = n => (n >>> 0).toString(16).toUpperCase().slice(-4).padStart(4, '0')
 let round = 1;
 function updateSeedLabel() { $('#seedLabel').textContent = `${t('seed')} ${String(round).padStart(2, '0')} · SEED ${hex(seedN)}`; }
 const heroM = new Mountain($('#heroCanvas'), {
-  seed: seedN, n: 26, reach: true,
+  seed: seedN, n: 34, reach: true,
   hue: () => 350 + ((seedN % 9) - 4) * .9,
   fit: (w, h) => {
-    if (w < 860) { const s = Math.min(w / 440, h * .42 / 280); return { s, x: w / 2 - 256 * s, y: h - 404 * s }; }
-    const s = Math.min(w * .5 / 420, (h - 150) / 300); return { s, x: w - 480 * s - w * .015, y: h - 410 * s };
+    if (w < 860) { const s = Math.min(w / 510, h * .42 / 280); return { s, x: w / 2 - 256 * s, y: h - 404 * s }; }
+    const s = Math.min(w * .5 / 470, (h - 150) / 300); return { s, x: w - 540 * s - w * .01, y: h - 410 * s };
   }
 });
 updateSeedLabel();
@@ -998,8 +998,8 @@ const engine = $('#engine'), stagesEl = $$('#stages .stage');
 let prog = reduce ? 1 : 0;
 const smooth = x => x <= 0 ? 0 : x >= 1 ? 1 : x * x * (3 - 2 * x);
 const stageM = new Mountain($('#stageCanvas'), {
-  seed: 0x9A71C3, n: 24, reach: false, hue: () => 352,
-  fit: (w, h) => { const s = Math.min(w / 500, h / 410); return { s, x: w / 2 - 256 * s, y: h - 408 * s }; },
+  seed: 0x9A71C3, n: 30, reach: false, hue: () => 352,
+  fit: (w, h) => { const s = Math.min(w / 570, (h - 40) / 410); return { s, x: w / 2 - 256 * s, y: h - 40 - 400 * s }; },   // base sits above the stage note
   stage: () => { const p = prog * 3; return { spark: smooth(p * 2), forge: smooth(p - 1), lift: smooth((p - 2) * 1.3) }; }
 });
 // Spark: points start scattered and gather
