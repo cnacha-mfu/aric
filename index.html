@@ -13,7 +13,7 @@
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anuphan:wght@300;400;500;600&family=Bai+Jamjuree:wght@500;600;700&family=Martian+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&family=Martian+Mono:wght@400;500&display=swap">
 <style>
 :root{
   --red:#C8102E; --red-d:#7A0C1E; --field:#6E0B1C; --field-d:#4A0712;
@@ -21,9 +21,9 @@
   --ink:#17110F; --ink2:#463B37; --mute:#6B5E59; --rule:#E7E1DE; --paper:#FFFFFF; --wash:#F6F3F1;
   --on-red:#FFF4EF; --on-red2:rgba(255,236,228,.80); --on-red3:rgba(255,236,228,.58);
   --f2:#3F8F6F; --f3:#6B5B95; --f4:#0D3B66; --f1:#C9713C;
-  --disp:'Bai Jamjuree','Anuphan',system-ui,sans-serif;
-  --body:'Anuphan','Bai Jamjuree',system-ui,sans-serif;
-  --mono:'Martian Mono','Anuphan',ui-monospace,Consolas,monospace;
+  --disp:'Prompt',system-ui,sans-serif;
+  --body:'Prompt',system-ui,sans-serif;
+  --mono:'Martian Mono','Prompt',ui-monospace,Consolas,monospace;
   --ease:cubic-bezier(.16,1,.3,1);
   --wrap:min(1240px, 100% - 2*clamp(20px,4vw,56px));
 }
@@ -63,7 +63,7 @@ p{margin:0;text-wrap:pretty}
 .brand b{font:700 22px/1 var(--disp);letter-spacing:.06em}
 .brand span{display:block;font:500 11px/1.25 var(--disp);letter-spacing:.02em;opacity:.78;white-space:nowrap}
 .nav ul{display:flex;gap:4px;list-style:none;margin:0 0 0 auto;padding:0}
-.nav ul a{display:block;font:500 15px/1 var(--disp);padding:10px 12px;border-radius:999px;text-decoration:none;opacity:.86;transition:opacity .2s,background .2s}
+.nav ul a{display:block;font:500 15px/1 var(--disp);padding:10px 11px;white-space:nowrap;border-radius:999px;text-decoration:none;opacity:.86;transition:opacity .2s,background .2s}
 .nav ul a:hover{opacity:1;background:rgba(255,255,255,.12)}
 .nav.solid ul a:hover{background:var(--wash)}
 .lang{display:flex;border:1.5px solid currentColor;border-radius:999px;padding:2px;opacity:.9;flex:none}
@@ -72,7 +72,7 @@ p{margin:0;text-wrap:pretty}
 .nav .btn{padding:12px 18px;font-size:15px;flex:none}
 .menu-btn{display:none;background:none;border:0;color:inherit;padding:8px;cursor:pointer;margin-left:auto}
 .menu-btn svg{width:26px;height:26px}
-@media (max-width:1100px){.nav ul{display:none}.nav .btn{display:none}.menu-btn{display:block}.lang{margin-left:0}}
+@media (max-width:1240px){.nav ul{display:none}.nav .btn{display:none}.menu-btn{display:block}.lang{margin-left:0}}
 .drawer{position:fixed;inset:0;z-index:60;background:var(--field);color:var(--on-red);display:none;flex-direction:column;padding:88px clamp(24px,6vw,48px) 40px}
 .drawer.open{display:flex}
 .drawer a{font:600 28px/1.35 var(--disp);text-decoration:none;padding:8px 0;border-bottom:1px solid rgba(255,236,228,.14)}
@@ -190,6 +190,43 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
 .vid p{font-size:15.5px;line-height:1.6;color:var(--ink2)}
 .show-note{margin-top:26px;font-size:14px;color:var(--mute)}
 @media (max-width:900px){.show-grid{grid-template-columns:1fr;gap:36px}}
+
+/* interns */
+.interns{background:var(--wash)}
+.it-kicker{font-size:13px;letter-spacing:.06em;color:var(--red);margin-bottom:14px}
+.it-facts{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:48px;border-top:1px solid var(--rule)}
+.it-facts>div{padding:20px 22px 4px 0}
+.it-facts>div+div{padding-left:22px;border-left:1px solid var(--rule)}
+.it-facts dt{font:600 12.5px var(--mono);letter-spacing:.06em;color:var(--red)}
+.it-facts dd{margin:8px 0 0;font-size:15.5px;line-height:1.6;color:var(--ink)}
+.it-box{margin-top:48px;background:var(--paper);border-radius:18px;box-shadow:0 30px 60px -44px rgba(0,0,0,.3);overflow:hidden}
+.it-tabs{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--rule)}
+.it-tab{all:unset;box-sizing:border-box;cursor:pointer;display:flex;flex-direction:column;gap:8px;padding:22px 24px;position:relative;color:var(--ink2);transition:background .25s,color .25s}
+.it-tab+.it-tab{border-left:1px solid var(--rule)}
+.it-tab .n{font-size:13px;color:var(--mute)}
+.it-tab b{font:600 19px/1.3 var(--disp)}
+.it-tab::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:3px;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform .45s var(--ease)}
+.it-tab:hover{background:var(--wash);color:var(--ink)}
+.it-tab[aria-selected="true"]{background:var(--field);color:var(--on-red)}
+.it-tab[aria-selected="true"] .n{color:var(--gold-l)}
+.it-tab[aria-selected="true"]::after{transform:scaleX(1)}
+.it-tab:focus-visible{outline:3px solid var(--gold);outline-offset:-3px}
+.it-panel{display:grid;grid-template-columns:minmax(260px,.8fr) 2fr;gap:clamp(28px,4vw,56px);padding:clamp(24px,3.4vw,44px);animation:it-in .5s var(--ease)}
+.it-panel[hidden]{display:none}
+@keyframes it-in{from{opacity:0;transform:translateY(10px)}}
+.it-tag{font:600 clamp(1.3rem,1.9vw,1.65rem)/1.35 var(--disp);color:var(--ink)}
+.it-time{display:flex;flex-direction:column;gap:4px;margin-top:18px;font-size:15px;line-height:1.6;color:var(--ink2)}
+.it-time .k,.it-cols h4{font:600 12.5px var(--mono);letter-spacing:.06em;color:var(--red)}
+.it-head .btn{margin-top:24px;padding:15px 22px;font-size:16px}
+.it-send{margin-top:14px;font-size:14px;line-height:1.6;color:var(--mute)}
+.it-send a{color:var(--red-d)}
+.it-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(20px,2.6vw,36px)}
+.it-cols ul{list-style:none;margin:12px 0 0;padding:0;display:flex;flex-direction:column;gap:10px}
+.it-cols li{position:relative;padding-left:18px;font-size:15.5px;line-height:1.6;color:var(--ink2)}
+.it-cols li::before{content:"";position:absolute;left:0;top:.68em;width:7px;height:7px;background:var(--gold);transform:rotate(45deg)}
+@media (max-width:1000px){.it-panel{grid-template-columns:1fr}.it-facts{grid-template-columns:1fr 1fr}.it-facts>div:nth-child(3){padding-left:0;border-left:0}.it-facts>div:nth-child(n+3){border-top:1px solid var(--rule)}}
+@media (max-width:700px){.it-tabs{grid-template-columns:1fr 1fr}.it-tab:nth-child(3){border-left:0}.it-tab:nth-child(n+3){border-top:1px solid var(--rule)}.it-tab{padding:16px 18px}.it-tab b{font-size:16.5px}.it-cols{grid-template-columns:1fr}.it-facts{grid-template-columns:1fr}.it-facts>div,.it-facts>div+div{padding-left:0;border-left:0}.it-facts>div+div{border-top:1px solid var(--rule)}}
+@media (prefers-reduced-motion:reduce){.it-panel{animation:none}.it-tab::after{transition:none}}
 
 /* founders */
 .founders{background:var(--wash)}
@@ -342,6 +379,7 @@ footer p{line-height:1.6}
       <li><a href="#engine" data-en="Engine">กลไก</a></li>
       <li><a href="#showcase" data-en="Showcase">ผลงาน</a></li>
       <li><a href="#founders" data-en="Founders">สำหรับผู้ก่อตั้ง</a></li>
+      <li><a href="#interns" data-en="Internship">ฝึกงาน</a></li>
       <li><a href="#building" data-en="Building">อาคาร</a></li>
       <li><a href="#film" data-en="Film">วิดีโอ</a></li>
       <li><a href="#contact" data-en="Contact">ติดต่อ</a></li>
@@ -356,7 +394,7 @@ footer p{line-height:1.6}
 </header>
 <div class="drawer" id="drawer" role="dialog" aria-modal="true" aria-label="เมนู">
   <button class="close" type="button" aria-label="ปิดเมนู"><svg viewBox="0 0 26 26" width="26" height="26" aria-hidden="true"><path d="M6 6l14 14M20 6 6 20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
-  <a href="#brain" data-en="Idea">แนวคิด</a><a href="#engine" data-en="Engine">กลไก</a><a href="#showcase" data-en="Showcase">ผลงาน</a><a href="#founders" data-en="Founders">สำหรับผู้ก่อตั้ง</a><a href="#building" data-en="Building">อาคาร</a><a href="#film" data-en="Film">วิดีโอ</a><a href="#contact" data-en="Contact">ติดต่อ</a>
+  <a href="#brain" data-en="Idea">แนวคิด</a><a href="#engine" data-en="Engine">กลไก</a><a href="#showcase" data-en="Showcase">ผลงาน</a><a href="#founders" data-en="Founders">สำหรับผู้ก่อตั้ง</a><a href="#interns" data-en="Internship">ฝึกงาน</a><a href="#building" data-en="Building">อาคาร</a><a href="#film" data-en="Film">วิดีโอ</a><a href="#contact" data-en="Contact">ติดต่อ</a>
   <a class="btn btn-gold" href="#join"><span data-en="Join the next Spark round">ร่วมรอบ Spark ถัดไป</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
 </div>
 
@@ -475,7 +513,7 @@ footer p{line-height:1.6}
           <div class="sup-cap" aria-live="polite"><span class="k" id="capK"></span><b id="capT"></b><p id="capD"></p></div>
           <div class="pool-cta">
             <p><b data-en="MFU student? Apply for ARIC Intern Program 2027">นักศึกษา มฟล.? สมัคร ARIC Intern Program 2027</b><span data-en="January – April 2027 · four tracks · paid per round">มกราคม – เมษายน 2570 · 4 สายงาน · มีค่าตอบแทนตามรอบงาน</span></p>
-            <a class="btn btn-gold" id="poolApply" href="mailto:nacha.cho@mfu.ac.th?subject=ARIC%3A%20apply%20for%20Intern%20Program%202027"><span data-en="Apply by email">สมัครทางอีเมล</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+            <a class="btn btn-gold" id="poolApply" href="#interns"><span data-en="See the tracks">ดูสายงานและสมัคร</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
           </div>
         </div>
       </div>
@@ -496,6 +534,81 @@ footer p{line-height:1.6}
         <button class="btn btn-gold" type="submit"><span data-en="Send by email">ส่งทางอีเมล</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></button>
         <small data-en="Opens your email app with the details filled in. Nothing is stored on this site.">ระบบจะเปิดแอปอีเมลของคุณพร้อมข้อมูลที่กรอก เว็บไซต์นี้ไม่เก็บข้อมูลใด ๆ</small>
       </form>
+    </div>
+  </div>
+</section>
+
+<!-- INTERNS -->
+<section class="sec interns" id="interns">
+  <div class="wrap">
+    <p class="it-kicker mono rv" data-en="Now recruiting · MFU students">เปิดรับสมัคร · นักศึกษา มฟล.</p>
+    <h2 class="h2 rv">ARIC Intern Program 2027</h2>
+    <p class="lead rv" data-en="Do real work beside the teams building AI and robotics solutions. Apply once to ARIC, not to a team: ARIC and the School of Applied Digital Technology select interns and assign each one to a team or task that fits their skills and timetable.">ร่วมงานจริงกับทีมที่สร้างโซลูชัน AI และหุ่นยนต์ สมัครครั้งเดียวกับ ARIC ไม่ต้องสมัครกับทีมใดทีมหนึ่ง ARIC และสำนักวิชาเทคโนโลยีดิจิทัลประยุกต์จะคัดเลือก แล้วมอบหมายทีมหรืองานที่ตรงกับทักษะและเวลาว่างของคุณ</p>
+    <dl class="it-facts rv">
+      <div><dt data-en="Who can apply">ใครสมัครได้</dt><dd data-en="MFU students from any school and any year, including graduate students">นักศึกษา มฟล. ทุกสำนักวิชา ทุกชั้นปี รวมบัณฑิตศึกษา</dd></div>
+      <div><dt data-en="First round">ฝึกงานรอบแรก</dt><dd data-en="January – April 2027: one 4-month round, Spark → Forge → Launch">มกราคม – เมษายน 2570 หนึ่งรอบ 4 เดือน Spark → Forge → Launch</dd></div>
+      <div><dt data-en="Pay">ค่าตอบแทน</dt><dd data-en="Paid per round or per task, plus a certificate of work">มีค่าตอบแทนตามรอบงานหรือตามงาน พร้อมหนังสือรับรองการทำงาน</dd></div>
+      <div><dt data-en="How to apply">วิธีสมัคร</dt><dd data-en="Email nacha.cho@mfu.ac.th with the subject “ARIC: apply for [track]”">อีเมลถึง nacha.cho@mfu.ac.th หัวข้อ “ARIC: apply for [ชื่อสาย]”</dd></div>
+    </dl>
+    <div class="it-box rv">
+      <div class="it-tabs" role="tablist" aria-label="สายงาน">
+<button type="button" role="tab" class="it-tab" id="itTab1" aria-controls="itPanel1" aria-selected="true" tabindex="0" data-track="AI &amp; Software"><span class="n mono">01</span><b data-en="AI &amp; Software">AI & Software</b></button>
+<button type="button" role="tab" class="it-tab" id="itTab2" aria-controls="itPanel2" aria-selected="false" tabindex="-1" data-track="Robotics &amp; Systems"><span class="n mono">02</span><b data-en="Robotics &amp; Systems">หุ่นยนต์และระบบ</b></button>
+<button type="button" role="tab" class="it-tab" id="itTab3" aria-controls="itPanel3" aria-selected="false" tabindex="-1" data-track="Design &amp; Communications"><span class="n mono">03</span><b data-en="Design &amp; Communications">ออกแบบและสื่อสาร</b></button>
+<button type="button" role="tab" class="it-tab" id="itTab4" aria-controls="itPanel4" aria-selected="false" tabindex="-1" data-track="Events &amp; Business"><span class="n mono">04</span><b data-en="Events &amp; Business">กิจกรรมและธุรกิจ</b></button>
+      </div>
+      <div class="it-panel" role="tabpanel" id="itPanel1" aria-labelledby="itTab1">
+        <div class="it-head">
+          <p class="it-tag" data-en="Build AI and software that people are waiting to use, from hospital wards to town halls.">สร้าง AI และซอฟต์แวร์ที่มีคนรอใช้จริง ตั้งแต่หอผู้ป่วยจนถึงเทศบาล</p>
+          <p class="it-time"><span class="k mono" data-en="Time">เวลา</span><span data-en="Mostly the 2-month Forge stage of each round, arranged around your classes.">ส่วนใหญ่อยู่ในช่วง Forge 2 เดือนต่อรอบ จัดเวลาให้ไม่ชนกับตารางเรียนได้</span></p>
+          <a class="btn btn-gold" href="mailto:nacha.cho@mfu.ac.th?subject=ARIC%3A%20apply%20for%20AI%20%26%20Software&amp;body=%E0%B8%8A%E0%B8%B7%E0%B9%88%E0%B8%AD-%E0%B8%99%E0%B8%B2%E0%B8%A1%E0%B8%AA%E0%B8%81%E0%B8%B8%E0%B8%A5%20/%20Name%3A%0A%E0%B8%A3%E0%B8%AB%E0%B8%B1%E0%B8%AA%E0%B8%99%E0%B8%B1%E0%B8%81%E0%B8%A8%E0%B8%B6%E0%B8%81%E0%B8%A9%E0%B8%B2%20/%20Student%20ID%3A%0A%E0%B8%AA%E0%B8%B3%E0%B8%99%E0%B8%B1%E0%B8%81%E0%B8%A7%E0%B8%B4%E0%B8%8A%E0%B8%B2%E0%B9%81%E0%B8%A5%E0%B8%B0%E0%B8%8A%E0%B8%B1%E0%B9%89%E0%B8%99%E0%B8%9B%E0%B8%B5%20/%20School%20and%20year%3A%0A%E0%B8%A5%E0%B8%B4%E0%B8%87%E0%B8%81%E0%B9%8C%20portfolio%20%E0%B8%AB%E0%B8%A3%E0%B8%B7%E0%B8%AD%20GitHub%20/%20Portfolio%20or%20GitHub%20link%3A%0A"><span data-en="Apply: AI &amp; Software">สมัครสาย AI & Software</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          <p class="it-send"><span data-en="Send your name, student ID, school and year, portfolio or github link to">ส่งชื่อ-นามสกุล รหัสนักศึกษา สำนักวิชาและชั้นปี และลิงก์ portfolio หรือ GitHub ไปที่</span> <a href="mailto:nacha.cho@mfu.ac.th?subject=ARIC%3A%20apply%20for%20AI%20%26%20Software&amp;body=%E0%B8%8A%E0%B8%B7%E0%B9%88%E0%B8%AD-%E0%B8%99%E0%B8%B2%E0%B8%A1%E0%B8%AA%E0%B8%81%E0%B8%B8%E0%B8%A5%20/%20Name%3A%0A%E0%B8%A3%E0%B8%AB%E0%B8%B1%E0%B8%AA%E0%B8%99%E0%B8%B1%E0%B8%81%E0%B8%A8%E0%B8%B6%E0%B8%81%E0%B8%A9%E0%B8%B2%20/%20Student%20ID%3A%0A%E0%B8%AA%E0%B8%B3%E0%B8%99%E0%B8%B1%E0%B8%81%E0%B8%A7%E0%B8%B4%E0%B8%8A%E0%B8%B2%E0%B9%81%E0%B8%A5%E0%B8%B0%E0%B8%8A%E0%B8%B1%E0%B9%89%E0%B8%99%E0%B8%9B%E0%B8%B5%20/%20School%20and%20year%3A%0A%E0%B8%A5%E0%B8%B4%E0%B8%87%E0%B8%81%E0%B9%8C%20portfolio%20%E0%B8%AB%E0%B8%A3%E0%B8%B7%E0%B8%AD%20GitHub%20/%20Portfolio%20or%20GitHub%20link%3A%0A">nacha.cho@mfu.ac.th</a></p>
+        </div>
+        <div class="it-cols">
+          <div><h4 data-en="What you'll do">สิ่งที่คุณจะทำ</h4><ul><li data-en="Join a team building an MVP from real problems brought by hospitals, communities and industry">ร่วมทีมสร้าง MVP จากโจทย์จริงของโรงพยาบาล ชุมชน และภาคอุตสาหกรรม</li><li data-en="Build the AI side: systems that understand Thai and local dialects, or the brain of an elderly-care robot">พัฒนาส่วน AI เช่น ระบบที่เข้าใจภาษาไทยและภาษาถิ่น หรือ "สมอง" ของหุ่นยนต์ดูแลผู้สูงอายุ</li><li data-en="Prepare and manage data, handling it with proper privacy care">เตรียมและจัดการข้อมูล โดยใช้ข้อมูลอย่างถูกต้องตามหลักความเป็นส่วนตัว</li><li data-en="Build web apps, mobile apps and dashboards that nurses, carers or customers actually use">ทำเว็บ แอป และแดชบอร์ดที่พยาบาล ผู้ดูแล หรือลูกค้าใช้ได้จริง</li></ul></div>
+          <div><h4 data-en="Who we look for">เรามองหา</h4><ul><li data-en="Any major, any year, if you can code and have something to show">ทุกสาขา ทุกชั้นปี ที่เขียนโปรแกรมได้และมีผลงานให้ดูสักชิ้น</li><li data-en="Especially welcome: ML, NLP, web or app experience, or solid Python / JavaScript">ยินดีเป็นพิเศษถ้าเคยทำ ML, NLP, เว็บหรือแอป หรือใช้ Python / JavaScript ได้คล่อง</li></ul></div>
+          <div><h4 data-en="What you get">สิ่งที่คุณจะได้</h4><ul><li data-en="Real problems and real users">โจทย์จริงและผู้ใช้จริง</li><li data-en="Mentors from industry and MFU&#x27;s health schools">พี่เลี้ยงจากภาคอุตสาหกรรมและสำนักวิชาด้านสุขภาพของ มฟล.</li><li data-en="NVIDIA DGX and AI coding agents during the round">ใช้เครื่อง NVIDIA DGX และ AI coding agent ระหว่างรอบ</li><li data-en="Portfolio work and a certificate of work">ผลงานใส่ portfolio และหนังสือรับรองการทำงาน</li><li data-en="Paid per round">มีค่าตอบแทนตามรอบงาน</li></ul></div>
+        </div>
+      </div>
+      <div class="it-panel" role="tabpanel" id="itPanel2" aria-labelledby="itTab2" hidden>
+        <div class="it-head">
+          <p class="it-tag" data-en="Help care robots see, move and work safely beside patients.">ทำให้หุ่นยนต์ดูแลมองเห็น เคลื่อนที่ และทำงานข้างผู้ป่วยได้อย่างปลอดภัย</p>
+          <p class="it-time"><span class="k mono" data-en="Time">เวลา</span><span data-en="Team work falls in the 2-month Forge stage; systems support runs across the round. Arranged around your classes.">งานในทีมอยู่ในช่วง Forge 2 เดือน ส่วนงานดูแลระบบกระจายตลอดรอบ จัดเวลาให้ไม่ชนกับตารางเรียนได้</span></p>
+          <a class="btn btn-gold" href="mailto:nacha.cho@mfu.ac.th?subject=ARIC%3A%20apply%20for%20Robotics%20%26%20Systems&amp;body=%E0%B8%8A%E0%B8%B7%E0%B9%88%E0%B8%AD-%E0%B8%99%E0%B8%B2%E0%B8%A1%E0%B8%AA%E0%B8%81%E0%B8%B8%E0%B8%A5%20/%20Name%3A%0A%E0%B8%A3%E0%B8%AB%E0%B8%B1%E0%B8%AA%E0%B8%99%E0%B8%B1%E0%B8%81%E0%B8%A8%E0%B8%B6%E0%B8%81%E0%B8%A9%E0%B8%B2%20/%20Student%20ID%3A%0A%E0%B8%AA%E0%B8%B3%E0%B8%99%E0%B8%B1%E0%B8%81%E0%B8%A7%E0%B8%B4%E0%B8%8A%E0%B8%B2%E0%B9%81%E0%B8%A5%E0%B8%B0%E0%B8%8A%E0%B8%B1%E0%B9%89%E0%B8%99%E0%B8%9B%E0%B8%B5%20/%20School%20and%20year%3A%0A%E0%B8%A5%E0%B8%B4%E0%B8%87%E0%B8%81%E0%B9%8C%20portfolio%20%E0%B8%AB%E0%B8%A3%E0%B8%B7%E0%B8%AD%20GitHub%20/%20Portfolio%20or%20GitHub%20link%3A%0A"><span data-en="Apply: Robotics &amp; Systems">สมัครสาย หุ่นยนต์และระบบ</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          <p class="it-send"><span data-en="Send your name, student ID, school and year, portfolio or github link to">ส่งชื่อ-นามสกุล รหัสนักศึกษา สำนักวิชาและชั้นปี และลิงก์ portfolio หรือ GitHub ไปที่</span> <a href="mailto:nacha.cho@mfu.ac.th?subject=ARIC%3A%20apply%20for%20Robotics%20%26%20Systems&amp;body=%E0%B8%8A%E0%B8%B7%E0%B9%88%E0%B8%AD-%E0%B8%99%E0%B8%B2%E0%B8%A1%E0%B8%AA%E0%B8%81%E0%B8%B8%E0%B8%A5%20/%20Name%3A%0A%E0%B8%A3%E0%B8%AB%E0%B8%B1%E0%B8%AA%E0%B8%99%E0%B8%B1%E0%B8%81%E0%B8%A8%E0%B8%B6%E0%B8%81%E0%B8%A9%E0%B8%B2%20/%20Student%20ID%3A%0A%E0%B8%AA%E0%B8%B3%E0%B8%99%E0%B8%B1%E0%B8%81%E0%B8%A7%E0%B8%B4%E0%B8%8A%E0%B8%B2%E0%B9%81%E0%B8%A5%E0%B8%B0%E0%B8%8A%E0%B8%B1%E0%B9%89%E0%B8%99%E0%B8%9B%E0%B8%B5%20/%20School%20and%20year%3A%0A%E0%B8%A5%E0%B8%B4%E0%B8%87%E0%B8%81%E0%B9%8C%20portfolio%20%E0%B8%AB%E0%B8%A3%E0%B8%B7%E0%B8%AD%20GitHub%20/%20Portfolio%20or%20GitHub%20link%3A%0A">nacha.cho@mfu.ac.th</a></p>
+        </div>
+        <div class="it-cols">
+          <div><h4 data-en="What you'll do">สิ่งที่คุณจะทำ</h4><ul><li data-en="Write robot software (e.g. ROS 2) linking AI to navigation and manipulation, on target platforms such as the AgiBot X2 Ultra and D1 Edu">เขียนซอฟต์แวร์หุ่นยนต์ (เช่น ROS 2) เชื่อม AI เข้ากับการเคลื่อนที่และการหยิบจับ บนแพลตฟอร์มเป้าหมาย เช่น AgiBot X2 Ultra และ D1 Edu</li><li data-en="Build vision systems, such as detecting falls or the posture of older people">พัฒนาระบบมองเห็น เช่น ตรวจจับการล้มหรือท่าทางของผู้สูงอายุ</li><li data-en="Connect sensors and IoT devices to care systems">ต่อเซนเซอร์และอุปกรณ์ IoT เข้ากับระบบดูแล</li><li data-en="With ADT staff, look after the NVIDIA DGX machines every team shares">ร่วมกับเจ้าหน้าที่ ADT ดูแลเครื่อง NVIDIA DGX ที่ทุกทีมใช้ร่วมกัน</li></ul></div>
+          <div><h4 data-en="Who we look for">เรามองหา</h4><ul><li data-en="Any major, any year, if you like getting hands-on with robots, hardware or Linux systems">ทุกสาขา ทุกชั้นปี ที่ชอบลงมือกับหุ่นยนต์ ฮาร์ดแวร์ หรือระบบ Linux</li><li data-en="Especially welcome: ROS, OpenCV, Arduino/ESP32, competition robots, or running a server">ยินดีเป็นพิเศษถ้าเคยทำ ROS, OpenCV, Arduino/ESP32, หุ่นยนต์แข่งขัน หรือดูแลเซิร์ฟเวอร์</li></ul></div>
+          <div><h4 data-en="What you get">สิ่งที่คุณจะได้</h4><ul><li data-en="Real problems from patient and elderly care">โจทย์จริงจากงานดูแลผู้ป่วยและผู้สูงอายุ</li><li data-en="Mentors from industry and MFU&#x27;s health schools">พี่เลี้ยงจากภาคอุตสาหกรรมและสำนักวิชาด้านสุขภาพของ มฟล.</li><li data-en="NVIDIA DGX and AI coding agents during the round">ใช้เครื่อง NVIDIA DGX และ AI coding agent ระหว่างรอบ</li><li data-en="Portfolio work and a certificate of work">ผลงานใส่ portfolio และหนังสือรับรองการทำงาน</li><li data-en="Paid per round">มีค่าตอบแทนตามรอบงาน</li></ul></div>
+        </div>
+      </div>
+      <div class="it-panel" role="tabpanel" id="itPanel3" aria-labelledby="itTab3" hidden>
+        <div class="it-head">
+          <p class="it-tag" data-en="Tell ARIC&#x27;s story, and design screens older people find easy to use.">เล่าเรื่องของ ARIC และออกแบบหน้าจอที่ผู้สูงอายุใช้ได้ง่าย</p>
+          <p class="it-time"><span class="k mono" data-en="Time">เวลา</span><span data-en="Task-based, busiest before each Spark call and before each expo. Arranged around your classes.">เป็นงานตามชิ้น หนักช่วงก่อนเปิดรับสมัคร Spark และก่อนงานบูธ จัดเวลาให้ไม่ชนกับตารางเรียนได้</span></p>
+          <a class="btn btn-gold" href="mailto:nacha.cho@mfu.ac.th?subject=ARIC%3A%20apply%20for%20Design%20%26%20Communications&amp;body=%E0%B8%8A%E0%B8%B7%E0%B9%88%E0%B8%AD-%E0%B8%99%E0%B8%B2%E0%B8%A1%E0%B8%AA%E0%B8%81%E0%B8%B8%E0%B8%A5%20/%20Name%3A%0A%E0%B8%A3%E0%B8%AB%E0%B8%B1%E0%B8%AA%E0%B8%99%E0%B8%B1%E0%B8%81%E0%B8%A8%E0%B8%B6%E0%B8%81%E0%B8%A9%E0%B8%B2%20/%20Student%20ID%3A%0A%E0%B8%AA%E0%B8%B3%E0%B8%99%E0%B8%B1%E0%B8%81%E0%B8%A7%E0%B8%B4%E0%B8%8A%E0%B8%B2%E0%B9%81%E0%B8%A5%E0%B8%B0%E0%B8%8A%E0%B8%B1%E0%B9%89%E0%B8%99%E0%B8%9B%E0%B8%B5%20/%20School%20and%20year%3A%0A%E0%B8%A5%E0%B8%B4%E0%B8%87%E0%B8%81%E0%B9%8C%20portfolio%20/%20Portfolio%20link%3A%0A"><span data-en="Apply: Design &amp; Communications">สมัครสาย ออกแบบและสื่อสาร</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          <p class="it-send"><span data-en="Send your name, student ID, school and year, portfolio link to">ส่งชื่อ-นามสกุล รหัสนักศึกษา สำนักวิชาและชั้นปี และลิงก์ portfolio ไปที่</span> <a href="mailto:nacha.cho@mfu.ac.th?subject=ARIC%3A%20apply%20for%20Design%20%26%20Communications&amp;body=%E0%B8%8A%E0%B8%B7%E0%B9%88%E0%B8%AD-%E0%B8%99%E0%B8%B2%E0%B8%A1%E0%B8%AA%E0%B8%81%E0%B8%B8%E0%B8%A5%20/%20Name%3A%0A%E0%B8%A3%E0%B8%AB%E0%B8%B1%E0%B8%AA%E0%B8%99%E0%B8%B1%E0%B8%81%E0%B8%A8%E0%B8%B6%E0%B8%81%E0%B8%A9%E0%B8%B2%20/%20Student%20ID%3A%0A%E0%B8%AA%E0%B8%B3%E0%B8%99%E0%B8%B1%E0%B8%81%E0%B8%A7%E0%B8%B4%E0%B8%8A%E0%B8%B2%E0%B9%81%E0%B8%A5%E0%B8%B0%E0%B8%8A%E0%B8%B1%E0%B9%89%E0%B8%99%E0%B8%9B%E0%B8%B5%20/%20School%20and%20year%3A%0A%E0%B8%A5%E0%B8%B4%E0%B8%87%E0%B8%81%E0%B9%8C%20portfolio%20/%20Portfolio%20link%3A%0A">nacha.cho@mfu.ac.th</a></p>
+        </div>
+        <div class="it-cols">
+          <div><h4 data-en="What you'll do">สิ่งที่คุณจะทำ</h4><ul><li data-en="Design booth graphics, hackathon posters and social media visuals">ออกแบบกราฟิกบูธ โปสเตอร์ประกาศรับสมัครแฮกกาธอน และภาพสำหรับโซเชียลมีเดีย</li><li data-en="Design UX/UI for the teams&#x27; apps so older people and nurses can really use them">ออกแบบ UX/UI ของแอปที่ทีมสร้าง ให้ผู้สูงอายุและพยาบาลใช้ได้จริง</li><li data-en="Write content in Thai and English, and shoot and edit the teams&#x27; demo videos">เขียนคอนเทนต์ภาษาไทยและอังกฤษ ถ่ายและตัดต่อคลิปเดโมของทีม</li><li data-en="Help teams lay out their slides for Launch day">ช่วยทีมจัดหน้าสไลด์สำหรับวัน Launch</li></ul></div>
+          <div><h4 data-en="Who we look for">เรามองหา</h4><ul><li data-en="Any major, any year; we judge by your portfolio">ทุกสาขา ทุกชั้นปี ดูจากผลงานเป็นหลัก</li><li data-en="Especially welcome: Figma, Illustrator, Canva or video editing, and good Thai typography">ยินดีเป็นพิเศษถ้าใช้ Figma, Illustrator, Canva หรือโปรแกรมตัดต่อได้ และจัดตัวอักษรภาษาไทยได้สวย</li></ul></div>
+          <div><h4 data-en="What you get">สิ่งที่คุณจะได้</h4><ul><li data-en="Work used at national expos and in apps with real users">ผลงานที่ได้ใช้จริงในงานแสดงระดับประเทศและในแอปที่มีผู้ใช้จริง</li><li data-en="A close view of teams building AI and robots">ทำงานใกล้ชิดกับทีมที่สร้าง AI และหุ่นยนต์</li><li data-en="Portfolio work and a certificate of work">ผลงานใส่ portfolio และหนังสือรับรองการทำงาน</li><li data-en="Paid per task">มีค่าตอบแทนตามงาน</li></ul></div>
+        </div>
+      </div>
+      <div class="it-panel" role="tabpanel" id="itPanel4" aria-labelledby="itTab4" hidden>
+        <div class="it-head">
+          <p class="it-tag" data-en="Be on the ground from the hackathon to national expo booths, and help bring the work to customers.">อยู่หน้างานตั้งแต่แฮกกาธอนจนถึงบูธระดับประเทศ และช่วยพาผลงานไปถึงลูกค้า</p>
+          <p class="it-time"><span class="k mono" data-en="Time">เวลา</span><span data-en="Busiest during Spark and expo weeks; some events need travel to Bangkok. ARIC gives early notice so we can plan around your classes.">หนักช่วง Spark และช่วงงานบูธ บางงานต้องเดินทางไปกรุงเทพฯ ARIC จะแจ้งล่วงหน้าเพื่อวางแผนร่วมกับตารางเรียน</span></p>
+          <a class="btn btn-gold" href="mailto:nacha.cho@mfu.ac.th?subject=ARIC%3A%20apply%20for%20Events%20%26%20Business&amp;body=%E0%B8%8A%E0%B8%B7%E0%B9%88%E0%B8%AD-%E0%B8%99%E0%B8%B2%E0%B8%A1%E0%B8%AA%E0%B8%81%E0%B8%B8%E0%B8%A5%20/%20Name%3A%0A%E0%B8%A3%E0%B8%AB%E0%B8%B1%E0%B8%AA%E0%B8%99%E0%B8%B1%E0%B8%81%E0%B8%A8%E0%B8%B6%E0%B8%81%E0%B8%A9%E0%B8%B2%20/%20Student%20ID%3A%0A%E0%B8%AA%E0%B8%B3%E0%B8%99%E0%B8%B1%E0%B8%81%E0%B8%A7%E0%B8%B4%E0%B8%8A%E0%B8%B2%E0%B9%81%E0%B8%A5%E0%B8%B0%E0%B8%8A%E0%B8%B1%E0%B9%89%E0%B8%99%E0%B8%9B%E0%B8%B5%20/%20School%20and%20year%3A%0A%E0%B8%9B%E0%B8%A3%E0%B8%B0%E0%B8%AA%E0%B8%9A%E0%B8%81%E0%B8%B2%E0%B8%A3%E0%B8%93%E0%B9%8C%E0%B8%AB%E0%B8%A3%E0%B8%B7%E0%B8%AD%20portfolio%20%28%E0%B8%96%E0%B9%89%E0%B8%B2%E0%B8%A1%E0%B8%B5%29%20/%20Experience%20or%20portfolio%20%28if%20any%29%3A%0A"><span data-en="Apply: Events &amp; Business">สมัครสาย กิจกรรมและธุรกิจ</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          <p class="it-send"><span data-en="Send your name, student ID, school and year, experience or portfolio (if any) to">ส่งชื่อ-นามสกุล รหัสนักศึกษา สำนักวิชาและชั้นปี และประสบการณ์หรือ portfolio (ถ้ามี) ไปที่</span> <a href="mailto:nacha.cho@mfu.ac.th?subject=ARIC%3A%20apply%20for%20Events%20%26%20Business&amp;body=%E0%B8%8A%E0%B8%B7%E0%B9%88%E0%B8%AD-%E0%B8%99%E0%B8%B2%E0%B8%A1%E0%B8%AA%E0%B8%81%E0%B8%B8%E0%B8%A5%20/%20Name%3A%0A%E0%B8%A3%E0%B8%AB%E0%B8%B1%E0%B8%AA%E0%B8%99%E0%B8%B1%E0%B8%81%E0%B8%A8%E0%B8%B6%E0%B8%81%E0%B8%A9%E0%B8%B2%20/%20Student%20ID%3A%0A%E0%B8%AA%E0%B8%B3%E0%B8%99%E0%B8%B1%E0%B8%81%E0%B8%A7%E0%B8%B4%E0%B8%8A%E0%B8%B2%E0%B9%81%E0%B8%A5%E0%B8%B0%E0%B8%8A%E0%B8%B1%E0%B9%89%E0%B8%99%E0%B8%9B%E0%B8%B5%20/%20School%20and%20year%3A%0A%E0%B8%9B%E0%B8%A3%E0%B8%B0%E0%B8%AA%E0%B8%9A%E0%B8%81%E0%B8%B2%E0%B8%A3%E0%B8%93%E0%B9%8C%E0%B8%AB%E0%B8%A3%E0%B8%B7%E0%B8%AD%20portfolio%20%28%E0%B8%96%E0%B9%89%E0%B8%B2%E0%B8%A1%E0%B8%B5%29%20/%20Experience%20or%20portfolio%20%28if%20any%29%3A%0A">nacha.cho@mfu.ac.th</a></p>
+        </div>
+        <div class="it-cols">
+          <div><h4 data-en="What you'll do">สิ่งที่คุณจะทำ</h4><ul><li data-en="Help run the Spark hackathon, from sign-ups and team matching to timekeeping on the day">ช่วยจัดแฮกกาธอน Spark ตั้งแต่รับสมัคร จับคู่ทีม จนถึงคุมเวลาในวันงาน</li><li data-en="Help prepare and staff booths at national events such as SITE, Techsauce Global Summit and DigiTech ASEAN Thailand">ช่วยเตรียมและดูแลบูธในงานระดับประเทศ เช่น SITE, Techsauce Global Summit และ DigiTech ASEAN Thailand</li><li data-en="Look after the student and supporter community: news, updates and answering questions">ดูแลชุมชนนักศึกษาและผู้สนใจ ส่งข่าวสารและตอบคำถาม</li><li data-en="Support partnerships and sales: collecting contacts and preparing material before meetings with hospitals or companies">ช่วยงานความร่วมมือและการขาย เช่น เก็บรายชื่อผู้สนใจ เตรียมข้อมูลก่อนพบโรงพยาบาลหรือบริษัท</li></ul></div>
+          <div><h4 data-en="Who we look for">เรามองหา</h4><ul><li data-en="Any major, any year, if you enjoy meeting people and are organised and on time">ทุกสาขา ทุกชั้นปี ที่ชอบพบคน เป็นระเบียบ และตรงเวลา</li><li data-en="Especially welcome: event or student-club experience, spoken English, interest in business and startups">ยินดีเป็นพิเศษถ้าเคยจัดกิจกรรมหรือทำงานชมรม สื่อสารภาษาอังกฤษได้ หรือสนใจธุรกิจและสตาร์ทอัพ</li></ul></div>
+          <div><h4 data-en="What you get">สิ่งที่คุณจะได้</h4><ul><li data-en="Experience at national technology events, meeting founders, investors and government agencies">ประสบการณ์ในงานเทคโนโลยีระดับประเทศ ได้พบผู้ประกอบการ นักลงทุน และหน่วยงานรัฐ</li><li data-en="A front-row view of real problems from hospitals and communities, and how ideas become businesses">ได้เห็นโจทย์จริงจากโรงพยาบาลและชุมชน และวิธีที่ไอเดียกลายเป็นธุรกิจ</li><li data-en="A certificate of work">หนังสือรับรองการทำงาน</li><li data-en="Paid per task">มีค่าตอบแทนตามงาน</li></ul></div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -721,15 +834,23 @@ class Mountain {
       this.pts.forEach((p, i) => { const a = this.morph.from[i], b = this.morph.to[i] || a; p.x = a.x + (b.x - a.x) * e; p.y = a.y + (b.y - a.y) * e; if (k === 1) { p.fixed = b.fixed; p.n = b.n; } });
       if (k === 1) this.morph = null;
     }
-    // pointer repel (spring)
+    // ambient drift: every interior point wanders on its own slow orbit (gentler under reduced motion)
     let pl = null; if (this.ptr) pl = this.toLogo(this.ptr.x, this.ptr.y);
+    const amp = reduce ? .35 : 1;
     P.forEach(p => {
       let tx = 0, ty = 0;
-      if (pl && !p.fixed) { const dx = p.x - pl[0], dy = p.y - pl[1], d = Math.hypot(dx, dy), R = 70; if (d < R && d > .01) { const s = (1 - d / R) * 13; tx = dx / d * s; ty = dy / d * s; } }
-      if (!reduce && !p.fixed) { tx += Math.sin(now / 1700 + p.x * .05) * 1.3; ty += Math.cos(now / 2100 + p.y * .05) * 1.1; }
+      if (!p.fixed) { const ph = (p.n || 0) * 60 + p.x * .031; tx = (Math.sin(now / 1500 + ph) * 3.4 + Math.sin(now / 3700 + p.y * .04) * 1.8) * amp; ty = (Math.cos(now / 1900 + ph * 1.3) * 2.8 + Math.cos(now / 4300 + p.x * .02) * 1.4) * amp; }
       p.ox += (tx - p.ox) * .12; p.oy += (ty - p.oy) * .12;
     });
     const Q = P.map(p => ({ x: p.x + p.ox, y: p.y + p.oy, z: height(p.x, p.y, p.n || 0) }));
+    // glow: nodes under the pointer light up and fade slowly behind it; a few light up on their own
+    if (o.reach) {
+      P.forEach((p, i) => {
+        let tg = 0; if (pl) { const d = Math.hypot(Q[i].x - pl[0], Q[i].y - pl[1]); if (d < 84) tg = 1 - d / 84; }
+        const gl = p.gl || 0; p.gl = tg > gl ? gl + (tg - gl) * .3 : gl * .965;
+      });
+      if (!reduce && Math.random() < .06) { const p = P[Math.floor(Math.random() * P.length)]; if (!p.fixed) p.gl = Math.max(p.gl || 0, .55 + Math.random() * .35); }
+    }
     const tris = delaunay(Q).filter(tr => { const cx = (Q[tr[0]].x + Q[tr[1]].x + Q[tr[2]].x) / 3, cy = (Q[tr[0]].y + Q[tr[1]].y + Q[tr[2]].y) / 3; return inPoly(cx, cy); });
     const adj = P.map(() => new Set());
     tris.forEach(([a, b, c]) => { adj[a].add(b); adj[b].add(a); adj[b].add(c); adj[c].add(b); adj[a].add(c); adj[c].add(a); });
@@ -744,7 +865,7 @@ class Mountain {
     g.fillStyle = '#E4B04A'; g.globalAlpha = stage ? Math.min(1, stage.forge * 1.5) : 1;
     g.beginPath(); g.arc(SUN[0], SUN[1], SUN[2] + pulse, 0, 7); g.fill(); g.globalAlpha = 1;
     // facets
-    const L = [.52, -.62, .58], hue = o.hue();
+    const L = o.reach && !reduce ? [.52 + Math.sin(now / 5200) * .22, -.62 + Math.cos(now / 6100) * .12, .58] : [.52, -.62, .58], hue = o.hue();   // hero light drifts so facets shimmer
     g.save(); g.beginPath(); POLY.forEach(([x, y], i) => i ? g.lineTo(x, y) : g.moveTo(x, y)); g.closePath(); g.clip();
     const lifted = stage ? this.liftSet(tris, Q) : null;
     tris.forEach((tr, ti) => {
@@ -769,6 +890,11 @@ class Mountain {
       adj.forEach((s, a) => s.forEach(b => { if (b > a && k++ < lim) { g.moveTo(Q[a].x, Q[a].y); g.lineTo(Q[b].x, Q[b].y); } }));
       g.stroke();
     }
+    // edges between lit nodes glow too
+    if (o.reach) {
+      g.lineWidth = 1.8;
+      adj.forEach((s, a) => s.forEach(b => { if (b <= a) return; const v = Math.min(P[a].gl || 0, P[b].gl || 0); if (v < .05) return; g.strokeStyle = `rgba(255,236,170,${.8 * v})`; g.beginPath(); g.moveTo(Q[a].x, Q[a].y); g.lineTo(Q[b].x, Q[b].y); g.stroke(); }));
+    }
     // pulses
     this.pulses = this.pulses.filter(pu => now < pu.s + pu.dur);
     this.pulses.forEach(pu => {
@@ -786,7 +912,7 @@ class Mountain {
         g.fillStyle = '#E4B04A'; g.strokeStyle = '#FFF2C8'; g.lineWidth = 2;
         g.beginPath(); tr.forEach((pi, j) => { const X = mx + (Q[pi].x - cx0) * k, Y = my + (Q[pi].y - cy0) * k; j ? g.lineTo(X, Y) : g.moveTo(X, Y); }); g.closePath(); g.fill(); g.stroke(); g.restore();
         if (stage.lift > .6) {
-          g.save(); g.globalAlpha = (stage.lift - .6) / .4; g.fillStyle = '#FFF4EF'; g.font = `600 ${(14 / f.s).toFixed(2)}px "Martian Mono", monospace`;
+          g.save(); g.globalAlpha = (stage.lift - .6) / .4; g.fillStyle = '#FFF4EF'; g.font = `600 ${(14 / f.s).toFixed(2)}px "Martian Mono", "Prompt", monospace`;
           const label = (lang === 'en' ? 'COMPANY ' : 'บริษัท ') + (i + 1), tw = g.measureText(label).width, right = (this.w - f.x) / f.s - 4;
           const lx = tx + 24 + tw <= right ? tx + 24 : tx - 24 - tw;   // right of the facet, or left if it would leave the canvas
           g.textAlign = 'left'; g.fillText(label, lx, ty + 6); g.restore();
@@ -804,14 +930,16 @@ class Mountain {
       if (!p.fixed && deg >= 7) { g.fillStyle = '#E4B04A'; g.beginPath(); g.arc(q.x, q.y, 4.6, 0, 7); g.fill(); }
     });
     g.globalAlpha = 1;
-    // reach: the network leans toward the pointer
-    if (pl && this.o.reach) {
-      const near = Q.map((q, i) => [Math.hypot(q.x - pl[0], q.y - pl[1]), i]).sort((a, b) => a[0] - b[0]).slice(0, 3);
-      if (near[0][0] < 180) {
-        g.save();
-        near.forEach(([d, i]) => { g.strokeStyle = `rgba(243,212,138,${.55 * (1 - d / 180)})`; g.lineWidth = 1.2; g.setLineDash([3, 5]); g.beginPath(); g.moveTo(pl[0], pl[1]); g.lineTo(Q[i].x, Q[i].y); g.stroke(); });
-        g.setLineDash([]); g.strokeStyle = 'rgba(243,212,138,.9)'; g.lineWidth = 1.6; g.beginPath(); g.arc(pl[0], pl[1], 7, 0, 7); g.stroke(); g.restore();
-      }
+    // lit dots: soft halo + bright core
+    if (o.reach) {
+      g.save(); g.globalCompositeOperation = 'lighter';
+      P.forEach((p, i) => {
+        const v = p.gl || 0; if (v < .03) return; const q = Q[i], r = 6 + 22 * v;
+        const grd = g.createRadialGradient(q.x, q.y, 0, q.x, q.y, r); grd.addColorStop(0, `rgba(255,226,150,${.85 * v})`); grd.addColorStop(1, 'rgba(255,226,150,0)');
+        g.fillStyle = grd; g.beginPath(); g.arc(q.x, q.y, r, 0, 7); g.fill();
+        g.fillStyle = `rgba(255,248,226,${.35 + .65 * v})`; g.beginPath(); g.arc(q.x, q.y, 1.8 + 2.8 * v, 0, 7); g.fill();
+      });
+      g.restore();
     }
     g.restore();   // closes the logo-space transform opened after clearRect
   }
@@ -859,7 +987,11 @@ $('#reseed').addEventListener('click', () => {
   document.documentElement.style.setProperty('--seed-h', heroM.o.hue());
 });
 // idle signals from the summit so the brain is visibly alive
-if (!reduce) setInterval(() => { if (heroM.visible && document.visibilityState === 'visible') heroM.wave([1, 3, 2][Math.floor(Math.random() * 3)], 3, 140); }, 3200);
+if (!reduce) setInterval(() => {
+  if (!heroM.visible || document.visibilityState !== 'visible') return;
+  const n = heroM.all().length, src = Math.random() < .5 ? [1, 3, 2][Math.floor(Math.random() * 3)] : Math.floor(Math.random() * n);
+  heroM.wave(src, 3, 120);
+}, 1500);
 
 /* ---------------- engine (scroll-driven) ---------------- */
 const engine = $('#engine'), stagesEl = $$('#stages .stage');
@@ -903,9 +1035,9 @@ if (reduce) { curStage = 2; stagesEl.forEach(el => el.classList.add('on')); draw
 
 /* ---------------- render loop (both canvases, paused off-screen) ---------------- */
 function loop(now) {
-  if (heroM.visible) heroM.frame(now);
-  if (stageM.visible) { stageFrame(); stageM.frame(now); }
-  if (!reduce) requestAnimationFrame(loop);
+  if (heroM.visible) heroM.frame(now);                       // hero always runs (calmer under reduced motion)
+  if (stageM.visible && (!reduce || !stageM.drawn)) { stageFrame(); stageM.frame(now); stageM.drawn = true; }
+  requestAnimationFrame(loop);
 }
 requestAnimationFrame(loop);
 if (reduce) { addEventListener('resize', () => { heroM.frame(performance.now()); stageM.frame(performance.now()); }); }
@@ -927,6 +1059,21 @@ $$('#floors .floor').forEach(fl => $('button', fl).addEventListener('click', () 
   $$('#floors .floor').forEach(o => { o.removeAttribute('open'); $('button', o).setAttribute('aria-expanded', 'false'); });
   if (open) { fl.setAttribute('open', ''); $('button', fl).setAttribute('aria-expanded', 'true'); }
 }));
+
+/* ---------------- interns: track tabs ---------------- */
+const itTabs = $$('.it-tab');
+const setTrack = (tab, focus) => {
+  itTabs.forEach(t => { const on = t === tab; t.setAttribute('aria-selected', String(on)); t.tabIndex = on ? 0 : -1; $('#' + t.getAttribute('aria-controls')).hidden = !on; });
+  if (focus) tab.focus();
+};
+itTabs.forEach((t, k) => {
+  t.addEventListener('click', () => setTrack(t));
+  t.addEventListener('keydown', e => {
+    const d = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[e.key];
+    if (d) { e.preventDefault(); setTrack(itTabs[(k + d + itTabs.length) % itTabs.length], true); }
+  });
+});
+$('#poolApply').addEventListener('click', e => { const t = itTabs.find(x => x.dataset.track === e.currentTarget.dataset.track); if (t) setTrack(t); });
 
 /* ---------------- showcase: click-to-load YouTube ---------------- */
 $$('.vframe button[data-yt]').forEach(b => b.addEventListener('click', () => {
@@ -990,8 +1137,7 @@ function setSup(i, quiet) {
   $$('.node', supSvg).forEach((e, k) => { e.classList.toggle('on', k === i); e.classList.toggle('in', supGroup ? SUP[k].g === supGroup : true); });
   supSvg.classList.toggle('dim', !!supGroup);
   $('#capK').textContent = GNAME[g][lang === 'en' ? 1 : 0]; $('#capT').textContent = n[lang][0]; $('#capD').textContent = n[lang][1];
-  const track = n.track || 'Student Pool';
-  $('#poolApply').href = 'mailto:nacha.cho@mfu.ac.th?subject=' + encodeURIComponent('ARIC: apply for ' + track);
+  $('#poolApply').dataset.track = n.track || '';
 }
 $$('.sup-groups button').forEach(b => b.addEventListener('click', () => {
   supAuto = false; const g = b.dataset.g; supGroup = supGroup === g ? null : g;
