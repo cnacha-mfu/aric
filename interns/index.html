@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ARIC Intern Program 2027 — รับสมัครนักศึกษาฝึกงาน</title>
+<meta name="description" content="ARIC Intern Program 2027 รับนักศึกษา มฟล. ชั้นปีที่ 4 ในภาคการศึกษาฝึกงาน มกราคม – เมษายน 2570 · 4 สายงาน: AI &amp; Software · หุ่นยนต์และระบบ · ออกแบบและสื่อสาร · กิจกรรมและธุรกิจ">
+<meta property="og:title" content="ARIC Intern Program 2027 — รับสมัครนักศึกษาฝึกงาน ชั้นปีที่ 4">
+<meta property="og:description" content="ฝึกงานกับศูนย์บ่มเพาะโซลูชัน AI และหุ่นยนต์ มหาวิทยาลัยแม่ฟ้าหลวง · มกราคม – เมษายน 2570 · 4 สายงาน">
+<meta property="og:image" content="https://cnacha-mfu.github.io/aric/assets/og.jpg">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#6E0B1C">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&family=Martian+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --red:#C8102E; --red-d:#7A0C1E; --field:#6E0B1C; --field-d:#4A0712;
+  --gold:#E4B04A; --gold-l:#F3D48A;
+  --ink:#17110F; --ink2:#463B37; --mute:#6B5E59; --rule:#E7E1DE; --paper:#FFFFFF; --wash:#F6F3F1;
+  --on-red:#FFF4EF; --on-red2:rgba(255,236,228,.80); --on-red3:rgba(255,236,228,.58);
+  --font:'Prompt',system-ui,sans-serif; --mono:'Martian Mono','Prompt',ui-monospace,Consolas,monospace;
+  --ease:cubic-bezier(.16,1,.3,1);
+  --wrap:min(1180px, 100% - 2*clamp(20px,4vw,56px));
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;font:400 17px/1.75 var(--font);color:var(--ink);background:var(--paper)}
+::selection{background:var(--gold);color:var(--ink)}
+h1,h2,h3,h4,p{margin:0}
+a{color:inherit}
+.wrap{width:var(--wrap);margin-inline:auto}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+:focus-visible{outline:3px solid var(--gold);outline-offset:3px;border-radius:4px}
+.btn{display:inline-flex;align-items:center;gap:12px;font:600 16px/1 var(--font);padding:16px 22px 16px 24px;border-radius:999px;text-decoration:none;border:0;cursor:pointer;transition:transform .3s var(--ease),box-shadow .3s var(--ease),background .2s}
+.btn svg{width:18px;height:18px;transition:transform .3s var(--ease)}
+.btn-gold{background:var(--gold);color:var(--ink);box-shadow:0 8px 20px -10px rgba(0,0,0,.32)}
+.btn-gold:hover{transform:translateY(-2px);background:#EDBD5C}
+.btn-gold:hover svg{transform:translateX(4px)}
+.btn-line{color:var(--on-red);box-shadow:inset 0 0 0 1.5px var(--on-red3)}
+.btn-line:hover{box-shadow:inset 0 0 0 1.5px var(--gold-l)}
+
+/* top bar */
+.bar{position:sticky;top:0;z-index:20;background:rgba(74,7,18,.92);backdrop-filter:blur(10px);color:var(--on-red)}
+.bar .wrap{display:flex;align-items:center;gap:14px;height:64px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;margin-right:auto}
+.brand img{width:38px;height:38px}
+.brand b{font:700 20px/1 var(--font);letter-spacing:.06em}
+.brand span{font:500 12.5px/1.2 var(--font);color:var(--on-red2);border-left:1px solid var(--on-red3);padding-left:10px}
+.back{font:500 14px/1 var(--font);text-decoration:none;color:var(--on-red2);padding:10px 4px}
+.back:hover{color:var(--on-red)}
+.lang{display:flex;border:1.5px solid currentColor;border-radius:999px;padding:2px;flex:none}
+.lang button{font:600 12.5px/1 var(--mono);color:inherit;background:none;border:0;padding:7px 10px;border-radius:999px;cursor:pointer}
+.lang button[aria-pressed="true"]{background:var(--gold);color:var(--ink)}
+
+/* hero */
+.hero{background:radial-gradient(110% 90% at 85% 80%,#8B0F25 0%,var(--field) 50%,var(--field-d) 100%);color:var(--on-red);overflow:hidden}
+.hero .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center;padding:clamp(56px,8vw,104px) 0 clamp(56px,7vw,90px)}
+.kicker{font:500 13px/1.4 var(--mono);letter-spacing:.06em;color:var(--gold-l)}
+.hero h1{font:700 clamp(2.6rem,6.2vw,5.2rem)/1.04 var(--font);letter-spacing:-.01em;margin-top:18px}
+.hero h1 em{font-style:normal;color:var(--gold-l)}
+.hero .sub{font-size:clamp(1.05rem,1.4vw,1.22rem);line-height:1.7;color:var(--on-red2);max-width:44ch;margin-top:22px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:26px;padding:0;list-style:none}
+.chips li{font:500 14.5px/1 var(--font);padding:10px 14px;border-radius:999px;background:rgba(255,236,228,.08);box-shadow:inset 0 0 0 1px rgba(255,236,228,.2)}
+.chips li b{color:var(--gold-l);font-weight:600}
+.cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:32px}
+.mark{width:100%;max-width:470px;justify-self:end;overflow:visible}
+.mark .net path{stroke-dasharray:1;stroke-dashoffset:1;opacity:.85;animation:draw .9s var(--ease) forwards;animation-delay:calc(.25s + var(--i) * .06s)}
+.mark .nodes circle{transform-box:fill-box;transform-origin:center;animation:glow 3.3s ease-in-out infinite;animation-delay:var(--d)}
+.mark .sun{transform-box:fill-box;transform-origin:center;animation:sun 5s ease-in-out infinite}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes glow{0%,70%,100%{transform:scale(1);filter:none}80%{transform:scale(1.7);filter:drop-shadow(0 0 6px #FFE6A0)}}
+@keyframes sun{50%{transform:scale(1.05)}}
+
+/* sections */
+.sec{padding:clamp(72px,9vw,120px) 0}
+.h2{font:700 clamp(1.9rem,3.6vw,3rem)/1.15 var(--font)}
+.lead{font-size:clamp(1.02rem,1.3vw,1.16rem);line-height:1.75;color:var(--ink2);max-width:62ch;margin-top:18px}
+.k{font:600 12.5px var(--mono);letter-spacing:.06em;color:var(--red)}
+
+/* round timeline */
+.round{margin-top:44px;display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.round .m{font:500 13px var(--mono);color:var(--mute);padding-bottom:10px}
+.round .seg{grid-row:2;border-radius:10px;padding:18px 18px 16px;color:var(--on-red);min-height:118px;display:flex;flex-direction:column;gap:4px}
+.round .seg b{font:600 21px/1.2 var(--font)}
+.round .seg span{font-size:14.5px;line-height:1.5;color:var(--on-red2)}
+.seg.s{background:#8B0F25} .seg.f{grid-column:span 2;background:var(--field)} .seg.l{background:var(--red-d)}
+.round-note{margin-top:16px;font-size:15px;color:var(--mute)}
+
+/* facts */
+.facts{display:grid;grid-template-columns:repeat(3,1fr);margin-top:56px;border-top:1px solid var(--rule)}
+.facts>div{padding:22px 24px 0 0}
+.facts>div+div{padding-left:24px;border-left:1px solid var(--rule)}
+.facts p{margin-top:8px;font-size:15.5px;line-height:1.65}
+
+/* tracks */
+.tracks{background:var(--wash)}
+.jump{display:flex;flex-wrap:wrap;gap:8px;margin-top:30px}
+.jump a{display:flex;align-items:center;gap:10px;text-decoration:none;font:600 15px/1 var(--font);padding:11px 16px;border-radius:999px;background:var(--paper);box-shadow:inset 0 0 0 1.5px var(--rule);transition:box-shadow .2s,transform .2s var(--ease)}
+.jump a .mono{font-size:12px;color:var(--red)}
+.jump a:hover{box-shadow:inset 0 0 0 1.5px var(--ink);transform:translateY(-1px)}
+.track{display:grid;grid-template-columns:minmax(260px,.8fr) 2fr;gap:clamp(28px,4vw,60px);margin-top:28px;padding:clamp(26px,3.6vw,46px);background:var(--paper);border-radius:18px;box-shadow:0 30px 60px -48px rgba(0,0,0,.35);scroll-margin-top:84px}
+.track:first-of-type{margin-top:44px}
+.t-head{align-self:start;position:sticky;top:92px}
+.t-n{font-size:13px;color:var(--red)}
+.t-head h3{font:700 clamp(1.6rem,2.4vw,2.1rem)/1.2 var(--font);margin-top:8px}
+.t-tag{font:500 17px/1.55 var(--font);color:var(--ink2);margin-top:12px}
+.t-time{display:flex;flex-direction:column;gap:4px;margin-top:18px;font-size:15px;line-height:1.6;color:var(--ink2)}
+.t-head .btn{margin-top:24px}
+.t-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(20px,2.6vw,36px)}
+.t-cols h4{font:600 12.5px var(--mono);letter-spacing:.06em;color:var(--red)}
+.t-cols ul{list-style:none;margin:12px 0 0;padding:0;display:flex;flex-direction:column;gap:10px}
+.t-cols li{position:relative;padding-left:18px;font-size:15.5px;line-height:1.6;color:var(--ink2)}
+.t-cols li::before{content:"";position:absolute;left:0;top:.68em;width:7px;height:7px;background:var(--gold);transform:rotate(45deg)}
+
+/* apply */
+.steps{list-style:none;padding:0;margin:48px 0 0;display:grid;grid-template-columns:repeat(3,1fr);gap:20px;counter-reset:s}
+.steps li{counter-increment:s;padding:26px 24px;border-radius:16px;background:var(--wash);position:relative}
+.steps li::before{content:"0" counter(s);font:500 13px var(--mono);color:var(--red)}
+.steps b{display:block;font:600 20px/1.35 var(--font);margin-top:8px}
+.steps p{font-size:15.5px;line-height:1.65;color:var(--ink2);margin-top:8px}
+.steps code{font:500 13.5px/1.5 var(--mono);background:var(--paper);padding:2px 7px;border-radius:6px;color:var(--red-d)}
+.mailbox{margin-top:28px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px 24px;padding:24px 28px;border-radius:16px;background:var(--field);color:var(--on-red)}
+.mailbox p{font-size:15.5px;line-height:1.6;color:var(--on-red2)}
+.mailbox p b{display:block;font:600 21px/1.35 var(--font);color:var(--on-red)}
+
+footer{background:var(--field-d);color:var(--on-red2);padding:40px 0;font-size:14.5px;line-height:1.7}
+footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px}
+footer a{color:var(--gold-l);text-decoration:none}
+footer a:hover{text-decoration:underline}
+
+/* reveal */
+.js .rv{opacity:0;transform:translateY(18px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
+.js .rv.in{opacity:1;transform:none}
+
+@media (max-width:980px){
+  .hero .wrap{grid-template-columns:1fr}
+  .mark{max-width:340px;justify-self:start;order:-1}
+  .track{grid-template-columns:1fr}
+  .t-head{position:static}
+}
+@media (max-width:720px){
+  .brand span,.back{display:none}
+  .facts{grid-template-columns:1fr}
+  .facts>div,.facts>div+div{padding:18px 0 14px;border-left:0}
+  .facts>div+div{border-top:1px solid var(--rule)}
+  .t-cols,.steps{grid-template-columns:1fr}
+  .round{grid-template-columns:1fr 1fr}
+  .round .m{display:none}
+  .round .seg{grid-row:auto;min-height:0}
+  .seg.s,.seg.l{grid-column:span 1} .seg.f{grid-column:span 2;order:0}
+  .mark{max-width:260px}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .mark .net path{animation:none;stroke-dashoffset:0}
+  .mark .nodes circle,.mark .sun{animation:none}
+  .js .rv{opacity:1;transform:none;transition:none}
+}
+@media print{
+  .bar,.cta,.jump,.mark{display:none}
+  .hero{background:none;color:var(--ink)} .hero .sub,.kicker{color:var(--ink2)}
+  .track{box-shadow:none;border:1px solid var(--rule);break-inside:avoid} .t-head{position:static}
+  .js .rv{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="i-arrow" viewBox="0 0 20 20"><path d="M3 10h13M11 4.5 16.5 10 11 15.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol></svg>
+
+<header class="bar">
+  <div class="wrap">
+    <a class="brand" href="../"><img src="../assets/logo/aric_logo_mark_reverse.svg" alt="" width="38" height="38"><b>ARIC</b><span>Intern Program 2027</span></a>
+    <a class="back" href="../" data-en="← Main site">← เว็บไซต์หลัก</a>
+    <div class="lang" role="group" aria-label="ภาษา / Language"><button type="button" data-lang="th" aria-pressed="true">TH</button><button type="button" data-lang="en" aria-pressed="false">EN</button></div>
+  </div>
+</header>
+
+<main>
+<section class="hero">
+  <div class="wrap">
+    <div>
+      <p class="kicker" data-en="Now recruiting · MFU fourth-year students">ประกาศรับสมัคร · นักศึกษา มฟล. ชั้นปีที่ 4</p>
+      <h1>ARIC <em>Intern</em><br>Program 2027</h1>
+      <p class="sub" data-en="Intern at an AI &amp; robotics incubator. Do real work beside teams turning real problems from hospitals, industry and communities into products.">ฝึกงานกับศูนย์บ่มเพาะโซลูชัน AI และหุ่นยนต์ ทำงานจริงกับทีมที่เปลี่ยนโจทย์จริงจากโรงพยาบาล อุตสาหกรรม และชุมชน ให้เป็นผลิตภัณฑ์</p>
+      <ul class="chips">
+        <li data-en="<b>Year 4</b> · internship semester"><b>ชั้นปีที่ 4</b> · ภาคการศึกษาฝึกงาน</li>
+        <li data-en="<b>Jan – Apr</b> 2027"><b>ม.ค. – เม.ย.</b> 2570</li>
+        <li data-en="<b>4</b> tracks"><b>4</b> สายงาน</li>
+      </ul>
+      <div class="cta">
+        <a class="btn btn-gold" href="#tracks"><span data-en="Choose a track and apply">เลือกสายงานและสมัคร</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+        <a class="btn btn-line" href="#apply" data-en="How to apply">วิธีสมัคร</a>
+      </div>
+    </div>
+    <svg class="mark" viewBox="40 100 440 316" aria-hidden="true">
+  <defs><linearGradient id="rg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E63A55"/><stop offset="1" stop-color="#A3122C"/></linearGradient></defs>
+  <circle class="sun" cx="418" cy="118" r="30" fill="#E4B04A"/>
+  <path d="M56 400 L168 192 L244 282 L320 140 L456 400 Z" fill="url(#rg)"/>
+  <g>
+    <path d="M56 400 L168 192 L232 352 Z" fill="#000" fill-opacity=".09"/><path d="M56 400 L232 352 L220 400 Z" fill="#000" fill-opacity=".225"/>
+    <path d="M168 192 L244 282 L232 352 Z" fill="#fff" fill-opacity=".09"/><path d="M244 282 L300 236 L232 352 Z" fill="#000" fill-opacity=".135"/>
+    <path d="M244 282 L320 140 L300 236 Z" fill="#fff" fill-opacity=".125"/><path d="M320 140 L352 320 L300 236 Z" fill="#000" fill-opacity=".165"/>
+    <path d="M320 140 L456 400 L352 320 Z" fill="#000" fill-opacity=".255"/><path d="M300 236 L352 320 L232 352 Z" fill="#000" fill-opacity=".105"/>
+    <path d="M232 352 L352 320 L352 400 Z" fill="#000" fill-opacity=".195"/><path d="M232 352 L352 400 L220 400 Z" fill="#000" fill-opacity=".285"/>
+    <path d="M352 320 L456 400 L352 400 Z" fill="#000" fill-opacity=".3"/>
+  </g>
+  <g class="net" stroke="#F3D48A" stroke-width="3" stroke-linecap="round" fill="none">
+    <path pathLength="1" style="--i:0" d="M56 400 L168 192"/>
+    <path pathLength="1" style="--i:1" d="M168 192 L232 352"/>
+    <path pathLength="1" style="--i:2" d="M56 400 L232 352"/>
+    <path pathLength="1" style="--i:3" d="M220 400 L232 352"/>
+    <path pathLength="1" style="--i:4" d="M168 192 L244 282"/>
+    <path pathLength="1" style="--i:5" d="M232 352 L244 282"/>
+    <path pathLength="1" style="--i:6" d="M244 282 L300 236"/>
+    <path pathLength="1" style="--i:7" d="M232 352 L300 236"/>
+    <path pathLength="1" style="--i:8" d="M244 282 L320 140"/>
+    <path pathLength="1" style="--i:9" d="M300 236 L320 140"/>
+    <path pathLength="1" style="--i:10" d="M320 140 L352 320"/>
+    <path pathLength="1" style="--i:11" d="M300 236 L352 320"/>
+    <path pathLength="1" style="--i:12" d="M320 140 L456 400"/>
+    <path pathLength="1" style="--i:13" d="M352 320 L456 400"/>
+    <path pathLength="1" style="--i:14" d="M232 352 L352 320"/>
+    <path pathLength="1" style="--i:15" d="M352 320 L352 400"/>
+    <path pathLength="1" style="--i:16" d="M232 352 L352 400"/>
+  </g>
+  <g class="nodes" fill="#E4B04A"><circle style="--d:0s" cx="300" cy="236" r="7.2"/><circle style="--d:1.1s" cx="232" cy="352" r="7.2"/><circle style="--d:2.2s" cx="352" cy="320" r="7.2"/></g>
+  <g fill="#fff" stroke="#E4B04A" stroke-width="5"><circle cx="168" cy="192" r="12"/><circle cx="244" cy="282" r="10"/><circle cx="320" cy="140" r="13"/></g>
+</svg>
+  </div>
+</section>
+
+<section class="sec" id="about">
+  <div class="wrap">
+    <h2 class="h2 rv" data-en="One full round, inside an incubator">ฝึกงานหนึ่งรอบเต็ม ในศูนย์บ่มเพาะ</h2>
+    <p class="lead rv" data-en="ARIC, the AI &amp; Robotics Innovation Center at Mae Fah Luang University, backs teams that build AI and robotics solutions from real problems, with health and elderly care as the flagship. Work runs in 4-month rounds; your internship is the first full round.">ARIC ศูนย์นวัตกรรมด้านปัญญาประดิษฐ์และหุ่นยนต์ มหาวิทยาลัยแม่ฟ้าหลวง หนุนทีมที่สร้างโซลูชัน AI และหุ่นยนต์จากโจทย์จริง โดยมีงานด้านสุขภาพและการดูแลผู้สูงอายุเป็นงานหลัก งานเดินเป็นรอบละ 4 เดือน และการฝึกงานของคุณคือรอบแรกเต็มรอบ</p>
+    <div class="round rv" role="img" aria-label="มกราคม Spark · กุมภาพันธ์–มีนาคม Forge · เมษายน Launch">
+      <span class="m" data-en="Jan 2027">ม.ค. 2570</span><span class="m" data-en="Feb">ก.พ.</span><span class="m" data-en="Mar">มี.ค.</span><span class="m" data-en="Apr">เม.ย.</span>
+      <div class="seg s"><b>Spark</b><span data-en="Hackathon on real problems; 3 teams go through">แฮกกาธอนจากโจทย์จริง คัดเหลือ 3 ทีม</span></div>
+      <div class="seg f"><b>Forge</b><span data-en="2 months building MVPs with tools, mentors and the intern pool">2 เดือน สร้าง MVP ด้วยเครื่องมือ ที่ปรึกษา และนักศึกษาฝึกงาน</span></div>
+      <div class="seg l"><b>Launch</b><span data-en="Meet customers and investors">พบลูกค้าและนักลงทุน</span></div>
+    </div>
+    <div class="facts rv">
+      <div><span class="k" data-en="Who can apply">ใครสมัครได้</span><p data-en="MFU fourth-year students in their internship semester, from any school and any major">นักศึกษา มฟล. ชั้นปีที่ 4 ที่อยู่ในภาคการศึกษาฝึกงาน ทุกสำนักวิชา ไม่จำกัดสาขา</p></div>
+      <div><span class="k" data-en="When">ช่วงเวลา</span><p data-en="January – April 2027, one 4-month round: Spark → Forge → Launch">มกราคม – เมษายน 2570 หนึ่งรอบ 4 เดือน Spark → Forge → Launch</p></div>
+      <div><span class="k" data-en="Selection">การคัดเลือก</span><p data-en="Apply once to ARIC, not to a team. ARIC and the School of Applied Digital Technology select interns and assign each to a team or task that fits their skills.">สมัครครั้งเดียวกับ ARIC ไม่ต้องสมัครกับทีมใดทีมหนึ่ง ARIC และสำนักวิชาเทคโนโลยีดิจิทัลประยุกต์คัดเลือก แล้วมอบหมายทีมหรืองานที่ตรงกับทักษะ</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec tracks" id="tracks">
+  <div class="wrap">
+    <h2 class="h2 rv" data-en="Four tracks">4 สายงาน</h2>
+    <p class="lead rv" data-en="Pick the track closest to you. ARIC may assign you across tracks when a team needs it.">เลือกสายที่ใกล้ตัวคุณที่สุด ARIC อาจมอบหมายงานข้ามสายเมื่อทีมต้องการ</p>
+    <nav class="jump rv" aria-label="สายงาน"><a href="#t-ai"><span class="mono">01</span><span data-en="AI &amp; Software">AI & Software</span></a><a href="#t-robotics"><span class="mono">02</span><span data-en="Robotics &amp; Systems">หุ่นยนต์และระบบ</span></a><a href="#t-design"><span class="mono">03</span><span data-en="Design &amp; Communications">ออกแบบและสื่อสาร</span></a><a href="#t-events"><span class="mono">04</span><span data-en="Events &amp; Business">กิจกรรมและธุรกิจ</span></a></nav>
+    <article class="track rv" id="t-ai">
+      <header class="t-head">
+        <p class="t-n mono">01 / 04</p>
+        <h3 data-en="AI &amp; Software">AI & Software</h3>
+        <p class="t-tag" data-en="Build AI and software that people are waiting to use.">สร้าง AI และซอฟต์แวร์ที่มีคนรอใช้จริง</p>
+        <a class="btn btn-gold" href="mailto:nacha.cho@mfu.ac.th?subject=ARIC%3A%20apply%20for%20AI%20%26%20Software&amp;body=%E0%B8%8A%E0%B8%B7%E0%B9%88%E0%B8%AD-%E0%B8%99%E0%B8%B2%E0%B8%A1%E0%B8%AA%E0%B8%81%E0%B8%B8%E0%B8%A5%20/%20Name%3A%0A%E0%B8%A3%E0%B8%AB%E0%B8%B1%E0%B8%AA%E0%B8%99%E0%B8%B1%E0%B8%81%E0%B8%A8%E0%B8%B6%E0%B8%81%E0%B8%A9%E0%B8%B2%20/%20Student%20ID%3A%0A%E0%B8%AA%E0%B8%B3%E0%B8%99%E0%B8%B1%E0%B8%81%E0%B8%A7%E0%B8%B4%E0%B8%8A%E0%B8%B2%E0%B9%81%E0%B8%A5%E0%B8%B0%E0%B8%8A%E0%B8%B1%E0%B9%89%E0%B8%99%E0%B8%9B%E0%B8%B5%20/%20School%20and%20year%3A%0A%E0%B8%A5%E0%B8%B4%E0%B8%87%E0%B8%81%E0%B9%8C%20portfolio%20%E0%B8%AB%E0%B8%A3%E0%B8%B7%E0%B8%AD%20GitHub%20/%20Portfolio%20or%20GitHub%20link%3A%0A"><span data-en="Apply: AI &amp; Software">สมัครสาย AI & Software</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+      </header>
+      <div class="t-cols">
+        <div><h4 data-en="What you'll do">สิ่งที่คุณจะทำ</h4><ul><li data-en="Join a team building an MVP from real problems brought by hospitals, communities and industry">ร่วมทีมสร้าง MVP จากโจทย์จริงของโรงพยาบาล ชุมชน และภาคอุตสาหกรรม</li><li data-en="Build the AI side: systems that understand Thai and local dialects, or the brain of an elderly-care robot">พัฒนาส่วน AI เช่น ระบบที่เข้าใจภาษาไทยและภาษาถิ่น หรือ "สมอง" ของหุ่นยนต์ดูแลผู้สูงอายุ</li><li data-en="Prepare and manage data, handling it with proper privacy care">เตรียมและจัดการข้อมูล โดยใช้ข้อมูลอย่างถูกต้องตามหลักความเป็นส่วนตัว</li><li data-en="Build web apps, mobile apps and dashboards that nurses, carers or customers actually use">ทำเว็บ แอป และแดชบอร์ดที่พยาบาล ผู้ดูแล หรือลูกค้าใช้ได้จริง</li></ul></div>
+        <div><h4 data-en="Who we look for">เรามองหา</h4><ul><li data-en="Any major, if you can code and have something to show">ทุกสาขา ที่เขียนโปรแกรมได้และมีผลงานให้ดูสักชิ้น</li><li data-en="Especially welcome: ML, NLP, web or app experience, or solid Python / JavaScript">ยินดีเป็นพิเศษถ้าเคยทำ ML, NLP, เว็บหรือแอป หรือใช้ Python / JavaScript ได้คล่อง</li></ul></div>
+        <div><h4 data-en="What you get">สิ่งที่คุณจะได้</h4><ul><li data-en="Real problems and real users">โจทย์จริงและผู้ใช้จริง</li><li data-en="Mentors from industry and MFU&#x27;s health schools">พี่เลี้ยงจากภาคอุตสาหกรรมและสำนักวิชาด้านสุขภาพของ มฟล.</li><li data-en="NVIDIA DGX and AI coding agents during the round">ใช้เครื่อง NVIDIA DGX และ AI coding agent ระหว่างรอบ</li><li data-en="Portfolio work and a certificate of work">ผลงานใส่ portfolio และหนังสือรับรองการทำงาน</li></ul></div>
+      </div>
+    </article>
+    <article class="track rv" id="t-robotics">
+      <header class="t-head">
+        <p class="t-n mono">02 / 04</p>
+        <h3 data-en="Robotics &amp; Systems">หุ่นยนต์และระบบ</h3>
+        <p class="t-tag" data-en="Help care robots see, move and work safely beside patients.">ทำให้หุ่นยนต์ดูแลมองเห็น เคลื่อนที่ และทำงานข้างผู้ป่วยได้อย่างปลอดภัย</p>
+        <a class="btn btn-gold" href="mailto:nacha.cho@mfu.ac.th?subject=ARIC%3A%20apply%20for%20Robotics%20%26%20Systems&amp;body=%E0%B8%8A%E0%B8%B7%E0%B9%88%E0%B8%AD-%E0%B8%99%E0%B8%B2%E0%B8%A1%E0%B8%AA%E0%B8%81%E0%B8%B8%E0%B8%A5%20/%20Name%3A%0A%E0%B8%A3%E0%B8%AB%E0%B8%B1%E0%B8%AA%E0%B8%99%E0%B8%B1%E0%B8%81%E0%B8%A8%E0%B8%B6%E0%B8%81%E0%B8%A9%E0%B8%B2%20/%20Student%20ID%3A%0A%E0%B8%AA%E0%B8%B3%E0%B8%99%E0%B8%B1%E0%B8%81%E0%B8%A7%E0%B8%B4%E0%B8%8A%E0%B8%B2%E0%B9%81%E0%B8%A5%E0%B8%B0%E0%B8%8A%E0%B8%B1%E0%B9%89%E0%B8%99%E0%B8%9B%E0%B8%B5%20/%20School%20and%20year%3A%0A%E0%B8%A5%E0%B8%B4%E0%B8%87%E0%B8%81%E0%B9%8C%20portfolio%20%E0%B8%AB%E0%B8%A3%E0%B8%B7%E0%B8%AD%20GitHub%20/%20Portfolio%20or%20GitHub%20link%3A%0A"><span data-en="Apply: Robotics &amp; Systems">สมัครสาย หุ่นยนต์และระบบ</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+      </header>
+      <div class="t-cols">
+        <div><h4 data-en="What you'll do">สิ่งที่คุณจะทำ</h4><ul><li data-en="Write robot software (e.g. ROS 2) linking AI to navigation and manipulation, on target platforms such as the AgiBot X2 Ultra and D1 Edu">เขียนซอฟต์แวร์หุ่นยนต์ (เช่น ROS 2) เชื่อม AI เข้ากับการเคลื่อนที่และการหยิบจับ บนแพลตฟอร์มเป้าหมาย เช่น AgiBot X2 Ultra และ D1 Edu</li><li data-en="Build vision systems, such as detecting falls or the posture of older people">พัฒนาระบบมองเห็น เช่น ตรวจจับการล้มหรือท่าทางของผู้สูงอายุ</li><li data-en="Connect sensors and IoT devices to care systems">ต่อเซนเซอร์และอุปกรณ์ IoT เข้ากับระบบดูแล</li><li data-en="With ADT staff, look after the NVIDIA DGX machines every team shares">ร่วมกับเจ้าหน้าที่ ADT ดูแลเครื่อง NVIDIA DGX ที่ทุกทีมใช้ร่วมกัน</li></ul></div>
+        <div><h4 data-en="Who we look for">เรามองหา</h4><ul><li data-en="Any major, if you like getting hands-on with robots, hardware or Linux systems">ทุกสาขา ที่ชอบลงมือกับหุ่นยนต์ ฮาร์ดแวร์ หรือระบบ Linux</li><li data-en="Especially welcome: ROS, OpenCV, Arduino/ESP32, competition robots, or running a server">ยินดีเป็นพิเศษถ้าเคยทำ ROS, OpenCV, Arduino/ESP32, หุ่นยนต์แข่งขัน หรือดูแลเซิร์ฟเวอร์</li></ul></div>
+        <div><h4 data-en="What you get">สิ่งที่คุณจะได้</h4><ul><li data-en="Real problems from patient and elderly care">โจทย์จริงจากงานดูแลผู้ป่วยและผู้สูงอายุ</li><li data-en="Mentors from industry and MFU&#x27;s health schools">พี่เลี้ยงจากภาคอุตสาหกรรมและสำนักวิชาด้านสุขภาพของ มฟล.</li><li data-en="NVIDIA DGX and AI coding agents during the round">ใช้เครื่อง NVIDIA DGX และ AI coding agent ระหว่างรอบ</li><li data-en="Portfolio work and a certificate of work">ผลงานใส่ portfolio และหนังสือรับรองการทำงาน</li></ul></div>
+      </div>
+    </article>
+    <article class="track rv" id="t-design">
+      <header class="t-head">
+        <p class="t-n mono">03 / 04</p>
+        <h3 data-en="Design &amp; Communications">ออกแบบและสื่อสาร</h3>
+        <p class="t-tag" data-en="Tell ARIC&#x27;s story, and design screens older people find easy to use.">เล่าเรื่องของ ARIC และออกแบบหน้าจอที่ผู้สูงอายุใช้ได้ง่าย</p>
+        <a class="btn btn-gold" href="mailto:nacha.cho@mfu.ac.th?subject=ARIC%3A%20apply%20for%20Design%20%26%20Communications&amp;body=%E0%B8%8A%E0%B8%B7%E0%B9%88%E0%B8%AD-%E0%B8%99%E0%B8%B2%E0%B8%A1%E0%B8%AA%E0%B8%81%E0%B8%B8%E0%B8%A5%20/%20Name%3A%0A%E0%B8%A3%E0%B8%AB%E0%B8%B1%E0%B8%AA%E0%B8%99%E0%B8%B1%E0%B8%81%E0%B8%A8%E0%B8%B6%E0%B8%81%E0%B8%A9%E0%B8%B2%20/%20Student%20ID%3A%0A%E0%B8%AA%E0%B8%B3%E0%B8%99%E0%B8%B1%E0%B8%81%E0%B8%A7%E0%B8%B4%E0%B8%8A%E0%B8%B2%E0%B9%81%E0%B8%A5%E0%B8%B0%E0%B8%8A%E0%B8%B1%E0%B9%89%E0%B8%99%E0%B8%9B%E0%B8%B5%20/%20School%20and%20year%3A%0A%E0%B8%A5%E0%B8%B4%E0%B8%87%E0%B8%81%E0%B9%8C%20portfolio%20/%20Portfolio%20link%3A%0A"><span data-en="Apply: Design &amp; Communications">สมัครสาย ออกแบบและสื่อสาร</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+      </header>
+      <div class="t-cols">
+        <div><h4 data-en="What you'll do">สิ่งที่คุณจะทำ</h4><ul><li data-en="Design booth graphics, hackathon posters and social media visuals">ออกแบบกราฟิกบูธ โปสเตอร์ประกาศรับสมัครแฮกกาธอน และภาพสำหรับโซเชียลมีเดีย</li><li data-en="Design UX/UI for the teams&#x27; apps so older people and nurses can really use them">ออกแบบ UX/UI ของแอปที่ทีมสร้าง ให้ผู้สูงอายุและพยาบาลใช้ได้จริง</li><li data-en="Write content in Thai and English, and shoot and edit the teams&#x27; demo videos">เขียนคอนเทนต์ภาษาไทยและอังกฤษ ถ่ายและตัดต่อคลิปเดโมของทีม</li><li data-en="Help teams lay out their slides for Launch day">ช่วยทีมจัดหน้าสไลด์สำหรับวัน Launch</li></ul></div>
+        <div><h4 data-en="Who we look for">เรามองหา</h4><ul><li data-en="Any major; we judge by your portfolio">ทุกสาขา ดูจากผลงานเป็นหลัก</li><li data-en="Especially welcome: Figma, Illustrator, Canva or video editing, and good Thai typography">ยินดีเป็นพิเศษถ้าใช้ Figma, Illustrator, Canva หรือโปรแกรมตัดต่อได้ และจัดตัวอักษรภาษาไทยได้สวย</li></ul></div>
+        <div><h4 data-en="What you get">สิ่งที่คุณจะได้</h4><ul><li data-en="Work used at national expos and in apps with real users">ผลงานที่ได้ใช้จริงในงานแสดงระดับประเทศและในแอปที่มีผู้ใช้จริง</li><li data-en="A close view of teams building AI and robots">ทำงานใกล้ชิดกับทีมที่สร้าง AI และหุ่นยนต์</li><li data-en="Portfolio work and a certificate of work">ผลงานใส่ portfolio และหนังสือรับรองการทำงาน</li></ul></div>
+      </div>
+    </article>
+    <article class="track rv" id="t-events">
+      <header class="t-head">
+        <p class="t-n mono">04 / 04</p>
+        <h3 data-en="Events &amp; Business">กิจกรรมและธุรกิจ</h3>
+        <p class="t-tag" data-en="Be on the ground from the hackathon to national expo booths, and help bring the work to customers.">อยู่หน้างานตั้งแต่แฮกกาธอนจนถึงบูธระดับประเทศ และช่วยพาผลงานไปถึงลูกค้า</p>
+        <a class="btn btn-gold" href="mailto:nacha.cho@mfu.ac.th?subject=ARIC%3A%20apply%20for%20Events%20%26%20Business&amp;body=%E0%B8%8A%E0%B8%B7%E0%B9%88%E0%B8%AD-%E0%B8%99%E0%B8%B2%E0%B8%A1%E0%B8%AA%E0%B8%81%E0%B8%B8%E0%B8%A5%20/%20Name%3A%0A%E0%B8%A3%E0%B8%AB%E0%B8%B1%E0%B8%AA%E0%B8%99%E0%B8%B1%E0%B8%81%E0%B8%A8%E0%B8%B6%E0%B8%81%E0%B8%A9%E0%B8%B2%20/%20Student%20ID%3A%0A%E0%B8%AA%E0%B8%B3%E0%B8%99%E0%B8%B1%E0%B8%81%E0%B8%A7%E0%B8%B4%E0%B8%8A%E0%B8%B2%E0%B9%81%E0%B8%A5%E0%B8%B0%E0%B8%8A%E0%B8%B1%E0%B9%89%E0%B8%99%E0%B8%9B%E0%B8%B5%20/%20School%20and%20year%3A%0A%E0%B8%9B%E0%B8%A3%E0%B8%B0%E0%B8%AA%E0%B8%9A%E0%B8%81%E0%B8%B2%E0%B8%A3%E0%B8%93%E0%B9%8C%E0%B8%AB%E0%B8%A3%E0%B8%B7%E0%B8%AD%20portfolio%20%28%E0%B8%96%E0%B9%89%E0%B8%B2%E0%B8%A1%E0%B8%B5%29%20/%20Experience%20or%20portfolio%20%28if%20any%29%3A%0A"><span data-en="Apply: Events &amp; Business">สมัครสาย กิจกรรมและธุรกิจ</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+      </header>
+      <div class="t-cols">
+        <div><h4 data-en="What you'll do">สิ่งที่คุณจะทำ</h4><ul><li data-en="Help run the Spark hackathon, from sign-ups and team matching to timekeeping on the day">ช่วยจัดแฮกกาธอน Spark ตั้งแต่รับสมัคร จับคู่ทีม จนถึงคุมเวลาในวันงาน</li><li data-en="Help prepare and staff booths at national events such as SITE, Techsauce Global Summit and DigiTech ASEAN Thailand">ช่วยเตรียมและดูแลบูธในงานระดับประเทศ เช่น SITE, Techsauce Global Summit และ DigiTech ASEAN Thailand</li><li data-en="Look after the student and supporter community: news, updates and answering questions">ดูแลชุมชนนักศึกษาและผู้สนใจ ส่งข่าวสารและตอบคำถาม</li><li data-en="Support partnerships and sales: collecting contacts and preparing material before meetings with hospitals or companies">ช่วยงานความร่วมมือและการขาย เช่น เก็บรายชื่อผู้สนใจ เตรียมข้อมูลก่อนพบโรงพยาบาลหรือบริษัท</li></ul></div>
+        <div><h4 data-en="Who we look for">เรามองหา</h4><ul><li data-en="Any major, if you enjoy meeting people and are organised and on time">ทุกสาขา ที่ชอบพบคน เป็นระเบียบ และตรงเวลา</li><li data-en="Especially welcome: event or student-club experience, spoken English, interest in business and startups">ยินดีเป็นพิเศษถ้าเคยจัดกิจกรรมหรือทำงานชมรม สื่อสารภาษาอังกฤษได้ หรือสนใจธุรกิจและสตาร์ทอัพ</li></ul></div>
+        <div><h4 data-en="What you get">สิ่งที่คุณจะได้</h4><ul><li data-en="Experience at national technology events, meeting founders, investors and government agencies">ประสบการณ์ในงานเทคโนโลยีระดับประเทศ ได้พบผู้ประกอบการ นักลงทุน และหน่วยงานรัฐ</li><li data-en="A front-row view of real problems from hospitals and communities, and how ideas become businesses">ได้เห็นโจทย์จริงจากโรงพยาบาลและชุมชน และวิธีที่ไอเดียกลายเป็นธุรกิจ</li><li data-en="A certificate of work">หนังสือรับรองการทำงาน</li></ul></div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="sec" id="apply">
+  <div class="wrap">
+    <h2 class="h2 rv" data-en="How to apply">วิธีสมัคร</h2>
+    <ol class="steps rv">
+      <li><b data-en="Choose a track">เลือกสายงาน</b><p data-en="One of the four tracks above. Not sure? Pick the closest one and say so in your email.">หนึ่งใน 4 สายด้านบน ถ้ายังไม่แน่ใจ เลือกสายที่ใกล้ที่สุดแล้วบอกไว้ในอีเมล</p></li>
+      <li><b data-en="Send one email">ส่งอีเมลฉบับเดียว</b><p data-en="To nacha.cho@mfu.ac.th with the subject &lt;code&gt;ARIC: apply for [track]&lt;/code&gt;. Include your name, student ID, school and year, and a portfolio or GitHub link.">ถึง nacha.cho@mfu.ac.th หัวข้อ <code>ARIC: apply for [ชื่อสาย]</code> แนบชื่อ-นามสกุล รหัสนักศึกษา สำนักวิชาและชั้นปี และลิงก์ portfolio หรือ GitHub</p></li>
+      <li><b data-en="ARIC selects and assigns">ARIC คัดเลือกและมอบหมายงาน</b><p data-en="Selected interns are assigned to a team or task before the round starts in January 2027, and receive a certificate of work at the end.">ผู้ผ่านการคัดเลือกจะได้รับมอบหมายทีมหรืองานก่อนเริ่มรอบในเดือนมกราคม 2570 และได้รับหนังสือรับรองการทำงานเมื่อจบรอบ</p></li>
+    </ol>
+    <div class="mailbox rv">
+      <p><b data-en="Ready? Apply by email">พร้อมแล้ว? สมัครทางอีเมล</b><span>nacha.cho@mfu.ac.th</span></p>
+      <a class="btn btn-gold" href="mailto:nacha.cho@mfu.ac.th?subject=ARIC%3A%20apply%20for%20Intern%20Program%202027"><span data-en="Write the email">เขียนอีเมลสมัคร</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p data-en="ARIC · AI &amp; Robotics Innovation Center, Mae Fah Luang University · operated by the School of Applied Digital Technology">ARIC · ศูนย์นวัตกรรมด้านปัญญาประดิษฐ์และหุ่นยนต์ มหาวิทยาลัยแม่ฟ้าหลวง · ดำเนินงานโดยสำนักวิชาเทคโนโลยีดิจิทัลประยุกต์</p>
+    <p><a href="mailto:aric@mfu.ac.th">aric@mfu.ac.th</a> · <a href="tel:053916741">0 5391 6741</a> · <a href="../" data-en="Main site">เว็บไซต์หลัก</a></p>
+  </div>
+</footer>
+
+<script>
+(() => {
+  'use strict';
+  const $$ = s => [...document.querySelectorAll(s)];
+  document.documentElement.classList.add('js');
+  const TITLE = { th: document.title, en: 'ARIC Intern Program 2027 — Internships for MFU fourth-year students' };
+  $$('[data-en]').forEach(el => { el.dataset.th = el.innerHTML; });
+  function applyLang(l) {
+    document.documentElement.lang = l; document.title = TITLE[l];
+    try { localStorage.setItem('aric-lang', l); } catch (e) {}
+    $$('[data-en]').forEach(el => { el.innerHTML = l === 'en' ? el.dataset.en : el.dataset.th; });
+    $$('.lang button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.lang === l)));
+  }
+  $$('.lang button').forEach(b => b.addEventListener('click', () => applyLang(b.dataset.lang)));
+  let start = new URLSearchParams(location.search).get('lang');
+  if (!start) { try { start = localStorage.getItem('aric-lang'); } catch (e) {} }
+  if (start === 'en') applyLang('en');
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { rootMargin: '0px 0px -8% 0px' });
+  $$('.rv').forEach(el => io.observe(el));
+  addEventListener('beforeprint', () => $$('.rv').forEach(el => el.classList.add('in')));
+})();
+</script>
+</body>
+</html>
