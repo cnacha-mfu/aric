@@ -379,7 +379,7 @@ footer p{line-height:1.6}
     <symbol id="i-play" viewBox="0 0 20 20"><path d="M5 3.2v13.6L16.5 10z" fill="currentColor"/></symbol>
     <symbol id="i-plus" viewBox="0 0 20 20"><path d="M10 3v14M3 10h14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
     <symbol id="i-node" viewBox="0 0 26 26"><path d="M5 20 13 5 21 20Z" fill="none" stroke="#C8102E" stroke-width="1.6" stroke-linejoin="round"/><path d="M13 5v15M9 20l4-7 4 7" fill="none" stroke="#E4B04A" stroke-width="1.4"/><circle cx="13" cy="5" r="2.6" fill="#fff" stroke="#E4B04A" stroke-width="1.6"/><circle cx="13" cy="13" r="2" fill="#E4B04A"/></symbol>
-    <symbol id="mark" viewBox="30 72 472 338"><path d="M56 400 L168 192 L244 282 L320 140 L456 400 Z" fill="currentColor"/><g stroke="#F3D48A" stroke-width="7" stroke-linecap="round" fill="none" opacity=".95"><path d="M168 192 L232 352 L320 140 M244 282 L300 236 M232 352 L352 320 L300 236 M352 320 L456 400 M56 400 L232 352 L220 400"/></g><circle cx="418" cy="118" r="30" fill="#E4B04A"/><g fill="#fff" stroke="#E4B04A" stroke-width="7"><circle cx="168" cy="192" r="13"/><circle cx="244" cy="282" r="11"/><circle cx="320" cy="140" r="14"/></g></symbol>
+    <symbol id="mark" viewBox="40 136 432 276"><path d="M56.0 400.0 L122.9 313.1 Q145.4 283.7 165.8 276.6 Q186.2 269.5 204.5 284.6 L207.5 287.2 Q225.8 302.3 242.8 299.5 Q259.8 296.7 275.6 276.1 L283.5 265.7 Q301.8 241.9 323.5 246.8 Q345.1 251.6 370.3 285.3 L456.0 400.0 L352.0 400.0 L220.0 400.0 L56.0 400.0 Z" fill="currentColor"/><g stroke="#F3D48A" stroke-width="6.5" stroke-linecap="round" fill="none" opacity=".95"><path d="M165.8 276.6 L232.0 366.4 M242.8 299.5 L232.0 366.4 M242.8 299.5 L300.0 297.8 M300.0 297.8 L323.5 246.8 M300.0 297.8 L352.0 346.8 M232.0 366.4 L352.0 346.8 M352.0 346.8 L456.0 400.0 M56.0 400.0 L232.0 366.4 M220.0 400.0 L232.0 366.4"/></g><circle cx="418" cy="180" r="30" fill="#E4B04A"/><g fill="#fff" stroke="#E4B04A" stroke-width="7"><circle cx="165.8" cy="276.6" r="13"/><circle cx="242.8" cy="299.5" r="11"/><circle cx="323.5" cy="246.8" r="14"/></g></symbol>
   </defs>
 </svg>
 
@@ -742,25 +742,22 @@ $$('a', drawer).forEach(a => a.addEventListener('click', () => setDrawer(false))
 addEventListener('keydown', e => { if (e.key === 'Escape' && drawer.classList.contains('open')) setDrawer(false); });
 
 /* ---------------- mountain geometry ---------------- */
-const POLY = [[-14, 400], [168, 192], [244, 282], [320, 140], [526, 400]];   // base widened (website only; logo masters unchanged)
-const PEAKS = [[168, 192, 1.0], [320, 140, 1.3], [244, 282, .62]];
-const SUN = [418, 118, 30];
+// logo version D "Rounded, low" (2026-11-03); base widened to x -14..526 on the website only
+const POLY = [[-14, 400], [110.2, 300.6], [119.7, 293.5], [128.9, 287.3], [137.8, 282.3], [146.4, 278.3], [154.7, 275.4], [162.7, 273.5], [170.4, 272.7], [177.8, 273], [184.9, 274.3], [191.7, 276.7], [198.3, 280.1], [204.5, 284.6], [207.5, 287.2], [213.6, 291.7], [219.5, 295.3], [225.5, 297.8], [231.3, 299.4], [237.1, 299.9], [242.8, 299.5], [248.4, 298.1], [254, 295.7], [259.5, 292.3], [264.9, 287.9], [270.3, 282.5], [275.6, 276.1], [283.5, 265.7], [289.8, 258.5], [296.4, 252.7], [303.4, 248.3], [310.8, 245.4], [318.5, 243.9], [326.6, 243.8], [335.1, 245.2], [343.9, 248], [353.1, 252.3], [362.7, 257.9], [372.6, 265.1], [383, 273.6], [526, 400], [352, 400], [220, 400]];   // dense silhouette: clip + point-in-polygon
+const RIM = [[-14, 400], [162.7, 273.5], [242.8, 299.5], [326.6, 243.8], [526, 400], [17.2, 375], [48.5, 350], [79.7, 325], [110.9, 300], [183.8, 274.1], [217.9, 294.3], [283.4, 265.9], [354.2, 252.9], [386.4, 276.6], [416.3, 303.1], [446.3, 329.5], [476.3, 356], [506.2, 382.5], [458.5, 400], [391, 400], [323.5, 400], [256, 400], [188.5, 400], [121, 400], [53.5, 400]];   // fixed points on the silhouette; 1..3 = summits
+const PEAKS = [[162.7, 273.5, 1.0], [326.6, 243.8, 1.3], [242.8, 299.5, .62]];
+const SUN = [418, 180, 30];
 function inPoly(x, y) { let c = false; for (let i = 0, j = POLY.length - 1; i < POLY.length; j = i++) { const [xi, yi] = POLY[i], [xj, yj] = POLY[j]; if ((yi > y) !== (yj > y) && x < (xj - xi) * (y - yi) / (yj - yi) + xi) c = !c; } return c; }
 function rng(a) { return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
-function height(x, y, n) { let h = 0; for (const [px, py, ph] of PEAKS) h = Math.max(h, ph * (1 - Math.hypot(x - px, (y - py) * 1.15) / 250)); return Math.max(0, h) + n; }
+function height(x, y, n) { let h = 0; for (const [px, py, ph] of PEAKS) h = Math.max(h, ph * (1 - Math.hypot(x - px, (y - py) * 1.15) / 210)); return Math.max(0, h) + n; }
 function genPoints(seed, nInterior) {
-  const r = rng(seed), pts = [];
-  POLY.forEach(([x, y]) => pts.push({ x, y, fixed: true }));
-  for (let i = 0; i < POLY.length; i++) {          // samples along the silhouette
-    const [ax, ay] = POLY[i], [bx, by] = POLY[(i + 1) % POLY.length], k = i === POLY.length - 1 ? 7 : 4;
-    for (let j = 1; j <= k; j++) { const u = j / (k + 1) + (r() - .5) * .08; pts.push({ x: ax + (bx - ax) * u, y: ay + (by - ay) * u, fixed: true }); }
-  }
-  let guard = 0;
-  while (pts.length < POLY.length + 17 + nInterior && guard++ < 5000) {
-    const x = -10 + r() * 532, y = 150 + r() * 246;
+  const r = rng(seed), pts = RIM.map(([x, y]) => ({ x, y, fixed: true }));
+  let guard = 0, added = 0; const want = Math.round(nInterior * .72);   // the range is 70 % as tall as before
+  while (added < want && guard++ < 6000) {
+    const x = -10 + r() * 532, y = 232 + r() * 164;
     if (!inPoly(x, y)) continue;
     if (pts.some(p => Math.hypot(p.x - x, p.y - y) < 22)) continue;
-    pts.push({ x, y });
+    pts.push({ x, y }); added++;
   }
   pts.forEach(p => { p.n = (r() - .5) * .12; });
   return pts;
@@ -902,7 +899,7 @@ class Mountain {
     if (lifted && stage.lift > 0) {
       let i = 0;
       lifted.forEach(ti => {
-        const tr = tris[ti]; if (!tr) return; const cx0 = (Q[tr[0]].x + Q[tr[1]].x + Q[tr[2]].x) / 3, cy0 = (Q[tr[0]].y + Q[tr[1]].y + Q[tr[2]].y) / 3; const tx = [96, 222, 352][i], ty = [104, 62, 40][i], L = stage.lift, k = 1 - .3 * L, mx = cx0 + (tx - cx0) * L, my = cy0 + (ty - cy0) * L;
+        const tr = tris[ti]; if (!tr) return; const cx0 = (Q[tr[0]].x + Q[tr[1]].x + Q[tr[2]].x) / 3, cy0 = (Q[tr[0]].y + Q[tr[1]].y + Q[tr[2]].y) / 3; const tx = [96, 222, 352][i], ty = [176, 132, 112][i], L = stage.lift, k = 1 - .3 * L, mx = cx0 + (tx - cx0) * L, my = cy0 + (ty - cy0) * L;
         g.save(); g.globalAlpha = Math.min(1, stage.lift * 2);   // already in logo space
         g.fillStyle = '#E4B04A'; g.strokeStyle = '#FFF2C8'; g.lineWidth = 2;
         g.beginPath(); tr.forEach((pi, j) => { const X = mx + (Q[pi].x - cx0) * k, Y = my + (Q[pi].y - cy0) * k; j ? g.lineTo(X, Y) : g.moveTo(X, Y); }); g.closePath(); g.fill(); g.stroke(); g.restore();
@@ -958,8 +955,8 @@ const heroM = new Mountain($('#heroCanvas'), {
   seed: seedN, n: 34, reach: true,
   hue: () => 350 + ((seedN % 9) - 4) * .9,
   fit: (w, h) => {
-    if (w < 860) { const s = Math.min(w / 510, h * .42 / 280); return { s, x: w / 2 - 256 * s, y: h - 404 * s }; }
-    const s = Math.min(w * .5 / 470, (h - 150) / 300); return { s, x: w - 540 * s - w * .01, y: h - 410 * s };
+    if (w < 860) { const s = Math.min(w / 510, h * .42 / 230); return { s, x: w / 2 - 256 * s, y: h - 404 * s }; }
+    const s = Math.min(w * .52 / 470, (h - 150) / 250); return { s, x: w - 540 * s - w * .01, y: h - 410 * s };
   }
 });
 const toast = $('#toast');
@@ -988,7 +985,7 @@ let prog = reduce ? 1 : 0;
 const smooth = x => x <= 0 ? 0 : x >= 1 ? 1 : x * x * (3 - 2 * x);
 const stageM = new Mountain($('#stageCanvas'), {
   seed: 0x9A71C3, n: 30, reach: false, hue: () => 352,
-  fit: (w, h) => { const s = Math.min(w / 570, (h - 40) / 410); return { s, x: w / 2 - 256 * s, y: h - 40 - 400 * s }; },   // base sits above the stage note
+  fit: (w, h) => { const s = Math.min(w / 570, (h - 40) / 330); return { s, x: w / 2 - 256 * s, y: h - 40 - 400 * s }; },   // base sits above the stage note
   stage: () => { const p = prog * 3; return { spark: smooth(p * 2), forge: smooth(p - 1), lift: smooth((p - 2) * 1.3) }; }
 });
 // Spark: points start scattered and gather
@@ -1116,7 +1113,7 @@ function chip(i) {
 function row(ids) { return `<div class="band-row">${ids.map(chip).join('')}</div>`; }
 function buildSup() {
   const L = lang === 'en' ? 1 : 0, k = g => `<p class="band-k">${GNAME[g][L]}</p>`;
-  const core = `<div class="core" id="supCore"><svg viewBox="30 72 472 338" aria-hidden="true"><use href="#mark"/></svg><b>${lang === 'en' ? 'Your team' : 'ทีมของคุณ'}</b><span>founder · tech lead · dev</span></div>`;
+  const core = `<div class="core" id="supCore"><svg viewBox="40 136 432 276" aria-hidden="true"><use href="#mark"/></svg><b>${lang === 'en' ? 'Your team' : 'ทีมของคุณ'}</b><span>founder · tech lead · dev</span></div>`;
   const people = `<div class="band b-people">${k('people')}${row(RING.people[0])}${core}${row(RING.people[1])}</div>`;
   const pool = `<div class="band b-pool">${k('pool')}${row(RING.pool[0])}${people}${row(RING.pool[1])}</div>`;
   supBox.innerHTML = `<div class="band b-tools">${k('tools')}${row(RING.tools[0])}${pool}${row(RING.tools[1])}</div><svg class="beam" aria-hidden="true"><path class="bl"/><path class="bs"/><circle r="0"/></svg>`;
