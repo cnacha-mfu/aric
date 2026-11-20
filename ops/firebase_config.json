@@ -1,0 +1,9 @@
+{
+  "_note": "ARIC OS sign-in (Firebase Authentication, Google provider). Public web config, not a secret. Project created 2026-11-19 by nacha.cho@mfu.ac.th. Authorized domain aric.mfu.ac.th still to be added (Authentication > Settings > Authorized domains).",
+  "apiKey": "AIzaSyBDEOiUXAf6OUiUhScNEQWVu8V4V0uSJuw",
+  "authDomain": "aric-os.firebaseapp.com",
+  "projectId": "aric-os",
+  "storageBucket": "aric-os.firebasestorage.app",
+  "messagingSenderId": "1055186671889",
+  "appId": "1:1055186671889:web:5d2b22343f3b37631254b0"
+}

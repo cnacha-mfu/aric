@@ -1,0 +1,687 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ARIC OS</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700&family=Martian+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: app shell — maroon side rail (ARIC brand) + light working canvas; kanban columns scroll sideways inside their own track */
+:root{
+  --bg:#F7F4F2; --panel:#FFFFFF; --ink:#1B1412; --ink2:#53463F; --mute:#7D6F69; --rule:#E6DFDB;
+  --rail:#4A0712; --rail2:#6E0B1C; --on-rail:#FFF1EB; --on-rail2:rgba(255,236,228,.72);
+  --gold:#E4B04A; --gold-ink:#7A5410; --red:#C8102E; --chip:#F1ECE9; --num:#6E0B1C;
+  --ok:#2E7D5B; --warn:#B7791F; --bad:#B42318; --info:#2F5D9A;
+  --font:'Prompt',system-ui,sans-serif; --mono:'Martian Mono','Prompt',ui-monospace,Consolas,monospace;
+  --shadow:0 1px 2px rgba(40,10,10,.06),0 6px 18px -10px rgba(40,10,10,.22);
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){:root{
+  --bg:#150E0D; --panel:#1F1715; --ink:#F4ECE8; --ink2:#D2C3BC; --mute:#A39089; --rule:#3A2C28;
+  --rail:#2A0509; --rail2:#4A0712; --gold:#E8BA5C; --gold-ink:#F3D48A; --red:#F0546A; --chip:#2C211E; --num:#F3D48A;
+  --ok:#5FC293; --warn:#E3A84A; --bad:#F2776B; --info:#7FA8E0; color-scheme:dark}}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 14.5px/1.55 var(--font)}
+h1,h2,h3,h4,p{margin:0}
+button,input,select,textarea{font:inherit;color:inherit}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px;border-radius:6px}
+[hidden]{display:none!important}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.app{display:grid;grid-template-columns:232px 1fr;min-height:100%}
+.rail{background:linear-gradient(180deg,var(--rail2),var(--rail));color:var(--on-rail);padding:18px 14px;display:flex;flex-direction:column;gap:18px;position:sticky;top:0;height:100vh}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none}
+.brand svg{width:34px;height:34px;flex:none}
+.brand b{font:700 18px/1 var(--font);letter-spacing:.06em}
+.brand small{display:block;font:500 11px/1.3 var(--font);color:var(--on-rail2)}
+.nav{display:flex;flex-direction:column;gap:2px}
+.nav button,.nav a{display:flex;align-items:center;gap:10px;text-align:left;border:0;background:none;color:var(--on-rail2);padding:9px 10px;border-radius:9px;cursor:pointer;font-weight:500;text-decoration:none}
+.nav button:hover,.nav a:hover{background:rgba(255,236,228,.08);color:var(--on-rail)}
+.nav button[aria-current="page"]{background:rgba(255,236,228,.14);color:var(--on-rail)}
+.nav svg{width:18px;height:18px;flex:none}
+.nav .cnt{margin-left:auto;font:500 11px/1 var(--mono);background:var(--gold);color:#2B1A00;padding:3px 6px;border-radius:99px}
+.nav .sep{height:1px;background:rgba(255,236,228,.14);margin:8px 4px}
+.who{margin-top:auto;display:flex;flex-direction:column;gap:8px;font-size:12.5px;color:var(--on-rail2)}
+.who .me{display:flex;align-items:center;gap:8px;color:var(--on-rail);min-width:0}
+.who .me span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.who .lnk{border:0;background:none;color:var(--on-rail2);text-align:left;padding:0;cursor:pointer;text-decoration:underline}
+.seg{display:flex;border:1px solid rgba(255,236,228,.3);border-radius:99px;padding:2px;width:max-content}
+.seg button{border:0;background:none;color:var(--on-rail2);font:500 11.5px var(--mono);padding:5px 10px;border-radius:99px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--gold);color:#2B1A00}
+.main{min-width:0;padding-block:22px 40px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.main>.inner{max-width:1360px;margin:0 auto;padding-inline:clamp(0px,1.6vw,20px);display:flex;flex-direction:column;gap:18px}
+.top{display:flex;flex-wrap:wrap;align-items:flex-end;gap:12px}
+.top h1{font:600 24px/1.2 var(--font);text-wrap:balance}
+.top p{color:var(--mute);font-size:13.5px}
+.top .grow{flex:1;min-width:220px}
+.btn{display:inline-flex;align-items:center;gap:8px;border:0;border-radius:9px;padding:9px 14px;font-weight:600;cursor:pointer;background:var(--chip);color:var(--ink);text-decoration:none}
+.btn:hover{filter:brightness(.97)}
+.btn:disabled{opacity:.55;cursor:default}
+.btn.pri{background:var(--rail2);color:var(--on-rail)}
+.btn.gold{background:var(--gold);color:#2B1A00}
+.btn.sm{padding:6px 10px;font-size:13px;border-radius:8px}
+.btn.danger{color:var(--bad)}
+.btn svg{width:16px;height:16px}
+.tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.tools select,.tools input{background:var(--panel);border:1px solid var(--rule);border-radius:9px;padding:7px 10px;min-width:0}
+.panel{background:var(--panel);border:1px solid var(--rule);border-radius:14px;padding:16px;box-shadow:var(--shadow);min-width:0}
+.panel h3{font:600 15px var(--font);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.panel h3 .k{margin-left:auto;font:500 11px var(--mono);color:var(--mute)}
+.chip{display:inline-flex;align-items:center;gap:5px;font:500 11.5px/1 var(--font);padding:4px 8px;border-radius:99px;background:var(--chip);color:var(--ink2);white-space:nowrap}
+.chip i{width:7px;height:7px;border-radius:50%;display:inline-block}
+.pr{font:600 11px var(--font);padding:3px 6px;border-radius:5px}
+.pr.h{background:color-mix(in srgb,var(--bad) 16%,transparent);color:var(--bad)}
+.pr.m{background:color-mix(in srgb,var(--warn) 18%,transparent);color:var(--warn)}
+.pr.l{background:var(--chip);color:var(--mute)}
+.av{width:24px;height:24px;border-radius:50%;display:inline-grid;place-items:center;font:600 10.5px var(--font);color:#fff;flex:none;overflow:hidden;background:#888}
+.av img{width:100%;height:100%;object-fit:cover}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}
+.kpi{background:var(--panel);border:1px solid var(--rule);border-radius:12px;padding:12px 14px}
+.kpi b{display:block;font:600 26px/1.1 var(--font)}
+.kpi span{font-size:12.5px;color:var(--mute)}
+.kpi.alert b{color:var(--bad)}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px}
+.bars{display:flex;flex-direction:column;gap:8px}
+.bar{display:grid;grid-template-columns:130px 1fr 28px;align-items:center;gap:10px;font-size:13px}
+.bar .t{height:10px;background:var(--chip);border-radius:99px;overflow:hidden}
+.bar .t i{display:block;height:100%;border-radius:99px}
+.bar .n{font:500 12px var(--mono);text-align:right}
+.list{display:flex;flex-direction:column}
+.li{display:flex;align-items:center;gap:10px;padding:9px 2px;border-top:1px solid var(--rule);cursor:pointer;min-width:0}
+.li:first-child{border-top:0}
+.li .tt{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.li .d{font:500 11.5px var(--mono);color:var(--mute)}
+.board{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(258px,1fr);gap:12px;overflow-x:auto;padding-bottom:8px;align-items:start}
+.col{background:color-mix(in srgb,var(--chip) 70%,transparent);border:1px solid var(--rule);border-radius:12px;padding:10px;display:flex;flex-direction:column;gap:8px;min-height:140px}
+.col.over{outline:2px dashed var(--gold);outline-offset:-4px}
+.col header{display:flex;align-items:center;gap:8px;font-weight:600;font-size:13.5px;padding:2px 4px}
+.col header i{width:9px;height:9px;border-radius:3px}
+.col header .n{margin-left:auto;font:500 11.5px var(--mono);color:var(--mute)}
+.card{background:var(--panel);border:1px solid var(--rule);border-radius:10px;padding:10px 11px;display:flex;flex-direction:column;gap:7px;cursor:grab;box-shadow:0 1px 1px rgba(0,0,0,.03);touch-action:manipulation;-webkit-user-select:none;user-select:none}
+.card:hover{border-color:color-mix(in srgb,var(--gold) 60%,var(--rule))}
+.card.dragging{display:none}
+.card.lift{transform:scale(1.02);box-shadow:var(--shadow)}
+.ghost{position:fixed;left:0;top:0;z-index:60;pointer-events:none;margin:0;box-shadow:0 22px 40px -14px rgba(40,10,10,.45)}
+.ph{border:2px dashed var(--gold);border-radius:10px;background:color-mix(in srgb,var(--gold) 10%,transparent);flex:none}
+body.dragmode,body.dragmode *{cursor:grabbing!important;user-select:none;-webkit-user-select:none}
+.card .t{font-weight:500;line-height:1.4}
+.card .m{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.card .m .sp{margin-left:auto}
+.card .org{font-size:12px;color:var(--mute)}
+.stars{font:500 12px var(--mono);color:var(--gold-ink);letter-spacing:1px}
+.empty{font-size:12.5px;color:var(--mute);text-align:center;padding:14px 6px;border:1px dashed var(--rule);border-radius:9px}
+.bigempty{text-align:center;padding:40px 16px;color:var(--mute);display:flex;flex-direction:column;gap:10px;align-items:center}
+.bigempty b{color:var(--ink);font-size:16px}
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:720px}
+th,td{text-align:left;padding:10px 10px;border-bottom:1px solid var(--rule);vertical-align:middle}
+th{font:500 12px var(--font);color:var(--mute)}
+tbody tr{cursor:pointer}
+tbody tr:hover td{background:color-mix(in srgb,var(--chip) 60%,transparent)}
+.prog{display:flex;align-items:center;gap:8px;min-width:140px}
+.prog .t{flex:1;height:8px;background:var(--chip);border-radius:99px;overflow:hidden}
+.prog .t i{display:block;height:100%;background:var(--ok)}
+.prog span{font:500 11.5px var(--mono);color:var(--mute)}
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--rule);overflow-x:auto;flex-wrap:nowrap}
+.tabs button{border:0;background:none;padding:9px 14px;font-weight:500;color:var(--mute);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap;display:inline-flex;align-items:center;gap:6px}
+.tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--rail2)}
+.tabs button:hover{color:var(--ink)}
+.tabs .addb{color:var(--red);font-weight:600}
+.tabs .addb svg{width:15px;height:15px}
+.scrim{position:fixed;inset:0;background:rgba(20,6,6,.38);z-index:30}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(540px,100%);background:var(--panel);z-index:31;box-shadow:-20px 0 40px -20px rgba(0,0,0,.4);display:flex;flex-direction:column;padding-top:env(safe-area-inset-top,0px);padding-right:env(safe-area-inset-right,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+.drawer header{display:flex;align-items:flex-start;gap:10px;padding:18px 18px 12px;border-bottom:1px solid var(--rule)}
+.drawer header h2{font:600 18px/1.3 var(--font);flex:1;text-wrap:balance;overflow-wrap:anywhere}
+.drawer .body{padding:16px 18px;overflow-y:auto;display:flex;flex-direction:column;gap:14px}
+.x{border:0;background:var(--chip);border-radius:8px;width:32px;height:32px;cursor:pointer;flex:none}
+.fields{display:grid;grid-template-columns:130px 1fr;gap:8px 12px;font-size:13.5px;margin:0}
+.fields dt{color:var(--mute);padding-top:6px}
+.fields dd{margin:0;min-width:0;overflow-wrap:anywhere}
+.fields select,.fields input,.fields textarea{width:100%;background:var(--bg);border:1px solid var(--rule);border-radius:8px;padding:6px 8px}
+.qa{display:flex;flex-direction:column;gap:10px}
+.qa div{border-left:3px solid var(--gold);padding:2px 0 2px 10px;overflow-wrap:anywhere}
+.qa small{display:block;font:500 11.5px var(--font);color:var(--mute)}
+textarea{width:100%;background:var(--bg);border:1px solid var(--rule);border-radius:8px;padding:8px 10px;min-height:76px;resize:vertical}
+.chk{display:flex;flex-direction:column;gap:2px}
+.chk label{display:flex;align-items:flex-start;gap:10px;padding:8px 6px;border-radius:8px;cursor:pointer}
+.chk label:hover{background:var(--chip)}
+.chk input{margin-top:4px;accent-color:var(--ok)}
+.chk .own{margin-left:auto;font:500 11.5px var(--font);color:var(--mute);white-space:nowrap}
+.chk .done>span:first-of-type{text-decoration:line-through;color:var(--mute)}
+.cm{display:flex;flex-direction:column;gap:8px}
+.cm .c{background:var(--bg);border-radius:9px;padding:8px 10px;font-size:13px;overflow-wrap:anywhere}
+.cm .c b{font-weight:600}
+.cm .c small{color:var(--mute);font-family:var(--mono);font-size:11px;margin-left:6px}
+.f{display:flex;flex-direction:column;gap:5px;min-width:0}
+.f label,.f .lbl{font-size:13px;font-weight:500;color:var(--ink2)}
+.f input,.f select,.f textarea{background:var(--bg);border:1px solid var(--rule);border-radius:9px;padding:8px 10px}
+.f .hint{font-size:12px;color:var(--mute)}
+.frow{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.h4{font:600 14px var(--font);margin-bottom:6px}
+.toast{position:fixed;bottom:calc(18px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:10px;z-index:70;font-weight:500;box-shadow:var(--shadow);max-width:calc(100% - 32px)}
+.toast.err{background:var(--bad);color:#fff}
+.login{position:fixed;inset:0;z-index:50;display:grid;place-items:center;background:radial-gradient(110% 100% at 80% 90%,#8B0F25 0%,#6E0B1C 45%,#2A0509 100%);padding:16px}
+.lcard{background:var(--panel);color:var(--ink);border-radius:18px;padding:30px 28px;width:min(420px,100%);display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center;box-shadow:0 30px 60px -30px rgba(0,0,0,.6)}
+.lcard h2{font:700 24px var(--font);letter-spacing:.04em}
+.lcard p{color:var(--mute);font-size:13.5px}
+.lcard small{font:500 11.5px var(--mono);color:var(--mute)}
+.lcard .err{color:var(--bad);font-size:13px}
+.gbtn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;border:1px solid var(--rule);background:var(--panel);border-radius:10px;padding:11px 14px;font-weight:600;cursor:pointer}
+.gbtn:hover{background:var(--chip)}
+.devlogin{display:flex;gap:6px;width:100%}
+.devlogin input{flex:1;min-width:0;background:var(--bg);border:1px solid var(--rule);border-radius:8px;padding:8px}
+@media (max-width:860px){
+  .app{grid-template-columns:1fr}
+  .rail{position:sticky;top:0;height:auto;flex-direction:row;flex-wrap:wrap;align-items:center;padding:10px 12px;gap:10px;z-index:20}
+  .brand small{display:none}
+  .nav{flex-direction:row;overflow-x:auto;order:3;width:100%;gap:4px}
+  .nav button,.nav a{white-space:nowrap;padding:7px 9px}
+  .nav .sep{display:none}
+  .who{margin:0 0 0 auto;flex-direction:row;align-items:center}
+  .who .me span{display:none}
+  .fields{grid-template-columns:1fr}
+  .fields dt{padding-top:0}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="app" id="app" hidden>
+  <aside class="rail">
+    <a class="brand" href="/" title="aric.mfu.ac.th">
+      <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M6 50 L22 26 Q24 23 26 26 L33 36 L40 20 Q42 16 44 20 L58 50 Z" fill="none" stroke="#E4B04A" stroke-width="3" stroke-linejoin="round"/><circle cx="48" cy="12" r="5" fill="#E4B04A"/><g fill="#FFF1EB"><circle cx="22" cy="26" r="2.4"/><circle cx="33" cy="36" r="2.4"/><circle cx="42" cy="19" r="2.4"/></g></svg>
+      <div><b>ARIC OS</b><small data-i="tag"></small></div>
+    </a>
+    <nav class="nav" id="nav" aria-label="Main"></nav>
+    <div class="who">
+      <div class="me" id="meLine"></div>
+      <button type="button" class="lnk" id="signOut" data-i="signOut"></button>
+      <div class="seg" role="group" aria-label="ภาษา / Language"><button type="button" data-lang="th">TH</button><button type="button" data-lang="en">EN</button></div>
+    </div>
+  </aside>
+  <main class="main"><div class="inner" id="view"></div></main>
+</div>
+<div class="login" id="login" hidden>
+  <div class="lcard">
+    <svg viewBox="0 0 64 64" width="56" height="56" aria-hidden="true"><path d="M6 50 L22 26 Q24 23 26 26 L33 36 L40 20 Q42 16 44 20 L58 50 Z" fill="none" stroke="#E4B04A" stroke-width="3" stroke-linejoin="round"/><circle cx="48" cy="12" r="5" fill="#E4B04A"/></svg>
+    <h2>ARIC OS</h2>
+    <p data-i="signInNote"></p>
+    <button class="gbtn" id="gSignIn" type="button"><svg viewBox="0 0 48 48" width="20" height="20" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3 0 5.8 1.1 7.9 3l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3 0 5.8 1.1 7.9 3l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg><span data-i="signInBtn"></span></button>
+    <form class="devlogin" id="devLogin" hidden><input id="devEmail" type="email" placeholder="dev: name@mfu.ac.th"><button class="btn sm" type="submit">Dev</button></form>
+    <small>@mfu.ac.th · @lamduan.mfu.ac.th</small>
+    <p class="err" id="loginErr" hidden></p>
+    <p style="font-size:12.5px;border-top:1px solid var(--rule);padding-top:12px" data-i="pendingNote"></p>
+    <div class="seg" role="group" aria-label="ภาษา / Language" style="border-color:var(--rule)"><button type="button" data-lang="th">TH</button><button type="button" data-lang="en">EN</button></div>
+  </div>
+</div>
+<div id="layer"></div>
+
+<script type="module">
+'use strict';
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const LS = { get(k){ try { return JSON.parse(localStorage.getItem(k)); } catch(e){ return null; } }, set(k,v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch(e){} } };
+
+/* ---------------- i18n (Thai first) ---------------- */
+const T = {
+ th:{tag:'ระบบปฏิบัติการศูนย์ ARIC', dash:'ภาพรวม', pp:'โจทย์จากพันธมิตร', tasks:'งาน', people:'การจัดการบุคลากร', myonb:'ออนบอร์ดของฉัน', form:'แบบฟอร์มบนเว็บไซต์ ↗',
+  signOut:'ออกจากระบบ', signInBtn:'เข้าสู่ระบบด้วยอีเมล MFU', signInNote:'ระบบปฏิบัติการศูนย์ ARIC · สำหรับบุคลากรและนักศึกษา มฟล.',
+  pendingNote:'ผู้ใช้ที่เข้าสู่ระบบครั้งแรกจะได้บทบาท “เจ้าหน้าที่” และยังไม่เห็นข้อมูลใด จนกว่าผู้ดูแลระบบจะเพิ่มเข้าบอร์ดหรือมอบหมายงาน',
+  loginFail:'เข้าสู่ระบบไม่สำเร็จ', adminLbl:'ผู้ดูแลระบบ', staffLbl:'เจ้าหน้าที่',
+  dashSub:'ภาพรวมของศูนย์วันนี้ — โจทย์ที่เข้ามา งานที่ค้าง และความคืบหน้าการออนบอร์ด', dashStaffSub:'งาน บอร์ด และโจทย์ที่คุณได้รับสิทธิ์',
+  kNew:'โจทย์ใหม่ (รอคัดกรอง)', kShort:'คัดเลือกเป็นโจทย์แล้ว', kOpen:'งานที่ยังเปิดอยู่', kLate:'งานเลยกำหนด', kOnb:'ความคืบหน้าออนบอร์ดเฉลี่ย',
+  kMine:'งานของฉันที่ยังเปิด', kMineLate:'งานของฉันที่เลยกำหนด', kMyPP:'โจทย์ที่มอบหมายให้ฉัน', myBoards:'บอร์ดที่ฉันเป็นสมาชิก', my:'งานของฉัน',
+  pipe:'สถานะโจทย์จากพันธมิตร', load:'ภาระงานต่อคน', late:'ใกล้ถึง/เลยกำหนด', onbProg:'ความคืบหน้าออนบอร์ด', sectors:'โจทย์ตามภาคส่วน',
+  ppSub:'โจทย์ปัญหาจริงจากภาคอุตสาหกรรม เจ้าของกิจการ และศิษย์เก่า — คัดกรองเพื่อใช้ใน Spark Hackathon', ppSubStaff:'เฉพาะโจทย์ที่ผู้ดูแลระบบมอบหมายให้คุณดูแล',
+  tasksSub:'ลากการ์ดเพื่อย้ายสถานะหรือเรียงลำดับ · กดการ์ดเพื่อดูรายละเอียด', tasksSubStaff:'เฉพาะบอร์ดที่คุณเป็นสมาชิก และงานที่มอบหมายให้คุณ',
+  peopleSub:'ทะเบียนเจ้าหน้าที่ นักศึกษาฝึกงาน และพี่เลี้ยง พร้อมการออนบอร์ดของแต่ละคน', dirTab:'ทะเบียนบุคลากร', onbTab:'ออนบอร์ด',
+  onbSub:'เช็กลิสต์ออนบอร์ดของนักศึกษาฝึกงาน · กดชื่อเพื่อเปิดข้อมูล', myonbSub:'สิ่งที่ต้องทำก่อนและช่วงแรกของการฝึกงาน',
+  all:'ทั้งหมด', allBoards:'ทุกบอร์ด', allPeople:'ทุกคน', search:'ค้นหา…', newTask:'งานใหม่', newBoard:'บอร์ดใหม่', board:'บอร์ด', assignee:'ผู้รับผิดชอบ', due:'กำหนดส่ง',
+  priority:'ความสำคัญ', status:'สถานะ', title:'ชื่องาน', desc:'รายละเอียด', comments:'ความคิดเห็น', addComment:'เพิ่มความคิดเห็น', post:'โพสต์', linked:'เชื่อมกับโจทย์',
+  owner:'ผู้ดูแล', org:'องค์กร', sector:'ภาคส่วน', type:'ผู้ส่ง', contact:'ติดต่อ', received:'ได้รับเมื่อ', notes:'บันทึกภายใน', save:'บันทึก', cancel:'ยกเลิก',
+  createTask:'สร้างงานจากโจทย์นี้', involve:'ยินดีช่วยเพิ่มเติม', publicOk:'เปิดเผยชื่อองค์กรได้', yes:'ได้', no:'ไม่ได้',
+  name:'ชื่อ (อังกฤษ)', nameTh:'ชื่อ (ไทย)', role:'บทบาท', kind:'ประเภท', track:'สาย / ฝ่าย', jobTitle:'ตำแหน่ง', start:'เริ่ม', end:'สิ้นสุด', onbCol:'ออนบอร์ด', openTasks:'งานเปิด',
+  supervisor:'พี่เลี้ยง', idNo:'รหัสนักศึกษา', email:'อีเมล MFU', phone:'โทรศัพท์', color:'สี', lastLogin:'เข้าระบบล่าสุด', never:'ยังไม่เคย',
+  hi:'สูง', md:'กลาง', lo:'ต่ำ', saved:'บันทึกแล้ว', moved:'ย้ายไป', created:'สร้างแล้ว', deleted:'ลบแล้ว',
+  q_problem:'ปัญหาที่เกิดขึ้น', q_affected:'ผู้ได้รับผลกระทบ', q_freq:'ความถี่', q_work:'วิธีแก้ปัจจุบัน', q_impact:'ผลกระทบ', q_success:'ความสำเร็จหน้าตาเป็นอย่างไร',
+  q_data:'ข้อมูลที่มี', q_market:'ลูกค้า / ตลาดเป้าหมาย', q_msize:'ขนาดตลาด', q_chan:'ทางสู่ตลาด', q_price:'ราคาที่ลูกค้ายอมจ่าย', q_comp:'ทางเลือก / คู่แข่ง', q_alumni:'ศิษย์เก่า มฟล.',
+  close:'ปิด', delTask:'ลบงาน', delPP:'ลบโจทย์ (ตามคำขอ PDPA)', confirmAgain:'กดอีกครั้งเพื่อยืนยัน', exportCsv:'ส่งออก CSV',
+  boardName:'ชื่อบอร์ด', createBoard:'สร้างบอร์ด', members:'สมาชิกบอร์ด', editBoard:'แก้ไขบอร์ด / สมาชิก',
+  membersHint:'สมาชิกเห็นและแก้ไขงานทุกใบในบอร์ดนี้ ผู้ดูแลระบบเห็นทุกบอร์ดเสมอ', boardHint:'บอร์ดใหม่ใช้คอลัมน์ชุดเดียวกัน (รอจัดคิว → เสร็จแล้ว) และปรากฏเป็นแท็บด้านบน',
+  addPerson:'เพิ่มบุคลากร', editPerson:'แก้ไขข้อมูล', emailHint:'ใช้อีเมล @mfu.ac.th หรือ @lamduan.mfu.ac.th เพื่อให้คนนี้เข้าสู่ระบบได้',
+  emptyPP:'ยังไม่มีโจทย์', emptyPPHint:'ส่งลิงก์แบบฟอร์ม aric.mfu.ac.th/challenge ให้ภาคอุตสาหกรรม เจ้าของกิจการ และศิษย์เก่า โจทย์จะเข้ามาที่คอลัมน์ “ใหม่”',
+  noAccess:'ยังไม่มีงานหรือบอร์ดสำหรับคุณ', noAccessHint:'ผู้ดูแลระบบจะเพิ่มคุณเข้าบอร์ดหรือมอบหมายงานให้ แล้วงานจะปรากฏที่นี่',
+  noBoards:'ยังไม่มีบอร์ด', loadFail:'โหลดข้อมูลไม่สำเร็จ', retry:'ลองอีกครั้ง', untitled:'งานใหม่', followUp:'ติดตามโจทย์: ', none:'—'},
+ en:{tag:'ARIC operating system', dash:'Overview', pp:'Partner pain points', tasks:'Tasks', people:'People management', myonb:'My onboarding', form:'Form on the public site ↗',
+  signOut:'Sign out', signInBtn:'Sign in with MFU email', signInNote:'ARIC operating system · for MFU staff and students',
+  pendingNote:'People who sign in for the first time get the Staff role and see nothing until the admin adds them to a board or assigns them work.',
+  loginFail:'Sign-in failed', adminLbl:'Admin', staffLbl:'Staff',
+  dashSub:'Today at ARIC — incoming pain points, open work and onboarding progress', dashStaffSub:'The tasks, boards and pain points you have access to',
+  kNew:'New pain points (to triage)', kShort:'Shortlisted as challenges', kOpen:'Open tasks', kLate:'Overdue tasks', kOnb:'Average onboarding progress',
+  kMine:'My open tasks', kMineLate:'My overdue tasks', kMyPP:'Pain points assigned to me', myBoards:'Boards I belong to', my:'My tasks',
+  pipe:'Pain-point pipeline', load:'Workload per person', late:'Due soon / overdue', onbProg:'Onboarding progress', sectors:'Pain points by sector',
+  ppSub:'Real problems from industry, business owners and alumni, triaged into Spark hackathon challenges', ppSubStaff:'Only the pain points the admin has assigned to you',
+  tasksSub:'Drag a card to change its status or order · click a card for details', tasksSubStaff:'Only boards you belong to, and tasks assigned to you',
+  peopleSub:'Register of staff, interns and mentors, with each person’s onboarding', dirTab:'Directory', onbTab:'Onboarding',
+  onbSub:'Intern onboarding checklists · click a name to open the record', myonbSub:'What to do before and in the first weeks of your internship',
+  all:'All', allBoards:'All boards', allPeople:'Everyone', search:'Search…', newTask:'New task', newBoard:'New board', board:'Board', assignee:'Assignee', due:'Due',
+  priority:'Priority', status:'Status', title:'Title', desc:'Description', comments:'Comments', addComment:'Add a comment', post:'Post', linked:'Linked pain point',
+  owner:'Owner', org:'Organisation', sector:'Sector', type:'Submitted by', contact:'Contact', received:'Received', notes:'Internal notes', save:'Save', cancel:'Cancel',
+  createTask:'Create task from this', involve:'Extra help offered', publicOk:'May name the organisation', yes:'Yes', no:'No',
+  name:'Name (English)', nameTh:'Name (Thai)', role:'Role', kind:'Type', track:'Track / team', jobTitle:'Position', start:'Start', end:'End', onbCol:'Onboarding', openTasks:'Open tasks',
+  supervisor:'Supervisor', idNo:'Student ID', email:'MFU email', phone:'Phone', color:'Colour', lastLogin:'Last sign-in', never:'Never',
+  hi:'High', md:'Medium', lo:'Low', saved:'Saved', moved:'Moved to', created:'Created', deleted:'Deleted',
+  q_problem:'What happens today', q_affected:'Who is affected', q_freq:'How often', q_work:'Current workaround', q_impact:'Impact', q_success:'What success looks like',
+  q_data:'Data available', q_market:'Target customers / market', q_msize:'Market size', q_chan:'Route to market', q_price:'Likely price', q_comp:'Alternatives / competitors', q_alumni:'MFU alumni',
+  close:'Close', delTask:'Delete task', delPP:'Delete pain point (PDPA request)', confirmAgain:'Click again to confirm', exportCsv:'Export CSV',
+  boardName:'Board name', createBoard:'Create board', members:'Board members', editBoard:'Edit board / members',
+  membersHint:'Members see and edit every task on this board. The admin always sees every board.', boardHint:'A new board uses the same columns (Backlog → Done) and appears as a tab above the board.',
+  addPerson:'Add person', editPerson:'Edit details', emailHint:'Use an @mfu.ac.th or @lamduan.mfu.ac.th address so this person can sign in',
+  emptyPP:'No pain points yet', emptyPPHint:'Share aric.mfu.ac.th/challenge with industry, business owners and alumni. Submissions arrive in the “New” column.',
+  noAccess:'Nothing has been shared with you yet', noAccessHint:'The admin will add you to a board or assign you work, and it will appear here.',
+  noBoards:'No boards yet', loadFail:'Could not load data', retry:'Try again', untitled:'New task', followUp:'Follow up: ', none:'—'}
+};
+let lang = LS.get('aricos-lang') || 'th';
+const t = k => T[lang][k] ?? k;
+const L = o => (o && typeof o === 'object') ? (o[lang] ?? o.en) : o;
+const PP_STAGES = [{id:'new',c:'#2F5D9A',th:'ใหม่',en:'New'},{id:'review',c:'#B7791F',th:'กำลังพิจารณา',en:'Reviewing'},{id:'shortlist',c:'#C8102E',th:'คัดเลือกแล้ว',en:'Shortlisted'},{id:'contacted',c:'#6B5B95',th:'ติดต่อแล้ว',en:'Contacted'},{id:'challenge',c:'#2E7D5B',th:'เป็นโจทย์ Spark',en:'Spark challenge'},{id:'parked',c:'#8A7D77',th:'พักไว้',en:'Parked'}];
+const TASK_COLS = [{id:'backlog',c:'#8A7D77',th:'รอจัดคิว',en:'Backlog'},{id:'todo',c:'#2F5D9A',th:'ต้องทำ',en:'To do'},{id:'doing',c:'#B7791F',th:'กำลังทำ',en:'In progress'},{id:'review',c:'#6B5B95',th:'รอตรวจ',en:'Review'},{id:'done',c:'#2E7D5B',th:'เสร็จแล้ว',en:'Done'}];
+const SECTORS = {health:{th:'สุขภาพ / ผู้สูงอายุ',en:'Health & ageing'},agri:{th:'เกษตรและอาหาร',en:'Agriculture & food'},gov:{th:'ภาครัฐ / เมืองอัจฉริยะ',en:'Government & smart city'},tour:{th:'ท่องเที่ยว / บริการ',en:'Tourism & hospitality'},logi:{th:'โลจิสติกส์',en:'Logistics'},mfg:{th:'การผลิต / โรงงาน',en:'Manufacturing'},it:{th:'ซอฟต์แวร์ / IT',en:'Software & IT'},other:{th:'อื่น ๆ',en:'Other'}};
+const RTYPES = {owner:{th:'เจ้าของกิจการ',en:'Business owner'},industry:{th:'ภาคอุตสาหกรรม/บริษัท',en:'Industry / company'},alumni:{th:'ศิษย์เก่า มฟล.',en:'MFU alumni'},health:{th:'โรงพยาบาล/หน่วยบริการสุขภาพ',en:'Hospital / health service'},gov:{th:'หน่วยงานรัฐ/ท้องถิ่น',en:'Government / local authority'},community:{th:'ชุมชน/มูลนิธิ',en:'Community / foundation'}};
+const INVOLVE = {owner:{th:'เป็นเจ้าของโจทย์ ให้ข้อมูล',en:'Own the challenge, share data'},mentor:{th:'พี่เลี้ยง/กรรมการ',en:'Mentor or judge'},visit:{th:'เปิดพื้นที่ให้ลงพื้นที่',en:'Host a site visit'},sponsor:{th:'สนับสนุนรางวัล/ทุน',en:'Sponsor prizes'},pilot:{th:'ทดลองใช้/ซื้อโซลูชัน',en:'Pilot or buy the solution'},hire:{th:'รับนักศึกษาฝึกงาน/บัณฑิต',en:'Hire interns/graduates'}};
+const CHANNELS = {buy:{th:'เราจะซื้อหรือใช้เอง',en:'We would buy or use it'},refer:{th:'แนะนำให้ลูกค้าหรือเครือข่าย',en:'Introduce to our customers/network'},distribute:{th:'ร่วมจัดจำหน่าย / ตัวแทนขาย',en:'Distribute or resell'},invest:{th:'ร่วมลงทุน / ร่วมตั้งบริษัท',en:'Co-invest or co-found'},unsure:{th:'ยังไม่แน่ใจ',en:'Not sure yet'}};
+const DATA_T = {img:{th:'รูปภาพ',en:'Images'},vid:{th:'วิดีโอ',en:'Video'},doc:{th:'เอกสาร/ข้อความ',en:'Documents / text'},sheet:{th:'Excel/ฐานข้อมูล',en:'Spreadsheets / database'},iot:{th:'เซนเซอร์/IoT',en:'Sensors / IoT'},none:{th:'ยังไม่มี',en:'None yet'}};
+const FREQ = {daily:{th:'ทุกวัน',en:'Daily'},weekly:{th:'ทุกสัปดาห์',en:'Weekly'},monthly:{th:'ทุกเดือน',en:'Monthly'},seasonal:{th:'ตามฤดูกาล',en:'Seasonal'}};
+const PSTAT = {offered:{c:'#B7791F',th:'เสนอแล้ว รอตอบ',en:'Offered'},confirmed:{c:'#2F5D9A',th:'ยืนยันแล้ว',en:'Confirmed'},onboarding:{c:'#6B5B95',th:'กำลังออนบอร์ด',en:'Onboarding'},active:{c:'#2E7D5B',th:'ปฏิบัติงาน',en:'Active'},alumni:{c:'#8A7D77',th:'จบโครงการ',en:'Completed'}};
+const KINDS = {staff:{th:'เจ้าหน้าที่',en:'Staff'},intern:{th:'นักศึกษาฝึกงาน',en:'Intern'},mentor:{th:'พี่เลี้ยง',en:'Mentor'}};
+const ONB = [
+ {id:'o1',w:{th:'ตอบรับข้อเสนอทางอีเมล',en:'Accept the offer by email'},who:'intern',when:{th:'ก่อนเริ่ม',en:'Before start'}},
+ {id:'o2',w:{th:'ส่งแบบตอบรับ CWIE ไปที่ Internship@mfu.ac.th',en:'CWIE acceptance form sent to Internship@mfu.ac.th'},who:'aric',when:{th:'ก่อนเริ่ม',en:'Before start'}},
+ {id:'o3',w:{th:'ลงทะเบียนฝึกงานในระบบ MFU Internship (MIIS)',en:'Register the internship in the MFU Internship System (MIIS)'},who:'intern',when:{th:'ก่อนเริ่ม',en:'Before start'}},
+ {id:'o4',w:{th:'ลงนามความยินยอม PDPA และข้อตกลงรักษาความลับ',en:'Sign PDPA consent and confidentiality agreement'},who:'intern',when:{th:'วันแรก',en:'Day 1'}},
+ {id:'o5',w:{th:'สร้างบัญชี: อีเมลกลุ่ม, GitHub, เครื่อง GPU',en:'Accounts: email group, GitHub, GPU server'},who:'aric',when:{th:'วันแรก',en:'Day 1'}},
+ {id:'o6',w:{th:'ปฐมนิเทศและเยี่ยมชมศูนย์ (4 ม.ค. 2570)',en:'Orientation and centre tour (4 Jan 2027)'},who:'aric',when:{th:'วันแรก',en:'Day 1'}},
+ {id:'o7',w:{th:'อบรมความปลอดภัยห้องแล็บและสนามหุ่นยนต์',en:'Lab and robot-arena safety briefing'},who:'aric',when:{th:'สัปดาห์ที่ 1',en:'Week 1'}},
+ {id:'o8',w:{th:'พบพี่เลี้ยง ตั้งเป้าหมาย 4 เดือน',en:'Meet your mentor, set 4-month goals'},who:'mentor',when:{th:'สัปดาห์ที่ 1',en:'Week 1'}},
+ {id:'o9',w:{th:'ได้รับงานแรกบนบอร์ด',en:'First task assigned on the board'},who:'mentor',when:{th:'สัปดาห์ที่ 1',en:'Week 1'}},
+ {id:'o10',w:{th:'ประเมินกลางภาค',en:'Mid-term review'},who:'mentor',when:{th:'สัปดาห์ที่ 8',en:'Week 8'}},
+ {id:'o11',w:{th:'นำเสนอผลงานวัน Launch',en:'Final demo on Launch day'},who:'intern',when:{th:'สัปดาห์ที่ 16',en:'Week 16'}},
+ {id:'o12',w:{th:'ส่งมอบโค้ด เอกสาร และคืนอุปกรณ์',en:'Hand over code, docs and equipment'},who:'intern',when:{th:'วันสุดท้าย',en:'Last day'}}];
+const WHO = {intern:{th:'นักศึกษา',en:'Intern'},aric:{th:'ARIC',en:'ARIC'},mentor:{th:'พี่เลี้ยง',en:'Mentor'}};
+
+/* ---------------- state + API ---------------- */
+let CONFIG = null, S = null, view = LS.get('aricos-view') || 'dash';
+const f = {board:'all', person:'all', q:'', ppSector:'all', ptab:'dir'};
+async function api(method, url, body){
+  const r = await fetch(url, {method, credentials:'same-origin', headers:{'Content-Type':'application/json','X-ARIC':'1'}, body: body === undefined ? undefined : JSON.stringify(body)});
+  let d = {}; try { d = await r.json(); } catch(e){}
+  if (!r.ok) { const e = new Error(d.error || r.statusText); e.status = r.status; throw e; }
+  return d;
+}
+function toast(msg, err){ const el = document.createElement('div'); el.className = 'toast' + (err ? ' err' : ''); el.textContent = msg; document.body.appendChild(el); setTimeout(() => el.remove(), err ? 4200 : 2200); }
+async function act(fn, okMsg){ try { const r = await fn(); await refresh(); if (okMsg) toast(okMsg); return r; } catch(e){ toast(e.message || 'error', true); await refresh().catch(()=>{}); throw e; } }
+async function refresh(){ S = await api('GET', '/os/api/bootstrap'); render(); }
+
+/* ---------------- helpers ---------------- */
+const isAdmin = () => !!S?.admin;
+const ME = () => S.me.id;
+const person = id => S.people.find(p => p.id === id);
+const pname = p => p ? (lang === 'th' && p.name_th ? p.name_th : p.name) : '—';
+const initials = p => p ? (p.name || '?').replace(/\(.*\)/,'').trim().split(/\s+/).map(w => w[0]).slice(0,2).join('').toUpperCase() : '?';
+const av = id => { const p = person(id); if (!p) return ''; return `<span class="av" style="background:${esc(p.color||'#888')}" title="${esc(pname(p))}">${p.photo?`<img src="${esc(p.photo)}" alt="" referrerpolicy="no-referrer">`:esc(initials(p))}</span>`; };
+const boardOf = id => S.boards.find(b => b.id === id);
+const daysTo = d => d ? Math.round((new Date(d) - new Date(S.today)) / 864e5) : null;
+const fmtD = d => { if (!d) return '—'; const x = new Date(d.length > 10 ? d : d + 'T00:00:00'); if (isNaN(x)) return d; return x.toLocaleDateString(lang === 'th' ? 'th-TH' : 'en-GB', {day:'numeric', month:'short', year:'2-digit'}); };
+const dueChip = (d, st) => { if (!d) return ''; const n = daysTo(d), late = n < 0 && st !== 'done'; return `<span class="mono" style="font-size:11.5px;color:${late?'var(--bad)':n<=3&&st!=='done'?'var(--warn)':'var(--mute)'}">${late?'⚠ ':''}${fmtD(d)}</span>`; };
+const priChip = p => p ? `<span class="pr ${p}">${t({h:'hi',m:'md',l:'lo'}[p])}</span>` : '';
+const stars = n => n ? '★'.repeat(n) + '☆'.repeat(5-n) : '';
+const onbPct = id => Math.round(100 * S.onb.filter(o => o.person_id === id).length / ONB.length);
+const onbDone = (pid, item) => S.onb.some(o => o.person_id === pid && o.item === item);
+const ICON = {dash:'<path d="M3 13h8V3H3zM13 21h8V11h-8zM3 21h8v-6H3zM13 3v6h8V3z"/>', pp:'<path d="M4 4h16v12H5.2L4 17.2zM8 9h8M8 12h5"/>', tasks:'<path d="M4 4h4v16H4zM10 4h4v10h-4zM16 4h4v13h-4z"/>', people:'<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c1-3.5 3.5-5.5 6.5-5.5s5.5 2 6.5 5.5M16 4.5a3.5 3.5 0 0 1 0 7M18 14.8c1.8.8 3 2.5 3.5 5.2"/>', myonb:'<path d="M9 6h11M9 12h11M9 18h11M3.5 6l1.5 1.5L7.5 5M3.5 12l1.5 1.5 2.5-2.5M3.5 18l1.5 1.5 2.5-2.5"/>', form:'<path d="M6 3h9l4 4v14H6zM14 3v5h5M9 12h7M9 16h7"/>', plus:'<path d="M12 5v14M5 12h14"/>', down:'<path d="M12 4v12M6 11l6 6 6-6M5 20h14"/>'};
+const ico = k => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICON[k]}</svg>`;
+const header = (title, sub, right='') => `<div class="top"><div class="grow"><h1>${title}</h1><p>${sub}</p></div>${right}</div>`;
+const byOrd = (a, b) => (a.ord ?? 0) - (b.ord ?? 0) || a.id - b.id;
+const opts = (list, val) => list.map(([v,l]) => `<option value="${esc(v)}" ${String(v)===String(val??'')?'selected':''}>${esc(l)}</option>`).join('');
+
+/* ---------------- nav ---------------- */
+function navItems(){
+  if (isAdmin()) return ['dash','pp','tasks','people','sep','form'];
+  return ['dash','pp','tasks', ...(S.me.kind === 'intern' ? ['myonb'] : [])];
+}
+function renderNav(){
+  const nc = S.pp.filter(p => p.status === 'new').length;
+  $('#nav').innerHTML = navItems().map(k => k === 'sep' ? '<div class="sep"></div>' : k === 'form'
+    ? `<a href="/challenge/" target="_blank" rel="noopener">${ico('form')}<span>${t('form')}</span></a>`
+    : `<button type="button" data-v="${k}" ${view===k?'aria-current="page"':''}>${ico(k)}<span>${t(k)}</span>${k==='pp'&&nc?`<span class="cnt">${nc}</span>`:''}</button>`).join('');
+  $('#nav').querySelectorAll('button[data-v]').forEach(b => b.onclick = () => { view = b.dataset.v; LS.set('aricos-view', view); render(); });
+  $('#meLine').innerHTML = `${av(ME())}<span title="${esc(S.me.email)}">${esc(S.me.email)}</span><span class="chip" style="background:rgba(255,236,228,.14);color:var(--on-rail)">${isAdmin()?t('adminLbl'):t('staffLbl')}</span>`;
+}
+function applyStatic(){
+  document.documentElement.lang = lang;
+  document.querySelectorAll('[data-i]').forEach(el => el.textContent = t(el.dataset.i));
+  document.querySelectorAll('.seg button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.lang === lang)));
+}
+
+/* ---------------- views ---------------- */
+function vDash(){
+  if (!isAdmin()) {
+    const mine = S.tasks.filter(x => x.assignee_id === ME() && x.status !== 'done'), late = mine.filter(x => daysTo(x.due) < 0);
+    if (!S.boards.length && !mine.length && !S.pp.length) return header(t('dash'), t('dashStaffSub')) + `<section class="panel bigempty"><b>${t('noAccess')}</b><span>${t('noAccessHint')}</span></section>`;
+    return header(t('dash'), t('dashStaffSub')) + `<div class="kpis">
+      <div class="kpi"><b>${mine.length}</b><span>${t('kMine')}</span></div><div class="kpi ${late.length?'alert':''}"><b>${late.length}</b><span>${t('kMineLate')}</span></div>
+      <div class="kpi"><b>${S.pp.length}</b><span>${t('kMyPP')}</span></div>${S.me.kind==='intern'?`<div class="kpi"><b>${onbPct(ME())}%</b><span>${t('myonb')}</span></div>`:''}</div>
+     <div class="grid2">
+      <section class="panel"><h3>${t('my')}</h3><div class="list">${mine.sort((a,b)=>(a.due||'9').localeCompare(b.due||'9')).map(x => `<div class="li" data-task="${x.id}"><span class="tt">${esc(x.title)}</span>${dueChip(x.due,x.status)}</div>`).join('') || '<div class="empty">—</div>'}</div></section>
+      <section class="panel"><h3>${t('myBoards')}</h3><div class="list">${S.boards.map(b => `<div class="li" data-goboard="${b.id}"><span class="tt">${esc(b.name)}</span><span class="d">${S.tasks.filter(x=>x.board_id===b.id&&x.status!=='done').length}</span></div>`).join('') || '<div class="empty">—</div>'}</div></section>
+      <section class="panel"><h3>${t('kMyPP')}</h3><div class="list">${S.pp.map(p => `<div class="li" data-pp="${p.id}"><span class="tt">${esc(p.title)}</span><span class="d">${L(PP_STAGES.find(s=>s.id===p.status))}</span></div>`).join('') || '<div class="empty">—</div>'}</div></section>
+     </div>`;
+  }
+  const open = S.tasks.filter(x => x.status !== 'done'), late = open.filter(x => daysTo(x.due) < 0);
+  const interns = S.people.filter(p => p.kind === 'intern' && p.status !== 'offered' && p.status !== 'alumni');
+  const avg = interns.length ? Math.round(interns.reduce((s,p) => s + onbPct(p.id), 0) / interns.length) : 0;
+  const maxPP = Math.max(1, ...PP_STAGES.map(s => S.pp.filter(p => p.status === s.id).length));
+  const loads = S.people.map(p => ({p, n: open.filter(x => x.assignee_id === p.id).length})).filter(x => x.n).sort((a,b) => b.n - a.n), maxL = Math.max(1, ...loads.map(x => x.n));
+  const soon = open.filter(x => x.due && daysTo(x.due) <= 7).sort((a,b) => a.due.localeCompare(b.due));
+  const sec = Object.keys(SECTORS).map(k => ({k, n:S.pp.filter(p => p.sector === k).length})).filter(x => x.n), maxS = Math.max(1, ...sec.map(x => x.n));
+  return header(t('dash'), t('dashSub')) + `<div class="kpis">
+    <div class="kpi"><b>${S.pp.filter(p=>p.status==='new').length}</b><span>${t('kNew')}</span></div>
+    <div class="kpi"><b>${S.pp.filter(p=>p.status==='shortlist'||p.status==='challenge').length}</b><span>${t('kShort')}</span></div>
+    <div class="kpi"><b>${open.length}</b><span>${t('kOpen')}</span></div>
+    <div class="kpi ${late.length?'alert':''}"><b>${late.length}</b><span>${t('kLate')}</span></div>
+    <div class="kpi"><b>${avg}%</b><span>${t('kOnb')}</span></div></div>
+   <div class="grid2">
+    <section class="panel"><h3>${t('pipe')}</h3><div class="bars">${PP_STAGES.map(s => { const n = S.pp.filter(p => p.status === s.id).length; return `<div class="bar"><span>${L(s)}</span><span class="t"><i style="width:${100*n/maxPP}%;background:${s.c}"></i></span><span class="n">${n}</span></div>`; }).join('')}</div></section>
+    <section class="panel"><h3>${t('late')}<span class="k">≤ 7 d</span></h3><div class="list">${soon.map(x => `<div class="li" data-task="${x.id}">${av(x.assignee_id)}<span class="tt">${esc(x.title)}</span>${dueChip(x.due,x.status)}</div>`).join('') || '<div class="empty">—</div>'}</div></section>
+    <section class="panel"><h3>${t('load')}</h3><div class="bars">${loads.map(x => `<div class="bar"><span style="display:flex;gap:6px;align-items:center;min-width:0">${av(x.p.id)}<span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(pname(x.p))}</span></span><span class="t"><i style="width:${100*x.n/maxL}%;background:var(--rail2)"></i></span><span class="n">${x.n}</span></div>`).join('') || '<div class="empty">—</div>'}</div></section>
+    <section class="panel"><h3>${t('onbProg')}</h3><div class="list">${interns.map(p => `<div class="li" data-person="${p.id}">${av(p.id)}<span class="tt">${esc(pname(p))}</span><div class="prog" style="min-width:120px;max-width:160px"><span class="t"><i style="width:${onbPct(p.id)}%"></i></span><span>${onbPct(p.id)}%</span></div></div>`).join('') || '<div class="empty">—</div>'}</div></section>
+    <section class="panel"><h3>${t('sectors')}</h3><div class="bars">${sec.map(x => `<div class="bar"><span>${L(SECTORS[x.k])}</span><span class="t"><i style="width:${100*x.n/maxS}%;background:var(--gold)"></i></span><span class="n">${x.n}</span></div>`).join('') || '<div class="empty">—</div>'}</div></section>
+   </div>`;
+}
+function vPP(){
+  const q = f.q.toLowerCase();
+  const list = S.pp.filter(p => (f.ppSector === 'all' || p.sector === f.ppSector) && (!q || (p.title + ' ' + p.org + ' ' + p.ref).toLowerCase().includes(q)));
+  const tools = `<div class="tools"><select id="fSec" aria-label="${t('sector')}"><option value="all">${t('all')} · ${t('sector')}</option>${Object.entries(SECTORS).map(([k,v]) => `<option value="${k}" ${f.ppSector===k?'selected':''}>${L(v)}</option>`).join('')}</select><input id="fQ" type="search" placeholder="${t('search')}" value="${esc(f.q)}">${isAdmin()?`<a class="btn sm" href="/os/api/pp.csv">${ico('down')}${t('exportCsv')}</a>`:''}</div>`;
+  const head = header(t('pp'), isAdmin() ? t('ppSub') : t('ppSubStaff'), tools);
+  if (!S.pp.length) return head + `<section class="panel bigempty"><b>${t('emptyPP')}</b><span>${isAdmin()?t('emptyPPHint'):t('noAccessHint')}</span>${isAdmin()?`<a class="btn gold" href="/challenge/" target="_blank" rel="noopener">aric.mfu.ac.th/challenge ↗</a>`:''}</section>`;
+  return head + `<div class="board" data-kind="pp">${PP_STAGES.map(s => { const cards = list.filter(p => p.status === s.id).sort(byOrd); return `
+   <section class="col" data-col="${s.id}"><header><i style="background:${s.c}"></i>${L(s)}<span class="n">${cards.length}</span></header>
+   ${cards.map(p => `<article class="card" data-pp="${p.id}" tabindex="0"><div class="m"><span class="mono" style="font-size:11px;color:var(--mute)">${p.ref}</span><span class="sp stars">${stars(p.priority)}</span></div><div class="t">${esc(p.title)}</div><div class="org">${esc(p.org)}</div><div class="m"><span class="chip">${esc(L(SECTORS[p.sector]) || p.sector)}</span>${p.owner_id?`<span class="sp">${av(p.owner_id)}</span>`:''}</div></article>`).join('') || '<div class="empty">—</div>'}</section>`; }).join('')}</div>`;
+}
+function vTasks(){
+  if (f.board !== 'all' && !boardOf(+f.board)) f.board = 'all';
+  const q = f.q.toLowerCase();
+  const list = S.tasks.filter(x => (f.board === 'all' || x.board_id === +f.board) && (f.person === 'all' || x.assignee_id === +f.person) && (!q || x.title.toLowerCase().includes(q)));
+  const cur = f.board === 'all' ? null : boardOf(+f.board);
+  const btabs = `<div class="tabs" role="tablist">${[{id:'all', name:t('allBoards')}, ...S.boards].map(b => `<button type="button" role="tab" data-board="${b.id}" aria-selected="${String(f.board)===String(b.id)}">${esc(b.name)} <span class="mono" style="font-size:11px;color:var(--mute)">${S.tasks.filter(x => (b.id==='all'||x.board_id===b.id) && x.status!=='done').length}</span></button>`).join('')}${isAdmin()?`<button type="button" class="addb" id="newBoard">${ico('plus')}${t('newBoard')}</button>`:''}</div>`;
+  const memberBar = cur ? `<div class="tools" style="font-size:13px;color:var(--mute)"><span>${t('members')}:</span>${(cur.members||[]).map(id => av(id)).join('')}${cur.description?`<span>· ${esc(cur.description)}</span>`:''}${isAdmin()?`<button class="btn sm" id="editBoard">${t('editBoard')}</button>`:''}</div>` : '';
+  const canAdd = S.boards.some(b => isAdmin() || (b.members||[]).includes(ME()));
+  const tools = `<div class="tools"><select id="fPerson" aria-label="${t('assignee')}"><option value="all">${t('allPeople')}</option>${S.people.map(p => `<option value="${p.id}" ${String(f.person)===String(p.id)?'selected':''}>${esc(pname(p))}</option>`).join('')}</select><input id="fQ" type="search" placeholder="${t('search')}" value="${esc(f.q)}">${canAdd?`<button class="btn pri sm" id="newTask">${ico('plus')}${t('newTask')}</button>`:''}</div>`;
+  const head = header(t('tasks'), isAdmin() ? t('tasksSub') : t('tasksSubStaff'), tools);
+  if (!S.boards.length) return head + `<section class="panel bigempty"><b>${isAdmin()?t('noBoards'):t('noAccess')}</b><span>${isAdmin()?t('boardHint'):t('noAccessHint')}</span>${isAdmin()?`<button class="btn pri" id="newBoard">${ico('plus')}${t('newBoard')}</button>`:''}</section>`;
+  return head + btabs + memberBar + `<div class="board" data-kind="task">${TASK_COLS.map(c => { const cards = list.filter(x => x.status === c.id).sort(byOrd); return `
+   <section class="col" data-col="${c.id}"><header><i style="background:${c.c}"></i>${L(c)}<span class="n">${cards.length}</span></header>
+   ${cards.map(x => `<article class="card" data-task="${x.id}" tabindex="0"><div class="m">${f.board==='all'?`<span class="chip">${esc(boardOf(x.board_id)?.name || '—')}</span>`:''}${x.pp_id?`<span class="chip" title="${t('linked')}">↗ PP-${String(x.pp_id).padStart(4,'0')}</span>`:''}</div><div class="t">${esc(x.title)}</div><div class="m">${priChip(x.priority)}${dueChip(x.due,x.status)}${x.comments?`<span class="mono" style="font-size:11px;color:var(--mute)">💬 ${x.comments}</span>`:''}<span class="sp">${av(x.assignee_id)}</span></div></article>`).join('') || '<div class="empty">—</div>'}</section>`; }).join('')}</div>`;
+}
+function vPeople(){
+  const tabs = `<div class="tools" style="justify-content:space-between"><div class="tabs" role="tablist" style="flex:1">${[['dir','dirTab'],['onb','onbTab']].map(([k,l]) => `<button type="button" role="tab" data-ptab="${k}" aria-selected="${f.ptab===k}">${t(l)}</button>`).join('')}</div><button class="btn pri sm" id="addPerson">${ico('plus')}${t('addPerson')}</button></div>`;
+  if (f.ptab === 'onb') {
+    const interns = S.people.filter(p => p.kind === 'intern');
+    return header(t('people'), t('onbSub')) + tabs + `<div class="grid2">${interns.map(p => `<section class="panel"><h3 style="cursor:pointer" data-person="${p.id}">${av(p.id)}${esc(pname(p))}<span class="k">${onbPct(p.id)}%</span></h3><div class="prog" style="margin-bottom:10px"><span class="t"><i style="width:${onbPct(p.id)}%"></i></span></div>${onbList(p.id, 4)}</section>`).join('') || '<div class="empty">—</div>'}</div>`;
+  }
+  const open = S.tasks.filter(x => x.status !== 'done');
+  return header(t('people'), t('peopleSub')) + tabs + `<section class="panel tbl"><table><thead><tr><th>${t('name')}</th><th>${t('kind')}</th><th>${t('track')}</th><th>${t('status')}</th><th>${t('start')} – ${t('end')}</th><th>${t('onbCol')}</th><th>${t('openTasks')}</th></tr></thead><tbody>
+   ${S.people.map(p => `<tr data-person="${p.id}"><td><span style="display:flex;align-items:center;gap:8px">${av(p.id)}<span><b style="font-weight:500">${esc(p.name)}</b>${p.admin?` <span class="chip">${t('adminLbl')}</span>`:''}${p.name_th?`<br><small style="color:var(--mute)">${esc(p.name_th)}</small>`:''}</span></span></td><td>${L(KINDS[p.kind])||''}</td><td>${esc(p.track||p.title||'')}</td><td>${PSTAT[p.status]?`<span class="chip"><i style="background:${PSTAT[p.status].c}"></i>${L(PSTAT[p.status])}</span>`:''}</td><td class="mono" style="font-size:12px">${p.start?fmtD(p.start)+' – '+fmtD(p.end_):'—'}</td><td>${p.kind==='intern'?`<div class="prog"><span class="t"><i style="width:${onbPct(p.id)}%"></i></span><span>${onbPct(p.id)}%</span></div>`:'—'}</td><td class="mono">${open.filter(x=>x.assignee_id===p.id).length}</td></tr>`).join('')}
+  </tbody></table></section>`;
+}
+function onbList(pid, limit){
+  let items = ONB;
+  if (limit) { const first = items.findIndex(o => !onbDone(pid, o.id)); const s = Math.max(0, first - 1); items = items.slice(s, s + limit); }
+  const can = isAdmin() || pid === ME();
+  return `<div class="chk">${items.map(o => { const d = onbDone(pid, o.id); return `<label class="${d?'done':''}"><input type="checkbox" data-onb="${pid}:${o.id}" ${d?'checked':''} ${can?'':'disabled'}><span>${esc(L(o.w))}</span><span class="own">${L(WHO[o.who])} · ${L(o.when)}</span></label>`; }).join('')}</div>`;
+}
+function vMyOnb(){ return header(t('myonb'), t('myonbSub')) + `<section class="panel"><div class="prog" style="margin-bottom:10px"><span class="t"><i style="width:${onbPct(ME())}%"></i></span><span>${onbPct(ME())}%</span></div>${onbList(ME())}</section>`; }
+
+/* ---------------- drawers ---------------- */
+function openDrawer(title, body){
+  $('#layer').innerHTML = `<div class="scrim" data-close></div><aside class="drawer" role="dialog" aria-modal="true" aria-label="${esc(title)}"><header><h2>${esc(title)}</h2><button class="x" data-close aria-label="${t('close')}">✕</button></header><div class="body">${body}</div></aside>`;
+  $('#layer').querySelectorAll('[data-close]').forEach(el => el.onclick = closeDrawer);
+  $('#layer .x').focus();
+}
+function closeDrawer(){ $('#layer').innerHTML = ''; }
+function armDelete(btn, fn){ btn.onclick = () => { if (btn.dataset.armed) fn(); else { btn.dataset.armed = 1; btn.textContent = t('confirmAgain'); } }; }
+
+async function taskDrawer(id){
+  const x = S.tasks.find(y => y.id === id); if (!x) return;
+  const writable = S.boards.filter(b => isAdmin() || (b.members||[]).includes(ME()));
+  const sel = (key, list, val) => `<select data-tf="${key}">${opts(list, val)}</select>`;
+  openDrawer(x.title, `<dl class="fields">
+   <dt>${t('title')}</dt><dd><input data-tf="title" value="${esc(x.title)}" maxlength="300"></dd>
+   <dt>${t('status')}</dt><dd>${sel('status', TASK_COLS.map(c => [c.id, L(c)]), x.status)}</dd>
+   <dt>${t('board')}</dt><dd>${sel('board_id', (writable.some(b=>b.id===x.board_id)?writable:[boardOf(x.board_id), ...writable].filter(Boolean)).map(b => [b.id, b.name]), x.board_id)}</dd>
+   <dt>${t('assignee')}</dt><dd>${sel('assignee_id', S.people.map(p => [p.id, pname(p)]), x.assignee_id)}</dd>
+   <dt>${t('due')}</dt><dd><input type="date" data-tf="due" value="${esc(x.due||'')}"></dd>
+   <dt>${t('priority')}</dt><dd>${sel('priority', [['h',t('hi')],['m',t('md')],['l',t('lo')]], x.priority)}</dd>
+   ${x.pp_id && S.pp.find(p=>p.id===x.pp_id) ? `<dt>${t('linked')}</dt><dd><a href="#" data-openpp="${x.pp_id}">PP-${String(x.pp_id).padStart(4,'0')} · ${esc(S.pp.find(p=>p.id===x.pp_id).title)}</a></dd>` : ''}
+   <dt>${t('desc')}</dt><dd><textarea data-tf="description" maxlength="5000">${esc(x.description||'')}</textarea></dd>
+  </dl>
+  <div><h4 class="h4">${t('comments')}</h4><div class="cm" id="cmList"><div class="empty">…</div></div>
+   <textarea id="cmIn" placeholder="${t('addComment')}" style="margin-top:8px;min-height:60px" maxlength="4000"></textarea><div style="margin-top:6px"><button class="btn sm pri" id="cmPost">${t('post')}</button></div></div>
+  ${isAdmin()?`<div><button class="btn sm danger" id="delTask">${t('delTask')}</button></div>`:''}`);
+  $('#layer').querySelectorAll('[data-tf]').forEach(el => el.onchange = async () => {
+    let v = el.value; if (['board_id','assignee_id'].includes(el.dataset.tf)) v = +v;
+    await act(() => api('PATCH', `/os/api/tasks/${id}`, {[el.dataset.tf]: v}), t('saved')).catch(()=>{});
+    if (el.dataset.tf === 'title') { const h = $('#layer header h2'); if (h) h.textContent = el.value; }
+  });
+  const lk = $('#layer [data-openpp]'); if (lk) lk.onclick = e => { e.preventDefault(); ppDrawer(x.pp_id); };
+  const del = $('#delTask'); if (del) armDelete(del, async () => { await act(() => api('DELETE', `/os/api/tasks/${id}`), t('deleted')); closeDrawer(); });
+  const loadC = async () => { try { const r = await api('GET', `/os/api/tasks/${id}/comments`); const box = $('#cmList'); if (box) box.innerHTML = r.comments.map(c => `<div class="c"><b>${esc(pname(person(c.person_id)))}</b><small>${fmtD(c.created_at)}</small><div>${esc(c.body)}</div></div>`).join('') || '<div class="empty">—</div>'; } catch(e){} };
+  loadC();
+  $('#cmPost').onclick = async () => { const v = $('#cmIn').value.trim(); if (!v) return; try { await api('POST', `/os/api/tasks/${id}/comments`, {body:v}); $('#cmIn').value = ''; await loadC(); refresh(); } catch(e){ toast(e.message, true); } };
+}
+function ppDrawer(id){
+  const p = S.pp.find(y => y.id === id); if (!p) return;
+  const q = (k, v) => v ? `<div><small>${t(k)}</small>${esc(v)}</div>` : '';
+  const tags = (k, arr, dict) => (arr||[]).length ? `<div><small>${t(k)}</small>${arr.map(x => `<span class="chip" style="margin:2px 4px 2px 0">${esc(L(dict[x])||x)}</span>`).join('')}</div>` : '';
+  const li = /^https:\/\/([a-z]{2,3}\.)?linkedin\.com\//i.test(p.linkedin||'') ? ` · <a href="${esc(p.linkedin)}" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>` : '';
+  openDrawer(`${p.ref} · ${p.title}`, `<dl class="fields">
+   <dt>${t('status')}</dt><dd><select data-pf="status">${opts(PP_STAGES.map(s => [s.id, L(s)]), p.status)}</select></dd>
+   <dt>${t('priority')}</dt><dd><select data-pf="priority">${opts([0,1,2,3,4,5].map(n => [n, n ? stars(n) : '—']), p.priority)}</select></dd>
+   <dt>${t('owner')}</dt><dd><select data-pf="owner_id" ${isAdmin()?'':'disabled'}><option value="">—</option>${opts(S.people.filter(x => x.status !== 'offered').map(x => [x.id, pname(x)]), p.owner_id)}</select></dd>
+   <dt>${t('org')}</dt><dd>${esc(p.org)}${p.position?` · ${esc(p.position)}`:''}</dd><dt>${t('type')}</dt><dd>${esc(L(RTYPES[p.rtype])||p.rtype)}</dd><dt>${t('sector')}</dt><dd>${esc(L(SECTORS[p.sector])||p.sector)}</dd>
+   <dt>${t('contact')}</dt><dd>${esc(p.name)} · ${esc(p.email)}${p.phone?` · ${esc(p.phone)}`:''}${li}</dd>
+   <dt>${t('received')}</dt><dd class="mono">${fmtD(p.created_at)}</dd><dt>${t('publicOk')}</dt><dd>${p.public_ok?t('yes'):t('no')}</dd></dl>
+  <div class="qa">${q('q_problem',p.problem)}${q('q_affected',p.affected)}${p.freq?`<div><small>${t('q_freq')}</small>${L(FREQ[p.freq])||esc(p.freq)}</div>`:''}${q('q_work',p.workaround)}${q('q_impact',p.impact)}${q('q_success',p.success)}${tags('q_data',p.data,DATA_T)}${q('q_market',p.market)}${q('q_msize',p.msize)}${tags('q_chan',p.channels,CHANNELS)}${q('q_price',p.price)}${q('q_comp',p.competitors)}${tags('involve',p.involve,INVOLVE)}${q('q_alumni',p.alumni)}</div>
+  <div><h4 class="h4">${t('notes')}</h4><textarea id="ppNote" maxlength="8000">${esc(p.notes||'')}</textarea><div style="display:flex;gap:8px;margin-top:6px;flex-wrap:wrap"><button class="btn sm" id="ppSave">${t('save')}</button>${(isAdmin()||S.boards.some(b=>(b.members||[]).includes(ME())))?`<button class="btn sm pri" id="ppTask">${ico('plus')}${t('createTask')}</button>`:''}</div></div>
+  ${isAdmin()?`<div><button class="btn sm danger" id="ppDel">${t('delPP')}</button></div>`:''}`);
+  $('#layer').querySelectorAll('[data-pf]').forEach(el => el.onchange = () => { const k = el.dataset.pf; const v = k === 'status' ? el.value : (el.value === '' ? null : +el.value); act(() => api('PATCH', `/os/api/pp/${id}`, {[k]: v}), t('saved')).catch(()=>{}); });
+  $('#ppSave').onclick = () => act(() => api('PATCH', `/os/api/pp/${id}`, {notes: $('#ppNote').value}), t('saved')).catch(()=>{});
+  const mk = $('#ppTask'); if (mk) mk.onclick = async () => {
+    const b = S.boards.find(b => /spark/i.test(b.name) && (isAdmin() || (b.members||[]).includes(ME()))) || S.boards.find(b => isAdmin() || (b.members||[]).includes(ME()));
+    if (!b) return;
+    const r = await act(() => api('POST', '/os/api/tasks', {board_id:b.id, title:t('followUp') + p.title.slice(0, 260), assignee_id: p.owner_id || ME(), pp_id: p.id}), t('created')).catch(()=>null);
+    if (r) taskDrawer(r.id);
+  };
+  const del = $('#ppDel'); if (del) armDelete(del, async () => { await act(() => api('DELETE', `/os/api/pp/${id}`), t('deleted')); closeDrawer(); });
+}
+function boardDrawer(editId){
+  const b = editId ? boardOf(editId) : null;
+  const mem = new Set(b ? b.members : [ME()]);
+  openDrawer(b ? b.name : t('newBoard'), `<div class="f"><label for="bName">${t('boardName')}</label><input id="bName" maxlength="120" value="${esc(b?.name||'')}" placeholder="${lang==='th'?'เช่น Forge รอบที่ 1, โครงการหุ่นยนต์ดูแลผู้สูงอายุ':'e.g. Forge Round 1, Care-robot pilot'}"></div>
+   <div class="f"><label for="bDesc">${t('desc')}</label><textarea id="bDesc" style="min-height:60px" maxlength="2000">${esc(b?.description||'')}</textarea></div>
+   <div class="f"><span class="lbl">${t('members')}</span><span class="hint">${t('membersHint')}</span><div class="chk">${S.people.filter(p => p.status !== 'alumni').map(p => `<label><input type="checkbox" data-mem="${p.id}" ${mem.has(p.id)||p.admin?'checked':''} ${p.admin?'disabled':''}>${av(p.id)}<span>${esc(pname(p))}</span><span class="own">${p.admin?t('adminLbl'):L(KINDS[p.kind])}</span></label>`).join('')}</div></div>
+   ${b?'':`<p class="hint" style="font-size:12.5px;color:var(--mute)">${t('boardHint')}</p>`}
+   <div><button class="btn pri" id="bSave">${b ? t('save') : t('createBoard')}</button></div>`);
+  const inp = $('#bName'); inp.focus();
+  const go = async () => { const name = inp.value.trim(); if (!name) { inp.focus(); return; }
+    const members = [...document.querySelectorAll('[data-mem]:checked')].map(i => +i.dataset.mem);
+    const body = {name, description: $('#bDesc').value.trim(), members};
+    const r = await act(() => b ? api('PATCH', `/os/api/boards/${b.id}`, body) : api('POST', '/os/api/boards', body), t('saved')).catch(()=>null);
+    if (r) { if (!b && r.id) f.board = String(r.id); closeDrawer(); render(); } };
+  $('#bSave').onclick = go; inp.onkeydown = e => { if (e.key === 'Enter') go(); };
+}
+function personDrawer(id){
+  const p = person(id); if (!p) return;
+  const fullInfo = isAdmin() || id === ME();
+  openDrawer(pname(p), `<dl class="fields"><dt>${t('kind')}</dt><dd>${L(KINDS[p.kind])||''}${p.admin?` · ${t('adminLbl')}`:''}</dd>
+   ${fullInfo?`${p.name_th?`<dt>${t('nameTh')}</dt><dd>${esc(p.name_th)}</dd>`:''}${p.email?`<dt>${t('email')}</dt><dd>${esc(p.email)}</dd>`:''}${p.title?`<dt>${t('jobTitle')}</dt><dd>${esc(p.title)}</dd>`:''}${p.track?`<dt>${t('track')}</dt><dd>${esc(p.track)}</dd>`:''}
+   ${PSTAT[p.status]?`<dt>${t('status')}</dt><dd>${L(PSTAT[p.status])}</dd>`:''}${p.sid?`<dt>${t('idNo')}</dt><dd class="mono">${esc(p.sid)}</dd>`:''}${p.phone?`<dt>${t('phone')}</dt><dd>${esc(p.phone)}</dd>`:''}
+   ${p.start?`<dt>${t('start')} – ${t('end')}</dt><dd>${fmtD(p.start)} – ${fmtD(p.end_)}</dd>`:''}${p.supervisor_id?`<dt>${t('supervisor')}</dt><dd>${esc(pname(person(p.supervisor_id)))}</dd>`:''}
+   <dt>${t('lastLogin')}</dt><dd>${p.last_login?fmtD(p.last_login):t('never')}</dd>`:''}</dl>
+   ${isAdmin()?`<div><button class="btn sm" id="editP">${t('editPerson')}</button></div>`:''}
+   ${p.kind==='intern'&&fullInfo?`<div><h4 class="h4">${t('onbCol')} · ${onbPct(id)}%</h4>${onbList(id)}</div>`:''}
+   <div><h4 class="h4">${t('openTasks')}</h4><div class="list">${S.tasks.filter(x=>x.assignee_id===id&&x.status!=='done').map(x => `<div class="li" data-task="${x.id}"><span class="tt">${esc(x.title)}</span>${dueChip(x.due,x.status)}</div>`).join('') || '<div class="empty">—</div>'}</div></div>`);
+  const e = $('#editP'); if (e) e.onclick = () => personForm(id);
+  bindCommon($('#layer'));
+}
+function personForm(id){
+  const p = id ? person(id) : {kind:'intern', status:'confirmed', start:'2027-01-04', end_:'2027-04-23', supervisor_id: ME()};
+  const fld = (k, label, type='text', extra='') => `<div class="f"><label for="pf_${k}">${label}</label><input id="pf_${k}" type="${type}" value="${esc(p[k]||'')}" ${extra}></div>`;
+  openDrawer(id ? t('editPerson') : t('addPerson'), `<div class="frow">${fld('name', t('name'), 'text', 'maxlength="200" required')}${fld('name_th', t('nameTh'), 'text', 'maxlength="200"')}</div>
+   <div class="f"><label for="pf_email">${t('email')}</label><input id="pf_email" type="email" value="${esc(p.email||'')}" maxlength="200"><span class="hint">${t('emailHint')}</span></div>
+   <div class="frow"><div class="f"><label for="pf_kind">${t('kind')}</label><select id="pf_kind">${opts(Object.entries(KINDS).map(([k,v]) => [k, L(v)]), p.kind)}</select></div><div class="f"><label for="pf_status">${t('status')}</label><select id="pf_status">${opts(Object.entries(PSTAT).map(([k,v]) => [k, L(v)]), p.status)}</select></div></div>
+   <div class="frow">${fld('title', t('jobTitle'), 'text', 'maxlength="200"')}${fld('track', t('track'), 'text', 'maxlength="200"')}</div>
+   <div class="frow">${fld('sid', t('idNo'), 'text', 'maxlength="20"')}${fld('phone', t('phone'), 'text', 'maxlength="50"')}</div>
+   <div class="frow">${fld('start', t('start'), 'date')}${fld('end_', t('end'), 'date')}</div>
+   <div class="frow"><div class="f"><label for="pf_supervisor_id">${t('supervisor')}</label><select id="pf_supervisor_id"><option value="">—</option>${opts(S.people.filter(x => x.id !== id).map(x => [x.id, pname(x)]), p.supervisor_id)}</select></div><div class="f"><label for="pf_color">${t('color')}</label><input id="pf_color" type="color" value="${esc(p.color||'#6E0B1C')}"></div></div>
+   <div style="display:flex;gap:8px"><button class="btn pri" id="pfSave">${t('save')}</button><button class="btn" data-close>${t('cancel')}</button></div>`);
+  $('#layer').querySelectorAll('[data-close]').forEach(el => el.onclick = closeDrawer);
+  $('#pfSave').onclick = async () => {
+    const v = k => $('#pf_' + k).value.trim();
+    const body = {name:v('name'), name_th:v('name_th'), email:v('email'), kind:v('kind'), status:v('status'), title:v('title'), track:v('track'), sid:v('sid'), phone:v('phone'), start:v('start'), end_:v('end_'), supervisor_id: v('supervisor_id') ? +v('supervisor_id') : null, color:v('color')};
+    if (!body.name) { $('#pf_name').focus(); return; }
+    const r = await act(() => id ? api('PATCH', `/os/api/people/${id}`, body) : api('POST', '/os/api/people', body), t('saved')).catch(()=>null);
+    if (r) personDrawer(id || r.id);
+  };
+}
+
+/* ---------------- drag and drop (mouse, pen, touch) ---------------- */
+let dragging = false;
+document.addEventListener('touchmove', e => { if (dragging) e.preventDefault(); }, {passive:false});
+function bindBoard(){
+  const board = $('#view .board'); if (!board) return;
+  const kind = board.dataset.kind;
+  const open = c => kind === 'pp' ? ppDrawer(+c.dataset.pp) : taskDrawer(+c.dataset.task);
+  board.querySelectorAll('.card').forEach(c => { c.onkeydown = e => { if (e.key === 'Enter') open(c); }; c.addEventListener('pointerdown', e => startDrag(e, c, board, kind, open)); });
+}
+function startDrag(e, card, board, kind, open){
+  if (e.button !== 0 || e.target.closest('a,button,select,input')) return;
+  const sx = e.clientX, sy = e.clientY, touch = e.pointerType === 'touch';
+  let started = false, armed = !touch, ghost, ph, offX, offY, lastX = sx, lastY = sy, raf = 0;
+  const timer = touch ? setTimeout(() => { armed = true; dragging = true; card.classList.add('lift'); }, 200) : 0;
+  const begin = () => {
+    started = true; dragging = true;
+    const r = card.getBoundingClientRect(); offX = sx - r.left; offY = sy - r.top;
+    ghost = card.cloneNode(true); ghost.classList.add('ghost'); ghost.classList.remove('lift'); ghost.style.width = r.width + 'px'; document.body.appendChild(ghost);
+    ph = document.createElement('div'); ph.className = 'ph'; ph.style.height = r.height + 'px';
+    card.after(ph); card.classList.add('dragging'); card.classList.remove('lift'); document.body.classList.add('dragmode');
+  };
+  const place = (x, y) => {
+    ghost.style.transform = `translate(${x - offX}px, ${y - offY}px) rotate(1.5deg)`;
+    const col = document.elementFromPoint(x, y)?.closest('.col');
+    board.querySelectorAll('.col.over').forEach(c => { if (c !== col) c.classList.remove('over'); });
+    if (!col || !board.contains(col)) return;
+    col.classList.add('over');
+    const before = [...col.querySelectorAll('.card:not(.dragging)')].find(c => { const r = c.getBoundingClientRect(); return y < r.top + r.height / 2; });
+    if (before) col.insertBefore(ph, before); else col.appendChild(ph);
+    col.querySelectorAll('.empty').forEach(el => el.hidden = true);
+  };
+  const edge = () => { const br = board.getBoundingClientRect(), d = lastX < br.left + 60 ? -12 : lastX > br.right - 60 ? 12 : 0; if (d) { board.scrollLeft += d; place(lastX, lastY); } raf = requestAnimationFrame(edge); };
+  const finish = () => { clearTimeout(timer); cancelAnimationFrame(raf); dragging = false;
+    document.removeEventListener('pointermove', move); document.removeEventListener('pointerup', up); document.removeEventListener('pointercancel', cancel);
+    document.body.classList.remove('dragmode'); card.classList.remove('lift'); };
+  const move = ev => { lastX = ev.clientX; lastY = ev.clientY; const dist = Math.hypot(lastX - sx, lastY - sy);
+    if (!started) { if (!armed) { if (dist > 8) finish(); return; } if (dist < 5) return; begin(); raf = requestAnimationFrame(edge); }
+    ev.preventDefault(); place(lastX, lastY); };
+  const cancel = () => { finish(); if (started) render(); };
+  const up = async ev => {
+    const dist = Math.hypot(ev.clientX - sx, ev.clientY - sy); finish();
+    if (!started) { if (dist < 8) open(card); return; }
+    ghost.remove();
+    const col = ph.parentElement; if (!col || !col.classList.contains('col')) { render(); return; }
+    const key = c => +(kind === 'pp' ? c.dataset.pp : c.dataset.task);
+    const ids = [...col.children].filter(el => el === ph || (el.classList.contains('card') && el !== card)).map(el => el === ph ? key(card) : key(el));
+    const items = kind === 'pp' ? S.pp : S.tasks, item = items.find(x => x.id === key(card)), from = item.status, to = col.dataset.col;
+    item.status = to; ids.forEach((id, i) => { const it = items.find(x => x.id === id); if (it) it.ord = i; }); render();   // optimistic
+    try { await api('POST', kind === 'pp' ? '/os/api/pp/reorder' : '/os/api/tasks/reorder', {status: to, ids});
+      if (from !== to) toast(`${t('moved')} “${L((kind === 'pp' ? PP_STAGES : TASK_COLS).find(s => s.id === to))}”`);
+    } catch(e) { toast(e.message, true); }
+    refresh().catch(()=>{});
+  };
+  document.addEventListener('pointermove', move, {passive:false}); document.addEventListener('pointerup', up); document.addEventListener('pointercancel', cancel);
+}
+
+/* ---------------- render ---------------- */
+function bindCommon(root){
+  root.querySelectorAll('[data-task]').forEach(el => { if (!el.classList.contains('card')) el.onclick = () => taskDrawer(+el.dataset.task); });
+  root.querySelectorAll('[data-pp]').forEach(el => { if (!el.classList.contains('card')) el.onclick = () => ppDrawer(+el.dataset.pp); });
+  root.querySelectorAll('[data-person]').forEach(el => el.onclick = () => personDrawer(+el.dataset.person));
+  root.querySelectorAll('[data-goboard]').forEach(el => el.onclick = () => { f.board = el.dataset.goboard; view = 'tasks'; render(); });
+  root.querySelectorAll('[data-onb]').forEach(el => el.onchange = async () => { const [pid, item] = el.dataset.onb.split(':'); await act(() => api('POST', '/os/api/onboarding', {person_id:+pid, item, done:el.checked})).catch(()=>{}); if ($('#layer .drawer') && root === $('#layer')) personDrawer(+pid); });
+}
+function render(){
+  if (!S) return;
+  applyStatic(); renderNav();
+  const allowed = navItems().filter(k => k !== 'sep' && k !== 'form');
+  if (!allowed.includes(view)) view = allowed[0];
+  const v = $('#view');
+  v.innerHTML = ({dash:vDash, pp:vPP, tasks:vTasks, people:vPeople, myonb:vMyOnb})[view]();
+  bindBoard(); bindCommon(v);
+  const on = (id, ev, fn) => { const el = v.querySelector('#' + id); if (el) el.addEventListener(ev, fn); };
+  on('fSec', 'change', e => { f.ppSector = e.target.value; render(); });
+  on('fPerson', 'change', e => { f.person = e.target.value; render(); });
+  on('fQ', 'input', e => { f.q = e.target.value; clearTimeout(render.tq); render.tq = setTimeout(() => { render(); const q = $('#fQ'); if (q) { q.focus(); q.setSelectionRange(q.value.length, q.value.length); } }, 250); });
+  v.querySelectorAll('[data-board]').forEach(b => b.onclick = () => { f.board = b.dataset.board; render(); });
+  v.querySelectorAll('[data-ptab]').forEach(b => b.onclick = () => { f.ptab = b.dataset.ptab; render(); });
+  v.querySelectorAll('#newBoard').forEach(b => b.onclick = () => boardDrawer());
+  on('editBoard', 'click', () => boardDrawer(+f.board));
+  on('addPerson', 'click', () => personForm());
+  on('newTask', 'click', async () => {
+    const writable = S.boards.filter(b => isAdmin() || (b.members||[]).includes(ME()));
+    const bid = f.board !== 'all' && writable.some(b => b.id === +f.board) ? +f.board : writable[0]?.id; if (!bid) return;
+    const r = await act(() => api('POST', '/os/api/tasks', {board_id: bid, title: t('untitled'), status: 'todo'})).catch(()=>null);
+    if (r) { taskDrawer(r.id); setTimeout(() => { const i = $('#layer [data-tf="title"]'); if (i) { i.focus(); i.select(); } }, 50); }
+  });
+}
+
+/* ---------------- sign-in ---------------- */
+function showLogin(msg){
+  $('#app').hidden = true; $('#login').hidden = false; applyStatic();
+  const err = $('#loginErr'); err.hidden = !msg; err.textContent = msg || '';
+  $('#devLogin').hidden = !CONFIG?.dev;
+}
+async function googleSignIn(){
+  const btn = $('#gSignIn'); btn.disabled = true;
+  try {
+    const {initializeApp, getApps} = await import('https://www.gstatic.com/firebasejs/13.4.0/firebase-app.js');
+    const {getAuth, GoogleAuthProvider, signInWithPopup, signOut} = await import('https://www.gstatic.com/firebasejs/13.4.0/firebase-auth.js');
+    const app = getApps()[0] || initializeApp(CONFIG.firebase); const auth = getAuth(app);
+    const prov = new GoogleAuthProvider(); prov.setCustomParameters({prompt: 'select_account'});
+    const cred = await signInWithPopup(auth, prov);
+    const idToken = await cred.user.getIdToken();
+    await api('POST', '/os/api/auth/session', {idToken});
+    await signOut(auth).catch(()=>{});
+    await start();
+  } catch(e) { showLogin(`${t('loginFail')}: ${e.code || e.message}`); }
+  finally { btn.disabled = false; }
+}
+async function start(){
+  try { if (!CONFIG) CONFIG = await api('GET', '/os/api/config'); } catch(e) { showLogin(t('loadFail')); return; }
+  try { S = await api('GET', '/os/api/bootstrap'); }
+  catch(e) { if (e.status === 401) return showLogin(); showLogin(`${t('loadFail')}: ${e.message}`); return; }
+  $('#login').hidden = true; $('#app').hidden = false; render();
+}
+$('#gSignIn').onclick = googleSignIn;
+$('#devLogin').onsubmit = async e => { e.preventDefault(); try { await api('POST', '/os/api/auth/dev', {email: $('#devEmail').value}); await start(); } catch(err) { showLogin(err.message); } };
+$('#signOut').onclick = async () => { await api('POST', '/os/api/auth/logout').catch(()=>{}); S = null; closeDrawer(); showLogin(); };
+document.querySelectorAll('.seg button').forEach(b => b.onclick = () => { lang = b.dataset.lang; LS.set('aricos-lang', lang); applyStatic(); if (S) { closeDrawer(); render(); } });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrawer(); });
+applyStatic();
+start();
+</script>
+</body>
+</html>

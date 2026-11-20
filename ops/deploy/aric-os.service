@@ -1,0 +1,22 @@
+[Unit]
+Description=ARIC OS back office (ops/server.py)
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+User=aric
+Group=aric
+WorkingDirectory=/var/www/aric/ops
+EnvironmentFile=/etc/aric-os.env
+ExecStart=/usr/bin/python3 /var/www/aric/ops/server.py
+# server.py exits when its own file changes after a git pull; systemd then starts the new version
+Restart=always
+RestartSec=3
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ProtectHome=true
+ReadWritePaths=/var/lib/aric-os
+
+[Install]
+WantedBy=multi-user.target

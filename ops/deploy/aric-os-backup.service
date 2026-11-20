@@ -1,0 +1,9 @@
+[Unit]
+Description=Back up the ARIC OS database (keeps the last 14)
+
+[Service]
+Type=oneshot
+User=aric
+Group=aric
+EnvironmentFile=/etc/aric-os.env
+ExecStart=/usr/bin/python3 /var/www/aric/ops/server.py --backup /var/backups/aric-os

@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ส่งโจทย์ให้ ARIC — Spark Hackathon 2027</title>
+<meta name="description" content="ส่งโจทย์ปัญหาจริงจากงานของคุณให้ ARIC มหาวิทยาลัยแม่ฟ้าหลวง ARIC สนับสนุนค่าใช้จ่ายด้านบุคลากรและอุปกรณ์ หาคนทำงาน สร้าง MVP และพาออกบูธ ส่วนคุณเป็นที่ปรึกษาให้ทีม">
+<meta property="og:title" content="ส่งโจทย์ให้ ARIC — ปัญหาของคุณ คือโจทย์ของเรา">
+<meta property="og:description" content="หาคนทำงาน → สร้าง MVP → ออกสู่ตลาดที่บูธ · ARIC สนับสนุนค่าใช้จ่ายด้านบุคลากรและอุปกรณ์ คุณเป็นที่ปรึกษาให้ทีม">
+<meta property="og:image" content="https://aric.mfu.ac.th/assets/og.jpg">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#6E0B1C">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&family=Martian+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --red:#C8102E; --field:#6E0B1C; --field-d:#4A0712; --gold:#E4B04A; --gold-l:#F3D48A; --gold-ink:#7A5410;
+  --ink:#17110F; --ink2:#463B37; --mute:#6B5E59; --rule:#E7E1DE; --paper:#FFFFFF; --wash:#F6F3F1; --field-bg:#FBF9F8;
+  --on-red:#FFF4EF; --on-red2:rgba(255,236,228,.80); --on-red3:rgba(255,236,228,.58); --ok:#2E7D5B; --bad:#B42318;
+  --font:'Prompt',system-ui,sans-serif; --mono:'Martian Mono','Prompt',ui-monospace,Consolas,monospace;
+  --ease:cubic-bezier(.16,1,.3,1);
+  --wrap:min(980px, 100% - 2*clamp(16px,4vw,48px));
+  --shadow:0 1px 2px rgba(40,10,10,.05),0 10px 28px -16px rgba(40,10,10,.28);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font:400 16px/1.7 var(--font);color:var(--ink);background:var(--wash)}
+h1,h2,h3,h4,p{margin:0}
+a{color:inherit}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--gold);outline-offset:3px;border-radius:6px}
+[hidden]{display:none!important}
+.wrap{width:var(--wrap);margin-inline:auto}
+.bar{position:sticky;top:0;z-index:20;background:rgba(74,7,18,.94);backdrop-filter:blur(10px);color:var(--on-red)}
+.bar .wrap{display:flex;align-items:center;gap:14px;height:62px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;margin-right:auto}
+.brand img{width:36px;height:36px}
+.brand b{font:700 19px/1 var(--font);letter-spacing:.06em}
+.brand span{font:500 12.5px/1.2 var(--font);color:var(--on-red2);border-left:1px solid var(--on-red3);padding-left:10px}
+.back{font:500 14px/1 var(--font);text-decoration:none;color:var(--on-red2);padding:10px 4px}
+.back:hover{color:var(--on-red)}
+.lang{display:flex;border:1.5px solid currentColor;border-radius:999px;padding:2px;flex:none}
+.lang button{font:600 12.5px/1 var(--mono);color:inherit;background:none;border:0;padding:7px 10px;border-radius:999px;cursor:pointer}
+.lang button[aria-pressed="true"]{background:var(--gold);color:var(--ink)}
+.hero{background:radial-gradient(110% 120% at 85% 90%,#8B0F25 0%,var(--field) 50%,var(--field-d) 100%);color:var(--on-red)}
+.hero .wrap{padding:clamp(44px,7vw,84px) 0 clamp(40px,6vw,70px)}
+.kicker{font:500 13px/1.4 var(--mono);letter-spacing:.06em;color:var(--gold-l)}
+.hero h1{font:700 clamp(2.3rem,5.6vw,4.2rem)/1.08 var(--font);margin-top:14px;text-wrap:balance}
+.hero h1 em{font-style:normal;color:var(--gold-l)}
+.hero p{font-size:clamp(1.02rem,1.4vw,1.18rem);color:var(--on-red2);max-width:58ch;margin-top:18px}
+.hero .go{display:inline-flex;align-items:center;gap:10px;margin-top:26px;background:var(--gold);color:var(--ink);font-weight:600;text-decoration:none;padding:14px 22px;border-radius:999px}
+.hero .go:hover{background:#EDBD5C}
+main{display:flex;flex-direction:column;gap:18px;padding:clamp(28px,4vw,44px) 0 64px}
+.gets-h{display:flex;flex-direction:column;gap:4px}
+.gets-h span{font:600 13.5px var(--font);letter-spacing:.06em;color:var(--red)}
+.gets-h b{font:700 clamp(1.3rem,2.8vw,1.8rem)/1.25 var(--font);text-wrap:balance}
+.gets{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.get{position:relative;background:var(--paper);border:1px solid var(--rule);border-radius:18px;padding:22px 20px 20px;display:flex;flex-direction:column;gap:10px;box-shadow:var(--shadow);overflow:hidden}
+.get::before{content:"";position:absolute;inset:0 0 auto;height:5px;background:linear-gradient(90deg,var(--field),var(--gold))}
+.get .num{font:700 56px/1 var(--font);color:transparent;-webkit-text-stroke:1.6px var(--field);letter-spacing:-.02em}
+.get svg{position:absolute;top:22px;right:20px;width:34px;height:34px;fill:none;stroke:var(--gold-ink);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.get h3{font:700 19px/1.3 var(--font)}
+.get p{color:var(--ink2);font-size:14.5px;line-height:1.65}
+.deal{display:grid;grid-template-columns:1fr auto 1fr;gap:16px;background:linear-gradient(135deg,#FBF1DC,var(--paper));border:1px solid #EBD3A0;border-radius:18px;padding:20px 22px}
+.deal>div:not(.plus){display:flex;flex-direction:column;gap:4px;min-width:0}
+.deal span{font:600 12.5px var(--font);letter-spacing:.06em;color:var(--red)}
+.deal b{font:700 19px/1.3 var(--font)}
+.deal p{color:var(--ink2);font-size:14px}
+.deal .plus{display:grid;place-items:center;font:700 28px var(--font);color:var(--gold-ink)}
+form{display:flex;flex-direction:column;gap:16px;margin-top:6px}
+.step{background:var(--paper);border:1px solid var(--rule);border-radius:16px;padding:clamp(18px,3vw,26px);display:flex;flex-direction:column;gap:14px;box-shadow:var(--shadow)}
+.step h2{font:600 18px/1.3 var(--font);display:flex;gap:12px;align-items:baseline}
+.step h2 span{font:600 13px var(--mono);color:var(--gold-ink);white-space:nowrap}
+.step .intro{font-size:14px;color:var(--mute);margin-top:-6px}
+.row{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.f{display:flex;flex-direction:column;gap:6px;min-width:0}
+.f label,.f .lbl{font-size:14px;font-weight:500;color:var(--ink2)}
+.f em{color:var(--red);font-style:normal}
+.f input,.f select,.f textarea{background:var(--field-bg);border:1px solid var(--rule);border-radius:10px;padding:10px 12px;width:100%}
+.f textarea{min-height:96px;resize:vertical}
+.f input:focus,.f select:focus,.f textarea:focus{border-color:var(--gold);outline:none;box-shadow:0 0 0 3px rgba(228,176,74,.25)}
+.f .hint{font-size:12.5px;color:var(--mute)}
+.f.bad input,.f.bad select,.f.bad textarea{border-color:var(--bad)}
+.opts{display:flex;flex-wrap:wrap;gap:8px}
+.opts label{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--rule);border-radius:999px;padding:7px 13px;font-size:14px;cursor:pointer;background:var(--field-bg)}
+.opts label:has(input:checked){border-color:var(--field);background:#FBEFF0}
+.opts input{accent-color:var(--field)}
+.consent{display:flex;gap:10px;font-size:14px;color:var(--ink2);align-items:flex-start}
+.consent input{margin-top:5px;accent-color:var(--field);flex:none}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.submit{display:flex;flex-wrap:wrap;align-items:center;gap:14px}
+.btn{display:inline-flex;align-items:center;gap:10px;border:0;border-radius:999px;padding:15px 26px;font-weight:600;font-size:16px;cursor:pointer;background:var(--gold);color:var(--ink);box-shadow:0 8px 20px -10px rgba(0,0,0,.32)}
+.btn:hover{background:#EDBD5C}
+.btn:disabled{opacity:.6;cursor:progress}
+.err{color:var(--bad);font-size:14px}
+.done{background:var(--paper);border:1px solid var(--rule);border-radius:18px;padding:clamp(24px,4vw,40px);text-align:center;display:flex;flex-direction:column;gap:12px;align-items:center;box-shadow:var(--shadow)}
+.done .tick{width:64px;height:64px;border-radius:50%;background:#E5F3EC;display:grid;place-items:center;color:var(--ok);font-size:32px}
+.done h2{font:700 26px/1.25 var(--font)}
+.done .ref{font:600 20px var(--mono);color:var(--field);background:#FBEFF0;padding:6px 14px;border-radius:10px}
+.done p{color:var(--ink2);max-width:52ch}
+.done .again{background:none;border:1px solid var(--rule);border-radius:999px;padding:10px 18px;cursor:pointer;font-weight:500}
+footer{background:var(--field-d);color:var(--on-red2);font-size:13.5px}
+footer .wrap{padding:22px 0;display:flex;flex-wrap:wrap;gap:8px 18px;justify-content:space-between}
+@media (max-width:760px){.gets{grid-template-columns:1fr}.deal{grid-template-columns:1fr}.deal .plus{display:none}.brand span{display:none}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<header class="bar">
+  <div class="wrap">
+    <a class="brand" href="../"><img src="../assets/logo/aric_logo_mark_reverse.svg?v=d" alt="" width="36" height="36"><b>ARIC</b><span data-en="Mae Fah Luang University">มหาวิทยาลัยแม่ฟ้าหลวง</span></a>
+    <a class="back" href="../" data-en="← Main site">← เว็บไซต์หลัก</a>
+    <div class="lang" role="group" aria-label="ภาษา / Language"><button type="button" data-lang="th" aria-pressed="true">TH</button><button type="button" data-lang="en" aria-pressed="false">EN</button></div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <p class="kicker">ARIC · SPARK HACKATHON 2027</p>
+    <h1 data-en="Your problem is our <em>next challenge</em>">ปัญหาของคุณ <em>คือโจทย์ของเรา</em></h1>
+    <p data-en="Share a real problem from your work and receive grant-style support: ARIC finds the people, builds the MVP and takes it to a booth, while you serve as the team’s advisor. It takes about 5 minutes.">ส่งโจทย์จริงจากงานของคุณ แล้วรับการสนับสนุนในรูปแบบเดียวกับทุน (grant): ARIC จัดหาคน สร้าง MVP และพาออกบูธ ส่วนคุณร่วมเป็นที่ปรึกษา (Advisor) ให้ทีม ใช้เวลากรอกประมาณ 5 นาที</p>
+    <a class="go" href="#form"><span data-en="Share a problem">ส่งโจทย์</span> ↓</a>
+  </div>
+</section>
+
+<main class="wrap">
+  <div class="gets-h"><span data-en="WHAT YOU GET">สิ่งที่คุณจะได้รับ</span><b data-en="Grant-style support in three steps, from one problem to a product you can sell">การสนับสนุนแบบทุน 3 ขั้น จากโจทย์หนึ่งข้อ สู่ผลงานที่ขายได้</b></div>
+  <div class="gets">
+    <article class="get"><span class="num">01</span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c1-3.5 3.5-5.5 6.5-5.5s5.5 2 6.5 5.5M16 4.5a3.5 3.5 0 0 1 0 7M18 14.8c1.8.8 3 2.5 3.5 5.2"/></svg>
+      <h3 data-en="Find the people">หาคนทำงานให้</h3><p data-en="ARIC matches student teams, interns and startups with AI and robotics skills to work on your problem.">ARIC จับคู่ทีมนักศึกษา นักศึกษาฝึกงาน และสตาร์ทอัปที่มีทักษะ AI และหุ่นยนต์ ให้ลงมือแก้โจทย์ของคุณ</p></article>
+    <article class="get"><span class="num">02</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18v3h3l6.3-6.3a4 4 0 0 0 5.4-5.4l-2.6 2.6-2.4-.6-.6-2.4z"/></svg>
+      <h3 data-en="Build an MVP">สร้าง MVP</h3><p data-en="Teams build a working prototype at the Spark hackathon, then refine it with ARIC mentors, GPU servers and labs.">ทีมสร้างต้นแบบที่ใช้งานได้จริงใน Spark Hackathon แล้วพัฒนาต่อกับพี่เลี้ยง เครื่อง GPU และห้องแล็บของ ARIC</p></article>
+    <article class="get"><span class="num">03</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 21V9l9-6 9 6v12M3 21h18M8 21v-6h8v6M9 11h6"/></svg>
+      <h3 data-en="Go to market at a booth">ออกสู่ตลาด ที่บูธ</h3><p data-en="Show the result at a booth on Launch day and at expos, and meet real customers, investors and partners.">นำผลงานไปเปิดบูธในวัน Launch และงานแสดงผลงาน พบลูกค้า นักลงทุน และพันธมิตรตัวจริง</p></article>
+  </div>
+  <div class="deal">
+    <div><span data-en="ARIC PROVIDES">ARIC สนับสนุน</span><b data-en="ARIC covers the people and equipment costs">ARIC สนับสนุนค่าใช้จ่ายด้านบุคลากรและอุปกรณ์</b><p data-en="The development team, interns and mentors, plus the GPU servers, labs and robotics equipment used to build the MVP.">ทั้งค่าทีมพัฒนา นักศึกษาฝึกงาน และพี่เลี้ยง รวมถึงเครื่อง GPU ห้องแล็บ และอุปกรณ์หุ่นยนต์ที่ใช้สร้าง MVP</p></div>
+    <div class="plus" aria-hidden="true">+</div>
+    <div><span data-en="YOUR ROLE">บทบาทของคุณ</span><b data-en="Advisor">ที่ปรึกษา (Advisor)</b><p data-en="Explain the real-world context, share the data needed, point the way to commercialisation and the potential market, and give feedback on the MVP at each stage: Spark → Forge → Launch.">เล่าบริบทหน้างาน ให้ข้อมูลที่จำเป็น ชี้ทางสู่การค้าและตลาดที่มีศักยภาพ และให้ความเห็นต่อ MVP ในแต่ละช่วง Spark → Forge → Launch</p></div>
+  </div>
+
+  <form id="form" novalidate>
+    <section class="step">
+      <h2><span>1 / 5</span><b data-en="About you">เกี่ยวกับคุณ</b></h2>
+      <div class="row">
+        <div class="f"><label for="name"><span data-en="Full name">ชื่อ-นามสกุล</span> <em>*</em></label><input id="name" name="name" required maxlength="200" autocomplete="name"></div>
+        <div class="f"><label for="org"><span data-en="Organisation">องค์กร / บริษัท</span> <em>*</em></label><input id="org" name="org" required maxlength="200" autocomplete="organization"></div>
+      </div>
+      <div class="row">
+        <div class="f"><label for="position" data-en="Position">ตำแหน่ง</label><input id="position" name="position" maxlength="200" autocomplete="organization-title"></div>
+        <div class="f"><label for="email"><span data-en="Email">อีเมล</span> <em>*</em></label><input id="email" name="email" type="email" required maxlength="200" autocomplete="email"></div>
+        <div class="f"><label for="phone" data-en="Phone or LINE ID">โทรศัพท์ หรือ LINE ID</label><input id="phone" name="phone" maxlength="100" autocomplete="tel"></div>
+      </div>
+      <div class="f"><label for="linkedin" data-en="LinkedIn profile (optional)">โปรไฟล์ LinkedIn (ถ้ามี)</label><input id="linkedin" name="linkedin" type="url" inputmode="url" maxlength="300" placeholder="https://www.linkedin.com/in/…"><span class="hint" data-en="Helps the team get to know you and your business before getting in touch">ช่วยให้ทีมรู้จักคุณและธุรกิจของคุณก่อนติดต่อ</span></div>
+      <div class="f"><span class="lbl"><span data-en="You are">ท่านเป็น</span> <em>*</em></span><div class="opts" id="rtype"></div></div>
+      <div class="row">
+        <div class="f"><label for="sector"><span data-en="Sector">ภาคส่วน</span> <em>*</em></label><select id="sector" name="sector" required></select></div>
+        <div class="f"><label for="alumni" data-en="MFU alumni? (programme / year)">ศิษย์เก่า มฟล.? (สาขา / ปีที่จบ)</label><input id="alumni" name="alumni" maxlength="200" data-ph="เช่น วิศวกรรมซอฟต์แวร์ 2562" data-ph-en="e.g. Software Engineering 2019"></div>
+      </div>
+    </section>
+
+    <section class="step">
+      <h2><span>2 / 5</span><b data-en="The problem">โจทย์ปัญหา</b></h2>
+      <div class="f"><label for="title"><span data-en="The problem in one sentence">สรุปปัญหาในหนึ่งประโยค</span> <em>*</em></label><input id="title" name="title" required maxlength="300" data-ph="เช่น ตรวจนับสต็อกยาในคลังใช้เวลาวันละ 3 ชั่วโมง" data-ph-en="e.g. Counting medicine stock takes 3 hours a day"></div>
+      <div class="f"><label for="problem"><span data-en="What happens today (where, when, how)">เกิดอะไรขึ้นจริงในงาน (ที่ไหน เมื่อไร อย่างไร)</span> <em>*</em></label><textarea id="problem" name="problem" required maxlength="5000"></textarea></div>
+      <div class="row">
+        <div class="f"><label for="affected" data-en="Who is affected">ใครได้รับผลกระทบ</label><input id="affected" name="affected" maxlength="500"></div>
+        <div class="f"><span class="lbl" data-en="How often">เกิดบ่อยแค่ไหน</span><div class="opts" id="freq"></div></div>
+      </div>
+      <div class="row">
+        <div class="f"><label for="workaround" data-en="Current workaround">ตอนนี้แก้อย่างไร</label><input id="workaround" name="workaround" maxlength="2000"></div>
+        <div class="f"><label for="impact" data-en="Impact (time, money, errors)">ผลกระทบ (เวลา เงิน ความผิดพลาด)</label><input id="impact" name="impact" maxlength="2000"></div>
+      </div>
+      <div class="f"><label for="success" data-en="If solved, what does success look like?">ถ้าแก้ได้ ความสำเร็จหน้าตาเป็นอย่างไร</label><input id="success" name="success" maxlength="2000"></div>
+      <div class="f"><span class="lbl" data-en="What data do you have?">มีข้อมูลประกอบอะไรบ้าง</span><div class="opts" id="data"></div></div>
+    </section>
+
+    <section class="step">
+      <h2><span>3 / 5</span><b data-en="Route to market">ทางสู่การค้าและตลาด</b></h2>
+      <p class="intro" data-en="As the advisor, you know this market best. This helps the team build an MVP that can actually sell.">ในฐานะที่ปรึกษา คุณรู้จักตลาดนี้ดีที่สุด ข้อมูลนี้ช่วยให้ทีมสร้าง MVP ที่ขายได้จริง</p>
+      <div class="row">
+        <div class="f"><label for="market"><span data-en="Who would buy or use this solution?">ใครคือลูกค้าที่จะซื้อหรือใช้ทางแก้นี้</span> <em>*</em></label><input id="market" name="market" required maxlength="1000"></div>
+        <div class="f"><label for="msize" data-en="Rough market size">ขนาดตลาดโดยประมาณ</label><input id="msize" name="msize" maxlength="500" data-ph="เช่น มีองค์กรที่เจอปัญหาเดียวกันราว 200 แห่ง" data-ph-en="e.g. about 200 organisations face the same problem"></div>
+      </div>
+      <div class="f"><span class="lbl" data-en="How the result can reach the market (choose any)">ทางที่ผลงานจะไปสู่ตลาด (เลือกได้หลายข้อ)</span><div class="opts" id="channels"></div></div>
+      <div class="row">
+        <div class="f"><label for="price" data-en="Price customers would likely pay">ราคาที่ลูกค้าน่าจะยอมจ่าย</label><input id="price" name="price" maxlength="300" data-ph="เช่น 1,500 บาท/เดือน/สาขา" data-ph-en="e.g. THB 1,500 per month per branch"></div>
+        <div class="f"><label for="competitors" data-en="Alternatives or competitors today">ทางเลือกหรือคู่แข่งที่มีในตลาดตอนนี้</label><input id="competitors" name="competitors" maxlength="1000"></div>
+      </div>
+    </section>
+
+    <section class="step">
+      <h2><span>4 / 5</span><b data-en="Besides advising, how else would you like to help?">นอกจากบทบาทที่ปรึกษา ท่านยินดีช่วยด้านใดเพิ่มเติม</b></h2>
+      <p class="intro" data-en="Every problem owner advises their team. Anything below is optional.">เจ้าของโจทย์ทุกรายเป็นที่ปรึกษาให้ทีมโดยอัตโนมัติ เลือกเพิ่มได้ตามสะดวก (ไม่บังคับ)</p>
+      <div class="opts" id="involve"></div>
+    </section>
+
+    <section class="step">
+      <h2><span>5 / 5</span><b data-en="Consent">ความยินยอม</b></h2>
+      <label class="consent"><input type="checkbox" id="consent"><span><span data-en="I consent to ARIC, Mae Fah Luang University, storing and using this information to select challenges and contact me about the hackathon, under Thailand’s Personal Data Protection Act (2019). I can ask for deletion at aric@mfu.ac.th.">ข้าพเจ้ายินยอมให้ศูนย์ ARIC มหาวิทยาลัยแม่ฟ้าหลวง เก็บและใช้ข้อมูลนี้เพื่อคัดเลือกโจทย์และติดต่อกลับเกี่ยวกับกิจกรรม Hackathon ตาม พ.ร.บ.คุ้มครองข้อมูลส่วนบุคคล พ.ศ. 2562 และขอลบข้อมูลได้ที่ aric@mfu.ac.th</span> <em style="color:var(--red);font-style:normal">*</em></span></label>
+      <label class="consent"><input type="checkbox" id="public_ok"><span data-en="You may name our organisation as the challenge owner">อนุญาตให้ระบุชื่อองค์กรในฐานะเจ้าของโจทย์</span></label>
+      <div class="hp" aria-hidden="true"><label for="website">Website</label><input id="website" name="website" tabindex="-1" autocomplete="off"></div>
+      <div class="submit"><button class="btn" type="submit" id="send"><span data-en="Submit the problem">ส่งโจทย์</span></button><p class="err" id="err" role="alert" hidden></p></div>
+    </section>
+  </form>
+
+  <section class="done" id="done" hidden aria-live="polite">
+    <div class="tick">✓</div>
+    <h2 data-en="Thank you, we have your problem">ขอบคุณ ได้รับโจทย์ของคุณแล้ว</h2>
+    <div class="ref" id="ref"></div>
+    <p data-en="Keep this reference number. The ARIC team will review your problem and contact you by email.">โปรดเก็บหมายเลขอ้างอิงนี้ไว้ ทีม ARIC จะพิจารณาโจทย์และติดต่อกลับทางอีเมล</p>
+    <button class="again" type="button" id="again" data-en="Share another problem">ส่งโจทย์อีกข้อ</button>
+  </section>
+</main>
+
+<footer><div class="wrap"><span data-en="ARIC — AI &amp; Robotics Innovation Center, Mae Fah Luang University">ARIC — ศูนย์นวัตกรรมด้านปัญญาประดิษฐ์และหุ่นยนต์ มหาวิทยาลัยแม่ฟ้าหลวง</span><span>aric@mfu.ac.th · 0 5391 6741</span></div></footer>
+
+<script>
+(() => {
+  'use strict';
+  const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+  const OPTS = {
+    rtype: {type:'radio', items:{owner:['เจ้าของกิจการ','Business owner'], industry:['ภาคอุตสาหกรรม / บริษัท','Industry / company'], alumni:['ศิษย์เก่า มฟล.','MFU alumni'], health:['โรงพยาบาล / หน่วยบริการสุขภาพ','Hospital / health service'], gov:['หน่วยงานรัฐ / ท้องถิ่น','Government / local authority'], community:['ชุมชน / มูลนิธิ','Community / foundation']}},
+    freq: {type:'radio', items:{daily:['ทุกวัน','Daily'], weekly:['ทุกสัปดาห์','Weekly'], monthly:['ทุกเดือน','Monthly'], seasonal:['ตามฤดูกาล','Seasonal']}},
+    data: {type:'checkbox', items:{img:['รูปภาพ','Images'], vid:['วิดีโอ','Video'], doc:['เอกสาร / ข้อความ','Documents / text'], sheet:['Excel / ฐานข้อมูล','Spreadsheets / database'], iot:['เซนเซอร์ / IoT','Sensors / IoT'], none:['ยังไม่มี','None yet']}},
+    channels: {type:'checkbox', items:{buy:['เราจะซื้อหรือใช้เอง','We would buy or use it ourselves'], refer:['แนะนำให้ลูกค้าหรือเครือข่ายของเรา','Introduce it to our customers or network'], distribute:['ร่วมจัดจำหน่าย / เป็นตัวแทนขาย','Distribute or resell it'], invest:['ร่วมลงทุน หรือร่วมตั้งบริษัท','Co-invest or co-found a company'], unsure:['ยังไม่แน่ใจ','Not sure yet']}},
+    involve: {type:'checkbox', items:{owner:['เป็นเจ้าของโจทย์ ให้ข้อมูลกับทีม','Own the challenge and share data with the team'], mentor:['เป็นพี่เลี้ยงหรือกรรมการ','Mentor or judge'], visit:['เปิดพื้นที่ให้ทีมลงพื้นที่','Host a site visit'], sponsor:['สนับสนุนรางวัลหรือทุน','Sponsor prizes or funding'], pilot:['ทดลองใช้หรือซื้อโซลูชันที่ได้','Pilot or buy the solution'], hire:['รับนักศึกษาฝึกงาน / บัณฑิต','Hire interns or graduates']}}
+  };
+  const SECTORS = {health:['สุขภาพ / ผู้สูงอายุ','Health & ageing'], agri:['เกษตรและอาหาร','Agriculture & food'], gov:['ภาครัฐ / เมืองอัจฉริยะ','Government & smart city'], tour:['ท่องเที่ยว / บริการ','Tourism & hospitality'], logi:['โลจิสติกส์ / ขนส่ง','Logistics'], mfg:['การผลิต / โรงงาน','Manufacturing'], it:['ซอฟต์แวร์ / IT','Software & IT'], other:['อื่น ๆ','Other']};
+  for (const [id, cfg] of Object.entries(OPTS)) $('#' + id).innerHTML = Object.entries(cfg.items).map(([v,[th,en]]) => `<label><input type="${cfg.type}" name="${id}" value="${v}"><span data-en="${en}">${th}</span></label>`).join('');
+  $('#sector').innerHTML = `<option value="" data-en="Choose a sector">เลือกภาคส่วน</option>` + Object.entries(SECTORS).map(([v,[th,en]]) => `<option value="${v}" data-en="${en}">${th}</option>`).join('');
+
+  const TITLE = {th: document.title, en: 'Share a problem with ARIC — Spark Hackathon 2027'};
+  const MSG = {
+    th:{req:'กรุณากรอกช่องที่มีเครื่องหมาย * ให้ครบ', consent:'กรุณาให้ความยินยอม PDPA ก่อนส่ง', email:'รูปแบบอีเมลไม่ถูกต้อง', li:'ลิงก์ LinkedIn ต้องขึ้นต้นด้วย https://www.linkedin.com/', net:'ส่งไม่สำเร็จ กรุณาลองอีกครั้ง หรืออีเมลมาที่ aric@mfu.ac.th', sending:'กำลังส่ง…'},
+    en:{req:'Please fill in the fields marked *', consent:'Please give PDPA consent before submitting', email:'That email address doesn’t look right', li:'The LinkedIn link must start with https://www.linkedin.com/', net:'Could not submit. Please try again, or email aric@mfu.ac.th', sending:'Sending…'}};
+  let lang = 'th';
+  $$('[data-en]').forEach(el => { el.dataset.th = el.innerHTML; });
+  function applyLang(l){
+    lang = l; document.documentElement.lang = l; document.title = TITLE[l];
+    try { localStorage.setItem('aric-lang', l); } catch(e) {}
+    $$('[data-en]').forEach(el => { el.innerHTML = l === 'en' ? el.dataset.en : el.dataset.th; });
+    $$('[data-ph]').forEach(el => { el.placeholder = l === 'en' ? el.dataset.phEn : el.dataset.ph; });
+    $$('.lang button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.lang === l)));
+  }
+  $$('.lang button').forEach(b => b.addEventListener('click', () => applyLang(b.dataset.lang)));
+  let start0 = new URLSearchParams(location.search).get('lang');
+  if (!start0) { try { start0 = localStorage.getItem('aric-lang'); } catch(e) {} }
+  applyLang(start0 === 'en' ? 'en' : 'th');
+
+  const opened = Date.now();
+  const val = id => ($('#' + id).value || '').trim();
+  const checked = n => $$(`input[name="${n}"]:checked`).map(i => i.value);
+  const showErr = m => { const e = $('#err'); e.textContent = m; e.hidden = !m; };
+  $('#form').addEventListener('submit', async ev => {
+    ev.preventDefault(); showErr('');
+    $$('.f.bad').forEach(f => f.classList.remove('bad'));
+    const required = ['name','org','email','title','problem','market','sector'];
+    const missing = required.filter(id => !val(id));
+    if (!checked('rtype').length) missing.push('rtype');
+    missing.forEach(id => $('#' + id).closest('.f')?.classList.add('bad'));
+    if (missing.length) { showErr(MSG[lang].req); $('#' + missing[0]).closest('.f')?.scrollIntoView({behavior:'smooth', block:'center'}); return; }
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(val('email'))) { $('#email').closest('.f').classList.add('bad'); showErr(MSG[lang].email); return; }
+    if (val('linkedin') && !/^https:\/\/([a-z]{2,3}\.)?linkedin\.com\//i.test(val('linkedin'))) { $('#linkedin').closest('.f').classList.add('bad'); showErr(MSG[lang].li); return; }
+    if (!$('#consent').checked) { showErr(MSG[lang].consent); return; }
+    const body = {lang, name:val('name'), org:val('org'), position:val('position'), email:val('email'), phone:val('phone'), linkedin:val('linkedin'),
+      rtype:checked('rtype')[0], sector:val('sector'), alumni:val('alumni'), title:val('title'), problem:val('problem'), affected:val('affected'),
+      freq:checked('freq')[0] || '', workaround:val('workaround'), impact:val('impact'), success:val('success'), data:checked('data'),
+      market:val('market'), msize:val('msize'), channels:checked('channels'), price:val('price'), competitors:val('competitors'),
+      involve:checked('involve'), consent:true, public_ok:$('#public_ok').checked, website:val('website'), elapsed_ms: Date.now() - opened};
+    const btn = $('#send'); btn.disabled = true; const label = btn.innerHTML; btn.textContent = MSG[lang].sending;
+    try {
+      const r = await fetch('/os/api/public/challenge', {method:'POST', headers:{'Content-Type':'application/json','X-ARIC':'1'}, body: JSON.stringify(body)});
+      const d = await r.json().catch(() => ({}));
+      if (!r.ok) throw new Error(d.error || MSG[lang].net);
+      $('#ref').textContent = d.ref; $('#form').hidden = true; $('#done').hidden = false;
+      $('#done').scrollIntoView({behavior:'smooth', block:'center'});
+    } catch(e) { showErr(e.message && e.message !== 'Failed to fetch' ? e.message : MSG[lang].net); }
+    finally { btn.disabled = false; btn.innerHTML = label; }
+  });
+  $('#again').addEventListener('click', () => { $('#form').reset(); $('#done').hidden = true; $('#form').hidden = false; window.scrollTo({top: $('#form').offsetTop - 80, behavior:'smooth'}); });
+})();
+</script>
+</body>
+</html>
