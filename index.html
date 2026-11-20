@@ -13,7 +13,7 @@
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&family=Martian+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600;700&family=Noto+Sans+Thai:wght@300;400;500;600;700&family=Martian+Mono:wght@400;500&display=swap">
 <style>
 :root{
   --red:#C8102E; --red-d:#7A0C1E; --field:#6E0B1C; --field-d:#4A0712;
@@ -21,9 +21,9 @@
   --ink:#17110F; --ink2:#463B37; --mute:#6B5E59; --rule:#E7E1DE; --paper:#FFFFFF; --wash:#F6F3F1;
   --on-red:#FFF4EF; --on-red2:rgba(255,236,228,.80); --on-red3:rgba(255,236,228,.58);
   --f2:#3F8F6F; --f3:#6B5B95; --f4:#0D3B66; --f1:#C9713C;
-  --disp:'Prompt',system-ui,sans-serif;
-  --body:'Prompt',system-ui,sans-serif;
-  --mono:'Martian Mono','Prompt',ui-monospace,Consolas,monospace;
+  --disp:'Noto Sans','Noto Sans Thai',system-ui,sans-serif;
+  --body:'Noto Sans','Noto Sans Thai',system-ui,sans-serif;
+  --mono:'Martian Mono','Noto Sans Thai',ui-monospace,Consolas,monospace;
   --ease:cubic-bezier(.16,1,.3,1);
   --wrap:min(1240px, 100% - 2*clamp(20px,4vw,56px));
 }
@@ -952,7 +952,7 @@ class Mountain {
         g.fillStyle = '#E4B04A'; g.strokeStyle = '#FFF2C8'; g.lineWidth = 2;
         g.beginPath(); tr.forEach((pi, j) => { const X = mx + (Q[pi].x - cx0) * k, Y = my + (Q[pi].y - cy0) * k; j ? g.lineTo(X, Y) : g.moveTo(X, Y); }); g.closePath(); g.fill(); g.stroke(); g.restore();
         if (stage.lift > .6) {
-          g.save(); g.globalAlpha = (stage.lift - .6) / .4; g.fillStyle = '#FFF4EF'; g.font = `600 ${(14 / f.s).toFixed(2)}px "Martian Mono", "Prompt", monospace`;
+          g.save(); g.globalAlpha = (stage.lift - .6) / .4; g.fillStyle = '#FFF4EF'; g.font = `600 ${(14 / f.s).toFixed(2)}px "Martian Mono", "Noto Sans Thai", monospace`;
           const label = (lang === 'en' ? 'COMPANY ' : 'บริษัท ') + (i + 1), tw = g.measureText(label).width, right = (this.w - f.x) / f.s - 4;
           const lx = tx + 24 + tw <= right ? tx + 24 : tx - 24 - tw;   // right of the facet, or left if it would leave the canvas
           g.textAlign = 'left'; g.fillText(label, lx, ty + 6); g.restore();
