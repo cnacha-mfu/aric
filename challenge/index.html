@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>ส่งโจทย์ให้ ARIC — Spark Hackathon 2027</title>
-<meta name="description" content="ส่งโจทย์ปัญหาจริงจากงานของคุณให้ ARIC มหาวิทยาลัยแม่ฟ้าหลวง ARIC สนับสนุนค่าใช้จ่ายด้านบุคลากรและอุปกรณ์ หาคนทำงาน สร้าง MVP และพาออกสู่ตลาด ส่วนคุณเป็นที่ปรึกษาให้ทีม">
+<meta name="description" content="ส่งโจทย์ปัญหาจริงจากงานของคุณให้ ARIC มหาวิทยาลัยแม่ฟ้าหลวง ARIC สนับสนุนค่าใช้จ่ายด้านบุคลากรและอุปกรณ์ หาคนทำงาน สร้าง MVP และพาออกสู่ตลาด ส่วนคุณเป็นพันธมิตรร่วมสร้างและร่วมรับผลตอบแทน">
 <meta property="og:title" content="ส่งโจทย์ให้ ARIC — ปัญหาของคุณ คือโจทย์ของเรา">
-<meta property="og:description" content="หาคนทำงาน → สร้าง MVP → ออกสู่ตลาด · ARIC สนับสนุนค่าใช้จ่ายด้านบุคลากรและอุปกรณ์ คุณเป็นที่ปรึกษาให้ทีม">
+<meta property="og:description" content="หาคนทำงาน → สร้าง MVP → ออกสู่ตลาด · ARIC สนับสนุนค่าใช้จ่ายด้านบุคลากรและอุปกรณ์ · คุณเป็นพันธมิตรร่วมสร้างและร่วมรับผลตอบแทน">
 <meta property="og:image" content="https://aric.mfu.ac.th/assets/og.jpg">
 <meta property="og:type" content="website">
 <meta name="theme-color" content="#6E0B1C">
@@ -129,6 +129,17 @@ footer .wrap{padding:22px 0;display:flex;flex-wrap:wrap;gap:8px 18px;justify-con
 .dico{display:inline-grid;place-items:center;width:40px;height:40px;border-radius:12px;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.06);margin-bottom:6px}
 .dico .si{width:22px;height:22px}
 @media (max-width:860px){.hero-grid{grid-template-columns:1fr}}
+.returns{background:var(--paper);border:1px solid var(--rule);border-radius:18px;padding:clamp(18px,3vw,26px);display:flex;flex-direction:column;gap:14px;box-shadow:var(--shadow)}
+.ret-h{display:flex;flex-direction:column;gap:2px}
+.ret-h span{font:600 12.5px var(--font);letter-spacing:.06em;color:var(--red)}
+.ret-h b{font:700 clamp(1.15rem,2.2vw,1.45rem)/1.3 var(--font)}
+.ret-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.ret{display:flex;flex-direction:column;gap:6px;padding:16px;border-radius:14px;background:linear-gradient(160deg,#FBF1DC,#fff 70%);border:1px solid #EFDDB4}
+.ret .si{width:30px;height:30px;stroke:var(--gold-ink);align-self:flex-start}
+.ret b{font:600 16.5px/1.35 var(--font)}
+.ret p{font-size:14px;color:var(--ink2);line-height:1.6}
+.ret-note{font-size:13px;color:var(--mute)}
+@media (max-width:760px){.ret-grid{grid-template-columns:1fr}}
 @media (max-width:760px){.gets{grid-template-columns:1fr}.deal{grid-template-columns:1fr}.deal .plus{display:none}.brand span{display:none}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
@@ -147,7 +158,7 @@ footer .wrap{padding:22px 0;display:flex;flex-wrap:wrap;gap:8px 18px;justify-con
     <div>
     <p class="kicker">ARIC · SPARK HACKATHON 2027</p>
     <h1 data-en="Your problem is our <em>next challenge</em>">ปัญหาของคุณ <em>คือโจทย์ของเรา</em></h1>
-    <p data-en="Share a real problem from your work and co-create the solution with ARIC: ARIC finds the people, builds the MVP and takes it to market, while you serve as the team’s advisor. It takes about 5 minutes.">ส่งโจทย์จริงจากงานของคุณ แล้วร่วมสร้างทางแก้กับ ARIC: ARIC จัดหาคน สร้าง MVP และพาออกสู่ตลาด ส่วนคุณร่วมเป็นที่ปรึกษา (Advisor) ให้ทีม ใช้เวลากรอกประมาณ 5 นาที</p>
+    <p data-en="Share a real problem from your work and co-create the solution with ARIC: ARIC finds the people, builds the MVP and takes it to market. You join as a co-creation partner and co-founder, and share the returns. It takes about 5 minutes.">ส่งโจทย์จริงจากงานของคุณ แล้วร่วมสร้างทางแก้กับ ARIC: ARIC จัดหาคน สร้าง MVP และพาออกสู่ตลาด ส่วนคุณร่วมเป็นพันธมิตรร่วมสร้างและผู้ร่วมก่อตั้ง พร้อมร่วมรับผลตอบแทน ใช้เวลากรอกประมาณ 5 นาที</p>
     <a class="go" href="#form"><span data-en="Share a problem">ส่งโจทย์</span> ↓</a>
     </div>
     <figure class="hero-pic"><img src="../assets/img/ch_hero.jpg" alt="ภาพจำลองพื้นที่จัดแสดงผลงานและเวที Pitch ของศูนย์ ARIC" width="1100" height="452"><figcaption data-en="Concept image of the ARIC showcase floor (AI-generated)">ภาพจำลองชั้นจัดแสดงผลงานของ ARIC (สร้างด้วย AI)</figcaption></figure>
@@ -168,8 +179,18 @@ footer .wrap{padding:22px 0;display:flex;flex-wrap:wrap;gap:8px 18px;justify-con
   <div class="deal">
     <div><span class="dico"><svg class="si" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h18v10H3zM3 10h18M7 14h3"/></svg></span><span data-en="ARIC PROVIDES">ARIC สนับสนุน</span><b data-en="ARIC covers the people and equipment costs">ARIC สนับสนุนค่าใช้จ่ายด้านบุคลากรและอุปกรณ์</b><p data-en="The development team, interns and mentors, plus the GPU servers, labs and robotics equipment used to build the MVP.">ทั้งค่าทีมพัฒนา นักศึกษาฝึกงาน และพี่เลี้ยง รวมถึงเครื่อง GPU ห้องแล็บ และอุปกรณ์หุ่นยนต์ที่ใช้สร้าง MVP</p></div>
     <div class="plus" aria-hidden="true">+</div>
-    <div><span class="dico"><svg class="si" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg></span><span data-en="YOUR ROLE">บทบาทของคุณ</span><b data-en="Advisor">ที่ปรึกษา (Advisor)</b><p data-en="Explain the real-world context, share the data needed, point the way to commercialisation and the potential market, and give feedback on the MVP at each stage: Spark → Forge → Launch.">เล่าบริบทหน้างาน ให้ข้อมูลที่จำเป็น ชี้ทางสู่การค้าและตลาดที่มีศักยภาพ และให้ความเห็นต่อ MVP ในแต่ละช่วง Spark → Forge → Launch</p></div>
+    <div><span class="dico"><svg class="si" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg></span><span data-en="YOUR ROLE">บทบาทของคุณ</span><b data-en="Co-creation partner / co-founder">พันธมิตรร่วมสร้าง / ผู้ร่วมก่อตั้ง</b><p data-en="Bring the problem, the data and your knowledge of the real work, point the way to commercialisation and the market, and give feedback on the MVP at each stage (Spark → Forge → Launch). In return, you share in what it earns.">ร่วมให้โจทย์ ข้อมูล และความรู้หน้างาน ชี้ทางสู่การค้าและตลาด และให้ความเห็นต่อ MVP ในแต่ละช่วง Spark → Forge → Launch แล้วร่วมรับผลตอบแทนเมื่อผลงานสร้างรายได้</p></div>
   </div>
+
+  <section class="returns" aria-labelledby="retTitle">
+    <div class="ret-h"><span data-en="WHAT YOU EARN AS A PARTNER">ผลตอบแทนของพันธมิตร</span><b id="retTitle" data-en="Choose one way to share in the result">เลือกรับผลตอบแทนได้ 1 แบบ</b></div>
+    <div class="ret-grid">
+      <div class="ret"><svg class="si" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v9l7.8 4.5A9 9 0 1 1 12 3z"/><path d="M15 3.5A9 9 0 0 1 20.5 12H15z"/></svg><b data-en="Shares in the new company">หุ้นในบริษัทที่ตั้งขึ้น</b><p data-en="When the solution becomes a startup, you hold shares as a co-founder.">เมื่อผลงานเติบโตเป็นสตาร์ทอัป คุณถือหุ้นในฐานะผู้ร่วมก่อตั้ง</p></div>
+      <div class="ret"><svg class="si" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19h16M7 15l4-4 3 3 5-6"/><path d="M15 8h4v4"/></svg><b data-en="A share of revenue">ส่วนแบ่งรายได้</b><p data-en="When the product sells to other customers, you receive part of the revenue.">เมื่อผลงานขายให้ลูกค้ารายอื่นได้ คุณรับส่วนแบ่งจากรายได้</p></div>
+      <div class="ret"><svg class="si" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12v8H4v-8M2 7h20v5H2zM12 22V7M12 7c-2-4-6-4-6-1.5S10 7 12 7zM12 7c2-4 6-4 6-1.5S14 7 12 7z"/></svg><b data-en="Free or discounted use">ใช้งานฟรีหรือราคาพิเศษ</b><p data-en="Use the solution in your own business first, free or at a special price.">นำผลงานไปใช้ในกิจการของคุณก่อนใคร ฟรีหรือในราคาพิเศษ</p></div>
+    </div>
+    <p class="ret-note" data-en="Example only: shares of around 5%, or a 3–5% revenue share. The actual terms are agreed project by project.">ตัวอย่างเท่านั้น: หุ้นราว 5% หรือส่วนแบ่งรายได้ 3–5% เงื่อนไขจริงตกลงกันเป็นรายโครงการ</p>
+  </section>
 
   <form id="form" novalidate>
     <section class="step">
@@ -209,7 +230,7 @@ footer .wrap{padding:22px 0;display:flex;flex-wrap:wrap;gap:8px 18px;justify-con
 
     <section class="step">
       <h2><svg class="si" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 20h18M6 16v-5M11 16V8M16 16v-3M20 6l-5 5-3-3-5 5"/></svg><span>3 / 5</span><b data-en="Route to market">ทางสู่การค้าและตลาด</b></h2>
-      <p class="intro" data-en="As the advisor, you know this market best. This helps the team build an MVP that can actually sell.">ในฐานะที่ปรึกษา คุณรู้จักตลาดนี้ดีที่สุด ข้อมูลนี้ช่วยให้ทีมสร้าง MVP ที่ขายได้จริง</p>
+      <p class="intro" data-en="As a co-creation partner, you know this market best. This helps the team build an MVP that can actually sell.">ในฐานะพันธมิตรร่วมสร้าง คุณรู้จักตลาดนี้ดีที่สุด ข้อมูลนี้ช่วยให้ทีมสร้าง MVP ที่ขายได้จริง</p>
       <div class="row">
         <div class="f"><label for="market"><span data-en="Who would buy or use this solution?">ใครคือลูกค้าที่จะซื้อหรือใช้ทางแก้นี้</span> <em>*</em></label><input id="market" name="market" required maxlength="1000"></div>
         <div class="f"><label for="msize" data-en="Rough market size">ขนาดตลาดโดยประมาณ</label><input id="msize" name="msize" maxlength="500" data-ph="เช่น มีองค์กรที่เจอปัญหาเดียวกันราว 200 แห่ง" data-ph-en="e.g. about 200 organisations face the same problem"></div>
@@ -222,8 +243,8 @@ footer .wrap{padding:22px 0;display:flex;flex-wrap:wrap;gap:8px 18px;justify-con
     </section>
 
     <section class="step">
-      <h2><svg class="si" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12l4-4 5 3 5-3 4 4-9 8z"/><path d="M7 8l5 3 5-3"/></svg><span>4 / 5</span><b data-en="Besides advising, how else would you like to help?">นอกจากบทบาทที่ปรึกษา ท่านยินดีช่วยด้านใดเพิ่มเติม</b></h2>
-      <p class="intro" data-en="Every problem owner advises their team. Anything below is optional.">เจ้าของโจทย์ทุกรายเป็นที่ปรึกษาให้ทีมโดยอัตโนมัติ เลือกเพิ่มได้ตามสะดวก (ไม่บังคับ)</p>
+      <h2><svg class="si" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12l4-4 5 3 5-3 4 4-9 8z"/><path d="M7 8l5 3 5-3"/></svg><span>4 / 5</span><b data-en="Besides being a co-creation partner, how else would you like to help?">นอกจากบทบาทพันธมิตรร่วมสร้าง ท่านยินดีช่วยด้านใดเพิ่มเติม</b></h2>
+      <p class="intro" data-en="Every problem owner is automatically the team’s co-creation partner. Anything below is optional.">เจ้าของโจทย์ทุกรายเป็นพันธมิตรร่วมสร้างของทีมโดยอัตโนมัติ เลือกเพิ่มได้ตามสะดวก (ไม่บังคับ)</p>
       <div class="opts" id="involve"></div>
     </section>
 
