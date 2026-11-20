@@ -62,6 +62,7 @@ p{margin:0;text-wrap:pretty}
 .brand svg{width:44px;height:auto}
 .brand b{font:700 22px/1 var(--disp);letter-spacing:.06em}
 .brand span{display:block;font:500 11px/1.25 var(--disp);letter-spacing:.02em;opacity:.78;white-space:nowrap}
+.nav nav{margin-left:auto}
 .nav ul{display:flex;gap:4px;list-style:none;margin:0 0 0 auto;padding:0}
 .nav ul a{display:block;font:500 15px/1 var(--disp);padding:10px 11px;white-space:nowrap;border-radius:999px;text-decoration:none;opacity:.86;transition:opacity .2s,background .2s}
 .nav ul a:hover{opacity:1;background:rgba(255,255,255,.12)}
@@ -321,6 +322,7 @@ fieldset.field{border:0;padding:0;margin:18px 0 0}
 .form .btn{margin-top:24px;width:100%;justify-content:center}
 .form small{display:block;margin-top:12px;font-size:13px;color:var(--mute);line-height:1.5}
 @media (max-width:900px){.f-grid{grid-template-columns:1fr}.form{position:static}}
+.f-grid.solo{grid-template-columns:minmax(0,1fr);max-width:900px;margin-inline:auto}
 
 /* building */
 .floors{margin-top:56px;display:flex;flex-direction:column;border-top:1px solid var(--rule)}
@@ -412,27 +414,23 @@ footer p{line-height:1.6}
     </a>
     <nav aria-label="หลัก"><ul>
       <li><a href="#brain" data-en="Idea">แนวคิด</a></li>
-      <li><a href="#engine" data-en="Engine">กลไก</a></li>
       <li><a href="#showcase" data-en="Showcase">ผลงาน</a></li>
-      <li><a href="#founders" data-en="Founders">สำหรับผู้ก่อตั้ง</a></li>
+      <li><a href="#founders" data-en="Join a team">ร่วมทีม</a></li>
       <li><a href="#interns" data-en="Internship">ฝึกงาน</a></li>
-      <li><a href="#building" data-en="Building">อาคาร</a></li>
-      <li><a href="#film" data-en="Film">วิดีโอ</a></li>
-      <li><a href="challenge/" data-en="Share a challenge">ส่งโจทย์</a></li>
       <li><a href="#contact" data-en="Contact">ติดต่อ</a></li>
     </ul></nav>
     <div class="lang" role="group" aria-label="ภาษา / Language">
       <button type="button" data-lang="th" aria-pressed="true">TH</button>
       <button type="button" data-lang="en" aria-pressed="false">EN</button>
     </div>
-    <a class="btn btn-gold" href="#join"><span data-en="Join Spark">ร่วมรอบ Spark</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+    <a class="btn btn-gold" href="challenge/"><span data-en="Share a challenge">ส่งโจทย์ให้ ARIC</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
     <button class="menu-btn" type="button" aria-label="เมนู" aria-expanded="false" aria-controls="drawer"><svg viewBox="0 0 26 26" aria-hidden="true"><path d="M4 8h18M4 13h18M4 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
   </div>
 </header>
 <div class="drawer" id="drawer" role="dialog" aria-modal="true" aria-label="เมนู">
   <button class="close" type="button" aria-label="ปิดเมนู"><svg viewBox="0 0 26 26" width="26" height="26" aria-hidden="true"><path d="M6 6l14 14M20 6 6 20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
-  <a href="#brain" data-en="Idea">แนวคิด</a><a href="#engine" data-en="Engine">กลไก</a><a href="#showcase" data-en="Showcase">ผลงาน</a><a href="#founders" data-en="Founders">สำหรับผู้ก่อตั้ง</a><a href="#interns" data-en="Internship">ฝึกงาน</a><a href="#building" data-en="Building">อาคาร</a><a href="#film" data-en="Film">วิดีโอ</a><a href="challenge/" data-en="Share a challenge">ส่งโจทย์</a><a href="#contact" data-en="Contact">ติดต่อ</a>
-  <a class="btn btn-gold" href="#join"><span data-en="Join the next Spark round">ร่วมรอบ Spark ถัดไป</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+  <a href="#brain" data-en="Idea">แนวคิด</a><a href="#showcase" data-en="Showcase">ผลงาน</a><a href="#founders" data-en="Join a team">ร่วมทีม</a><a href="#interns" data-en="Internship">ฝึกงาน</a><a href="#contact" data-en="Contact">ติดต่อ</a>
+  <a class="btn btn-gold" href="challenge/"><span data-en="Share a challenge with ARIC">ส่งโจทย์ให้ ARIC</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
 </div>
 
 <main id="main">
@@ -445,8 +443,7 @@ footer p{line-height:1.6}
       <h1 data-en="<span class=ln>We incubate</span> <span class=ln><em>AI &amp; robotics</em></span> <span class=ln>for real problems</span>"><span class="ln">บ่มเพาะโซลูชัน</span> <span class="ln"><em>AI และหุ่นยนต์</em></span> <span class="ln">จากโจทย์จริง</span></h1>
       <p class="lede" data-en="ARIC is Mae Fah Luang University's AI &amp; robotics incubator. We take real problems from every sector and back them with a ready ecosystem that grows the best solutions into companies.">ARIC ศูนย์นวัตกรรมด้านปัญญาประดิษฐ์และหุ่นยนต์ มหาวิทยาลัยแม่ฟ้าหลวง คือศูนย์บ่มเพาะ เรารับโจทย์จริงจากทุกภาคส่วน สนับสนุนด้วยระบบนิเวศที่พร้อม เพื่อต่อยอดโซลูชันที่ดีที่สุดเป็นบริษัท</p>
       <div class="actions">
-        <a class="btn btn-gold" href="#join"><span data-en="Join the next Spark round">ร่วมรอบ Spark ถัดไป</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
-        <a class="link-chall" href="#challenge"><span data-en="Have a real problem? Share it">มีโจทย์จริง? ส่งให้ ARIC</span></a>
+        <a class="btn btn-gold" href="challenge/"><span data-en="Share a challenge with ARIC">ส่งโจทย์ให้ ARIC</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
         <a class="link-play" href="#film"><i><svg aria-hidden="true"><use href="#i-play"/></svg></i><span data-en="Watch the film · 1:38">ดูวิดีโอ · 1:38</span></a>
       </div>
       <p class="hint" data-en="Tap the mountain to add a problem and watch the network wire itself.">แตะภูเขาเพื่อเพิ่มโจทย์ แล้วดูโครงข่ายต่อเส้นใหม่</p>
@@ -553,9 +550,9 @@ footer p{line-height:1.6}
 
 <section class="sec founders" id="founders">
   <div class="wrap">
-    <h2 class="h2 rv" data-en="For founders, students and developers">สำหรับผู้ก่อตั้ง นักศึกษา และนักพัฒนา</h2>
-    <p class="lead rv" data-en="Bring an idea, or pick up a real problem at Spark. You won't build alone: ARIC surrounds every team with tools, a pool of MFU students to fill the skills you're missing, and people who know the real work.">มาพร้อมไอเดีย หรือหยิบโจทย์จริงในรอบ Spark แล้วคุณจะไม่ต้องสร้างคนเดียว ARIC ล้อมทุกทีมด้วยเครื่องมือ Resource Pool นักศึกษา มฟล. ที่เติมทักษะที่ทีมยังขาด และคนที่รู้หน้างานจริง</p>
-    <div class="f-grid">
+    <h2 class="h2 rv" data-en="Join a team at ARIC">ร่วมทีมกับ ARIC</h2>
+    <p class="lead rv" data-en="For founders, students and developers: bring an idea, or pick up a real problem at Spark. You won't build alone: ARIC surrounds every team with tools, a pool of MFU students to fill the skills you're missing, and people who know the real work.">สำหรับผู้ก่อตั้ง นักศึกษา และนักพัฒนา: มาพร้อมไอเดีย หรือหยิบโจทย์จริงในรอบ Spark แล้วคุณจะไม่ต้องสร้างคนเดียว ARIC ล้อมทุกทีมด้วยเครื่องมือ Resource Pool นักศึกษา มฟล. ที่เติมทักษะที่ทีมยังขาด และคนที่รู้หน้างานจริง</p>
+    <div class="f-grid solo">
       <div>
         <div class="sup rv" id="sup">
           <div class="rings pre" id="rings" role="group" aria-label="ทีมของคุณอยู่ตรงกลาง ล้อมด้วยคนที่รู้หน้างาน Resource Pool และเครื่องมือ"></div>
@@ -567,23 +564,6 @@ footer p{line-height:1.6}
           </div>
         </div>
       </div>
-      <form class="form" id="join" novalidate>
-        <h3 data-en="Get notified when Spark opens">รับแจ้งเมื่อเปิดรอบ Spark</h3>
-        <p class="next"><span data-en="First round:">รอบแรก:</span> <span class="mono" data-en="Jan – Apr 2027">ม.ค. – เม.ย. 2570</span></p>
-        <div class="field"><label for="fName" data-en="Your name">ชื่อ</label><input id="fName" name="name" autocomplete="name" required></div>
-        <div class="field"><label for="fEmail" data-en="Email">อีเมล</label><input id="fEmail" name="email" type="email" autocomplete="email" required inputmode="email" data-en-ph="you@example.com" placeholder="you@example.com"><span class="err" id="fEmailErr" aria-live="polite"></span></div>
-        <fieldset class="field"><legend data-en="I am">ฉันคือ</legend>
-          <div class="chips">
-            <label><input type="radio" name="role" value="student" checked><span data-en="Student">นักศึกษา</span></label>
-            <label><input type="radio" name="role" value="founder"><span data-en="Founder">ผู้ก่อตั้ง</span></label>
-            <label><input type="radio" name="role" value="developer"><span data-en="Developer">นักพัฒนา</span></label>
-            <label><input type="radio" name="role" value="org"><span data-en="An organisation with a problem">องค์กรที่มีโจทย์</span></label>
-          </div>
-        </fieldset>
-        <div class="field"><label for="fNote" data-en="Your idea or problem (optional)">ไอเดียหรือโจทย์ของคุณ (ไม่บังคับ)</label><textarea id="fNote" name="note" rows="3"></textarea></div>
-        <button class="btn btn-gold" type="submit"><span data-en="Send by email">ส่งทางอีเมล</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></button>
-        <small data-en="Opens your email app with the details filled in. Nothing is stored on this site.">ระบบจะเปิดแอปอีเมลของคุณพร้อมข้อมูลที่กรอก เว็บไซต์นี้ไม่เก็บข้อมูลใด ๆ</small>
-      </form>
     </div>
   </div>
 </section>
@@ -1209,7 +1189,7 @@ if (!reduce) setInterval(() => {
 
 /* ---------------- sign-up (mailto) ---------------- */
 const form = $('#join');
-form.addEventListener('submit', e => {
+if (form) form.addEventListener('submit', e => {
   e.preventDefault();
   const name = $('#fName'), email = $('#fEmail'); let ok = true;
   name.setAttribute('aria-invalid', String(!name.value.trim()));
