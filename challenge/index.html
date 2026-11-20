@@ -78,15 +78,24 @@ form{display:flex;flex-direction:column;gap:16px;margin-top:6px}
 .f{display:flex;flex-direction:column;gap:6px;min-width:0}
 .f label,.f .lbl{font-size:14px;font-weight:500;color:var(--ink2)}
 .f em{color:var(--red);font-style:normal}
-.f input,.f select,.f textarea{background:var(--field-bg);border:1px solid var(--rule);border-radius:10px;padding:10px 12px;width:100%}
+.f input:not([type=checkbox]):not([type=radio]),.f select,.f textarea{background:var(--field-bg);border:1px solid var(--rule);border-radius:10px;padding:10px 12px;width:100%}
 .f textarea{min-height:96px;resize:vertical}
-.f input:focus,.f select:focus,.f textarea:focus{border-color:var(--gold);outline:none;box-shadow:0 0 0 3px rgba(228,176,74,.25)}
+.f input:not([type=checkbox]):not([type=radio]):focus,.f select:focus,.f textarea:focus{border-color:var(--gold);outline:none;box-shadow:0 0 0 3px rgba(228,176,74,.25)}
 .f .hint{font-size:12.5px;color:var(--mute)}
-.f.bad input,.f.bad select,.f.bad textarea{border-color:var(--bad)}
-.opts{display:flex;flex-wrap:wrap;gap:8px}
-.opts label{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--rule);border-radius:999px;padding:7px 13px;font-size:14px;cursor:pointer;background:var(--field-bg)}
-.opts label:has(input:checked){border-color:var(--field);background:#FBEFF0}
-.opts input{accent-color:var(--field)}
+.f.bad input:not([type=checkbox]):not([type=radio]),.f.bad select,.f.bad textarea,.f.bad .opts label{border-color:var(--bad)}
+.opts{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px}
+.opts.short{grid-template-columns:repeat(4,minmax(0,1fr))}
+.opts label{display:flex;align-items:center;gap:12px;min-height:54px;padding:11px 14px;border:1.5px solid var(--rule);border-radius:12px;background:var(--field-bg);font-size:14.5px;line-height:1.4;color:var(--ink2);cursor:pointer;transition:border-color .15s,background .15s}
+.opts label:hover{border-color:#D6C6C0;background:#fff}
+.opts input{appearance:none;-webkit-appearance:none;flex:none;width:20px;height:20px;margin:0;border:2px solid #B9AAA4;border-radius:6px;background:#fff;display:grid;place-items:center;cursor:pointer;transition:background .15s,border-color .15s}
+.opts input[type=radio]{border-radius:50%}
+.opts input:checked{border-color:var(--field);background:var(--field)}
+.opts input[type=checkbox]:checked::after{content:"";width:10px;height:5px;border:2px solid #fff;border-top:0;border-right:0;transform:translateY(-1px) rotate(-45deg)}
+.opts input[type=radio]:checked::after{content:"";width:8px;height:8px;border-radius:50%;background:#fff}
+.opts input:focus-visible{outline:none}
+.opts label:has(input:focus-visible){outline:3px solid var(--gold);outline-offset:2px}
+.opts label:has(input:checked){border-color:var(--field);background:#FBEFF0;color:var(--ink);font-weight:500}
+@media (max-width:620px){.opts{grid-template-columns:1fr}.opts.short{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .consent{display:flex;gap:10px;font-size:14px;color:var(--ink2);align-items:flex-start}
 .consent input{margin-top:5px;accent-color:var(--field);flex:none}
 .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
@@ -167,7 +176,7 @@ footer .wrap{padding:22px 0;display:flex;flex-wrap:wrap;gap:8px 18px;justify-con
       <div class="f"><label for="problem"><span data-en="What happens today (where, when, how)">เกิดอะไรขึ้นจริงในงาน (ที่ไหน เมื่อไร อย่างไร)</span> <em>*</em></label><textarea id="problem" name="problem" required maxlength="5000"></textarea></div>
       <div class="row">
         <div class="f"><label for="affected" data-en="Who is affected">ใครได้รับผลกระทบ</label><input id="affected" name="affected" maxlength="500"></div>
-        <div class="f"><span class="lbl" data-en="How often">เกิดบ่อยแค่ไหน</span><div class="opts" id="freq"></div></div>
+        <div class="f"><span class="lbl" data-en="How often">เกิดบ่อยแค่ไหน</span><div class="opts short" id="freq"></div></div>
       </div>
       <div class="row">
         <div class="f"><label for="workaround" data-en="Current workaround">ตอนนี้แก้อย่างไร</label><input id="workaround" name="workaround" maxlength="2000"></div>
