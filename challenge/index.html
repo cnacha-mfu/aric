@@ -160,7 +160,7 @@ footer .wrap{padding:22px 0;display:flex;flex-wrap:wrap;gap:8px 18px;justify-con
     <p class="kicker">ARIC · SPARK HACKATHON 2027</p>
     <h1 data-en="Your problem is our <em>next challenge</em>">ปัญหาของคุณ <em>คือโจทย์ของเรา</em></h1>
     <p data-en="Share a real problem from your work and co-create the solution with ARIC: ARIC finds the people, builds the MVP and takes it to market. You join as a co-creation partner and co-founder, and share the returns. It takes about 5 minutes.">ส่งโจทย์จริงจากงานของคุณ แล้วร่วมสร้างทางแก้กับ ARIC: ARIC จัดหาคน สร้าง MVP และพาออกสู่ตลาด ส่วนคุณร่วมเป็นพันธมิตรร่วมสร้างและผู้ร่วมก่อตั้ง พร้อมร่วมรับผลตอบแทน ใช้เวลากรอกประมาณ 5 นาที</p>
-    <a class="go" href="#form"><span data-en="Share a problem">ส่งโจทย์</span> ↓</a>
+    <a class="go" href="#form"><span data-en="Share a challenge">ส่งโจทย์</span> ↓</a>
     </div>
     <figure class="hero-pic"><img src="../assets/img/ch_hero.jpg" alt="ภาพจำลองพื้นที่จัดแสดงผลงานและเวที Pitch ของศูนย์ ARIC" width="1100" height="452"><figcaption data-en="Concept image of the ARIC showcase floor (AI-generated)">ภาพจำลองชั้นจัดแสดงผลงานของ ARIC (สร้างด้วย AI)</figcaption></figure>
   </div>
@@ -254,7 +254,7 @@ footer .wrap{padding:22px 0;display:flex;flex-wrap:wrap;gap:8px 18px;justify-con
       <label class="consent"><input type="checkbox" id="consent"><span><span data-en="I consent to ARIC, Mae Fah Luang University, storing and using this information to select challenges and contact me about the hackathon, under Thailand’s Personal Data Protection Act (2019). I can ask for deletion at aric@mfu.ac.th.">ข้าพเจ้ายินยอมให้ศูนย์ ARIC มหาวิทยาลัยแม่ฟ้าหลวง เก็บและใช้ข้อมูลนี้เพื่อคัดเลือกโจทย์และติดต่อกลับเกี่ยวกับกิจกรรม Hackathon ตาม พ.ร.บ.คุ้มครองข้อมูลส่วนบุคคล พ.ศ. 2562 และขอลบข้อมูลได้ที่ aric@mfu.ac.th</span> <em style="color:var(--red);font-style:normal">*</em></span></label>
       <label class="consent"><input type="checkbox" id="public_ok"><span data-en="You may name our organisation as the challenge owner">อนุญาตให้ระบุชื่อองค์กรในฐานะเจ้าของโจทย์</span></label>
       <div class="hp" aria-hidden="true"><label for="website">Website</label><input id="website" name="website" tabindex="-1" autocomplete="off"></div>
-      <div class="submit"><button class="btn" type="submit" id="send"><span data-en="Submit the problem">ส่งโจทย์</span></button><p class="err" id="err" role="alert" hidden></p></div>
+      <div class="submit"><button class="btn" type="submit" id="send"><span data-en="Submit the challenge">ส่งโจทย์</span></button><p class="err" id="err" role="alert" hidden></p></div>
     </section>
   </form>
 
@@ -284,7 +284,7 @@ footer .wrap{padding:22px 0;display:flex;flex-wrap:wrap;gap:8px 18px;justify-con
   for (const [id, cfg] of Object.entries(OPTS)) $('#' + id).innerHTML = Object.entries(cfg.items).map(([v,[th,en]]) => `<label><input type="${cfg.type}" name="${id}" value="${v}"><span data-en="${en}">${th}</span></label>`).join('');
   $('#sector').innerHTML = `<option value="" data-en="Choose a sector">เลือกภาคส่วน</option>` + Object.entries(SECTORS).map(([v,[th,en]]) => `<option value="${v}" data-en="${en}">${th}</option>`).join('');
 
-  const TITLE = {th: document.title, en: 'Share a problem with ARIC — Spark Hackathon 2027'};
+  const TITLE = {th: document.title, en: 'Share a challenge with ARIC — Spark Hackathon 2027'};
   const MSG = {
     th:{req:'กรุณากรอกช่องที่มีเครื่องหมาย * ให้ครบ', consent:'กรุณาให้ความยินยอม PDPA ก่อนส่ง', email:'รูปแบบอีเมลไม่ถูกต้อง', li:'ลิงก์ LinkedIn ต้องขึ้นต้นด้วย https://www.linkedin.com/', net:'ส่งไม่สำเร็จ กรุณาลองอีกครั้ง หรืออีเมลมาที่ aric@mfu.ac.th', sending:'กำลังส่ง…'},
     en:{req:'Please fill in the fields marked *', consent:'Please give PDPA consent before submitting', email:'That email address doesn’t look right', li:'The LinkedIn link must start with https://www.linkedin.com/', net:'Could not submit. Please try again, or email aric@mfu.ac.th', sending:'Sending…'}};
