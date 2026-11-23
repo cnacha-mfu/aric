@@ -112,6 +112,8 @@ section{position:relative}
 .chall-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(36px,5vw,88px);align-items:center}
 .chall-k{font:500 clamp(.88rem,.95vw,.95rem)/1.4 var(--disp);letter-spacing:.02em;color:var(--gold-l);margin:0 0 18px}
 .chall .h2 em{font-style:normal;color:var(--gold-l)}
+.chall .h2 .nw{white-space:nowrap}
+@media (max-width:420px){html[lang="en"] .chall .h2 .nw{white-space:normal}}
 .chall .lead{color:var(--on-red2)}
 .chall-deal{display:flex;flex-wrap:wrap;gap:8px 22px;margin-top:26px;padding-top:22px;border-top:1px solid rgba(255,236,228,.16);font-size:15px;color:var(--on-red2)}
 .chall-deal b{color:var(--on-red);font-weight:600}
@@ -535,7 +537,7 @@ footer p{line-height:1.6}
   <div class="wrap chall-grid">
     <div class="rv">
       <p class="chall-k" data-en="For companies, business owners and MFU alumni">สำหรับภาคอุตสาหกรรม เจ้าของกิจการ และศิษย์เก่า มฟล.</p>
-      <h2 class="h2" id="challTitle" data-en="Have a real problem at work? <em>Make it our next challenge</em>">มีปัญหาจริงในงาน? <em>ส่งเป็นโจทย์ให้ ARIC</em></h2>
+      <h2 class="h2" id="challTitle" data-en="Bring the Problem,<br><em class=nw>We&rsquo;ll Build the Business</em>">ส่งปัญหา<br><em class="nw">เราปั้นธุรกิจให้</em></h2>
       <p class="lead" data-en="Send us one real problem. ARIC finds the team, builds a working MVP and takes it to market. You join as a co-creation partner and co-founder, and share in what it earns.">ส่งปัญหาจริงจากงานของคุณมาหนึ่งข้อ ARIC จะหาทีม สร้าง MVP ที่ใช้งานได้ และพาออกสู่ตลาด โดยคุณร่วมเป็นพันธมิตรร่วมสร้างและผู้ร่วมก่อตั้ง และร่วมรับผลตอบแทนเมื่อผลงานสร้างรายได้</p>
       <div class="chall-deal"><span data-en="<b>ARIC covers</b> people, equipment, AI development tools and cloud costs">ARIC <b>สนับสนุนค่าใช้จ่าย</b>ด้านบุคลากร อุปกรณ์ เครื่องมือพัฒนา AI และคลาวด์</span><span data-en="<b>You</b> are a co-founder and choose your return"><b>คุณ</b>เป็นผู้ร่วมก่อตั้งและเลือกรับผลตอบแทน</span><span data-en="<b>Your return:</b> shares, a revenue share, or free / discounted use (agreed per project)"><b>ผลตอบแทน:</b> หุ้น ส่วนแบ่งรายได้ หรือใช้งานฟรี/ราคาพิเศษ (ตกลงเป็นรายโครงการ)</span></div>
       <div class="chall-act"><a class="btn btn-gold" href="challenge/"><span data-en="Share a challenge with ARIC">ส่งโจทย์ให้ ARIC</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a><small data-en="About 5 minutes · Thai or English · pictures are AI concept images">ใช้เวลาประมาณ 5 นาที · กรอกภาษาไทยหรืออังกฤษก็ได้ · ภาพประกอบเป็นภาพจำลอง (AI)</small></div>

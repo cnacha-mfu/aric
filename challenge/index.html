@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>ส่งโจทย์ให้ ARIC — Spark Hackathon 2027</title>
+<title>ส่งปัญหา เราปั้นธุรกิจให้ — ARIC Spark Hackathon 2027</title>
 <meta name="description" content="ส่งโจทย์ปัญหาจริงจากงานของคุณให้ ARIC มหาวิทยาลัยแม่ฟ้าหลวง ARIC สนับสนุนค่าใช้จ่ายด้านบุคลากร อุปกรณ์ เครื่องมือพัฒนา AI และคลาวด์ หาคนทำงาน สร้าง MVP และพาออกสู่ตลาด ส่วนคุณเป็นพันธมิตรร่วมสร้างและร่วมรับผลตอบแทน">
-<meta property="og:title" content="ส่งโจทย์ให้ ARIC — ปัญหาของคุณ คือโจทย์ของเรา">
+<meta property="og:title" content="ส่งปัญหา เราปั้นธุรกิจให้ — ARIC">
 <meta property="og:description" content="หาคนทำงาน → สร้าง MVP → ออกสู่ตลาด · ARIC สนับสนุนค่าใช้จ่ายด้านบุคลากร อุปกรณ์ เครื่องมือพัฒนา AI และคลาวด์ · คุณเป็นพันธมิตรร่วมสร้างและร่วมรับผลตอบแทน">
 <meta property="og:image" content="https://aric.mfu.ac.th/assets/og.jpg">
 <meta property="og:type" content="website">
@@ -50,6 +50,9 @@ button,input,select,textarea{font:inherit;color:inherit}
 .kicker{font:500 13px/1.4 var(--mono);letter-spacing:.06em;color:var(--gold-l)}
 .hero h1{font:700 clamp(2.3rem,5.6vw,4.2rem)/1.08 var(--font);margin-top:14px;text-wrap:balance}
 .hero h1 em{font-style:normal;color:var(--gold-l)}
+.hero h1 .nw{white-space:nowrap}
+html[lang="en"] .hero h1{font-size:clamp(2rem,4.1vw,3.3rem);line-height:1.12}
+html[lang="en"] .hero h1 .nw{white-space:normal}
 .hero p{font-size:clamp(1.02rem,1.4vw,1.18rem);color:var(--on-red2);max-width:58ch;margin-top:18px}
 .hero .go{display:inline-flex;align-items:center;gap:10px;margin-top:26px;background:var(--gold);color:var(--ink);font-weight:600;text-decoration:none;padding:14px 22px;border-radius:999px}
 .hero .go:hover{background:#EDBD5C}
@@ -167,7 +170,7 @@ footer .wrap{padding:22px 0;display:flex;flex-wrap:wrap;gap:8px 18px;justify-con
   <div class="wrap hero-top">
     <div>
       <p class="kicker">ARIC · SPARK HACKATHON 2027</p>
-      <h1 data-en="Your problem is our <em>next challenge</em>">ปัญหาของคุณ <em>คือโจทย์ของเรา</em></h1>
+      <h1 data-en="Bring the Problem,<br><em class=nw>We&rsquo;ll Build the Business</em>">ส่งปัญหา<br><em class="nw">เราปั้นธุรกิจให้</em></h1>
     </div>
     <div class="hero-side">
       <p data-en="Share a real problem from your work and co-create the solution with ARIC: ARIC finds the people, builds the MVP and takes it to market. You join as a co-creation partner and co-founder, and share the returns. It takes about 5 minutes.">ส่งโจทย์จริงจากงานของคุณ แล้วร่วมสร้างทางแก้กับ ARIC: ARIC จัดหาคน สร้าง MVP และพาออกสู่ตลาด ส่วนคุณร่วมเป็นพันธมิตรร่วมสร้างและผู้ร่วมก่อตั้ง พร้อมร่วมรับผลตอบแทน ใช้เวลากรอกประมาณ 5 นาที</p>
@@ -301,7 +304,7 @@ footer .wrap{padding:22px 0;display:flex;flex-wrap:wrap;gap:8px 18px;justify-con
   for (const [id, cfg] of Object.entries(OPTS)) $('#' + id).innerHTML = Object.entries(cfg.items).map(([v,[th,en]]) => `<label><input type="${cfg.type}" name="${id}" value="${v}"><span data-en="${en}">${th}</span></label>`).join('');
   $('#sector').innerHTML = `<option value="" data-en="Choose a sector">เลือกภาคส่วน</option>` + Object.entries(SECTORS).map(([v,[th,en]]) => `<option value="${v}" data-en="${en}">${th}</option>`).join('');
 
-  const TITLE = {th: document.title, en: 'Share a challenge with ARIC — Spark Hackathon 2027'};
+  const TITLE = {th: document.title, en: 'Bring the Problem, We’ll Build the Business — ARIC Spark Hackathon 2027'};
   const MSG = {
     th:{req:'กรุณากรอกช่องที่มีเครื่องหมาย * ให้ครบ', consent:'กรุณาให้ความยินยอม PDPA ก่อนส่ง', email:'รูปแบบอีเมลไม่ถูกต้อง', li:'ลิงก์ LinkedIn ต้องขึ้นต้นด้วย https://www.linkedin.com/', net:'ส่งไม่สำเร็จ กรุณาลองอีกครั้ง หรืออีเมลมาที่ aric@mfu.ac.th', sending:'กำลังส่ง…'},
     en:{req:'Please fill in the fields marked *', consent:'Please give PDPA consent before submitting', email:'That email address doesn’t look right', li:'The LinkedIn link must start with https://www.linkedin.com/', net:'Could not submit. Please try again, or email aric@mfu.ac.th', sending:'Sending…'}};
