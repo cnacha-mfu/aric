@@ -52,6 +52,7 @@ INVOLVE = ['owner', 'mentor', 'visit', 'sponsor', 'pilot', 'hire']
 KINDS = ['staff', 'intern', 'mentor']
 PSTATUS = ['offered', 'confirmed', 'onboarding', 'active', 'alumni']
 ONB_ITEMS = [f'o{i}' for i in range(1, 13)]
+BOARD_COLORS = ['#C8102E', '#2F5D9A', '#B7791F', '#2E7D5B', '#6B5B95', '#0D3B66', '#8A5A2B', '#3F8F6F', '#7A4E9A', '#6E0B1C']   # same set as the app's swatches
 COLORS = ['#6E0B1C', '#2F5D9A', '#B7791F', '#2E7D5B', '#6B5B95', '#C8102E', '#0D3B66', '#8A5A2B', '#3F8F6F', '#7A4E9A']
 
 SCHEMA = """
@@ -95,6 +96,11 @@ def db():
 def init_db():
     with db() as c:
         c.executescript(SCHEMA)
+        cols = {r[1] for r in c.execute('PRAGMA table_info(boards)')}   # columns added after release 1
+        if 'ord' not in cols: c.execute('ALTER TABLE boards ADD COLUMN ord REAL DEFAULT 0'); c.execute('UPDATE boards SET ord=id')
+        if 'color' not in cols:   # give existing boards distinct colours so the tabs are told apart at once
+            c.execute("ALTER TABLE boards ADD COLUMN color TEXT DEFAULT ''")
+            for i, (bid,) in enumerate(c.execute('SELECT id FROM boards ORDER BY ord, id').fetchall()): c.execute('UPDATE boards SET color=? WHERE id=?', (BOARD_COLORS[i % len(BOARD_COLORS)], bid))
 
 def rows(c, sql, args=()): return [dict(r) for r in c.execute(sql, args).fetchall()]
 def row(c, sql, args=()):
@@ -190,7 +196,7 @@ def person_out(p, full):
 
 def bootstrap(c, me):
     admin = is_admin(me)
-    boards = rows(c, 'SELECT * FROM boards WHERE archived=0 ORDER BY id')
+    boards = rows(c, 'SELECT * FROM boards WHERE archived=0 ORDER BY ord, id')
     members = {}
     for r in rows(c, 'SELECT * FROM board_members'): members.setdefault(r['board_id'], []).append(r['person_id'])
     counts = {r['task_id']: r['n'] for r in rows(c, 'SELECT task_id, COUNT(*) n FROM comments GROUP BY task_id')}
@@ -396,9 +402,14 @@ def set_members(c, bid, ids):
     for pid in {int(x) for x in ids}:
         if row(c, 'SELECT id FROM people WHERE id=?', (pid,)): c.execute('INSERT INTO board_members VALUES(?,?)', (bid, pid))
 
+def board_color(v):
+    need(not v or re.fullmatch(r'#[0-9A-Fa-f]{6}', v or ''), 400, 'invalid colour'); return v or ''
+
 @route('POST', '/os/api/boards', auth='admin')
 def h_board_new(rq, c, me, m):
-    cur = c.execute('INSERT INTO boards(name,description,created_at) VALUES(?,?,?)', (txt(rq.body.get('name'), 120, True, 'board name'), txt(rq.body.get('description'), 2000), now()))
+    ordn = (c.execute('SELECT MAX(ord) FROM boards').fetchone()[0] or 0) + 1
+    color = board_color(rq.body.get('color')) or BOARD_COLORS[c.execute('SELECT COUNT(*) FROM boards').fetchone()[0] % len(BOARD_COLORS)]
+    cur = c.execute('INSERT INTO boards(name,description,created_at,ord,color) VALUES(?,?,?,?,?)', (txt(rq.body.get('name'), 120, True, 'board name'), txt(rq.body.get('description'), 2000), now(), ordn, color))
     set_members(c, cur.lastrowid, list(rq.body.get('members') or []) + [me['id']])
     audit(c, me['id'], 'create', 'board', cur.lastrowid); return {'id': cur.lastrowid}
 
@@ -408,8 +419,23 @@ def h_board_edit(rq, c, me, m):
     if 'name' in b: c.execute('UPDATE boards SET name=? WHERE id=?', (txt(b['name'], 120, True, 'board name'), bid))
     if 'description' in b: c.execute('UPDATE boards SET description=? WHERE id=?', (txt(b['description'], 2000), bid))
     if 'archived' in b: c.execute('UPDATE boards SET archived=? WHERE id=?', (1 if b['archived'] else 0, bid))
+    if 'color' in b: c.execute('UPDATE boards SET color=? WHERE id=?', (board_color(b['color']), bid))
     if 'members' in b: set_members(c, bid, list(b['members']) + [me['id']])
     audit(c, me['id'], 'update', 'board', bid, {k: b[k] for k in b if k != 'description'}); return {'ok': True}
+
+@route('POST', '/os/api/boards/reorder', auth='admin')
+def h_board_order(rq, c, me, m):
+    ids = rq.body.get('ids'); need(isinstance(ids, list) and len(ids) <= 500, 400, 'invalid ids')
+    for i, bid in enumerate(ids): c.execute('UPDATE boards SET ord=? WHERE id=?', (i + 1, int(bid)))
+    audit(c, me['id'], 'reorder', 'board', None, [int(x) for x in ids]); return {'ok': True}
+
+@route('DELETE', r'/os/api/boards/(\d+)', auth='admin')
+def h_board_del(rq, c, me, m):
+    bid = int(m[1]); b = row(c, 'SELECT * FROM boards WHERE id=?', (bid,)); need(b, 404, 'board not found')
+    n = c.execute('SELECT COUNT(*) FROM tasks WHERE board_id=?', (bid,)).fetchone()[0]
+    c.execute('DELETE FROM comments WHERE task_id IN (SELECT id FROM tasks WHERE board_id=?)', (bid,))
+    c.execute('DELETE FROM tasks WHERE board_id=?', (bid,)); c.execute('DELETE FROM board_members WHERE board_id=?', (bid,)); c.execute('DELETE FROM boards WHERE id=?', (bid,))
+    audit(c, me['id'], 'delete', 'board', bid, {'name': b['name'], 'tasks': n}); return {'ok': True}
 
 # --- people (admin) and onboarding
 def person_vals(c, b, partial):

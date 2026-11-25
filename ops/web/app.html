@@ -129,7 +129,16 @@ tbody tr:hover td{background:color-mix(in srgb,var(--chip) 60%,transparent)}
 .prog span{font:500 11.5px var(--mono);color:var(--mute)}
 .tabs{display:flex;gap:4px;border-bottom:1px solid var(--rule);overflow-x:auto;flex-wrap:nowrap}
 .tabs button{border:0;background:none;padding:9px 14px;font-weight:500;color:var(--mute);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap;display:inline-flex;align-items:center;gap:6px}
-.tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--rail2)}
+.tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--bc,var(--rail2))}
+.tabs .bdot{width:9px;height:9px;border-radius:50%;flex:none;background:var(--bc)}
+.tabs button[draggable="true"]{cursor:grab}
+.tabs button.dragging{opacity:.4}
+.tabs button.drop-before{box-shadow:inset 3px 0 0 var(--gold)}
+.tabs button.drop-after{box-shadow:inset -3px 0 0 var(--gold)}
+.swatches{display:flex;flex-wrap:wrap;gap:8px}
+.swatches button{width:30px;height:30px;border-radius:50%;border:2px solid #fff;background:var(--sw);box-shadow:0 0 0 1px var(--rule);cursor:pointer;padding:0}
+.swatches button[aria-checked="true"]{box-shadow:0 0 0 2px var(--ink)}
+.chip .bdot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--bc);margin-right:5px;vertical-align:1px}
 .tabs button:hover{color:var(--ink)}
 .tabs .addb{color:var(--red);font-weight:600}
 .tabs .addb svg{width:15px;height:15px}
@@ -251,6 +260,7 @@ const T = {
   q_problem:'ปัญหาที่เกิดขึ้น', q_affected:'ผู้ได้รับผลกระทบ', q_freq:'ความถี่', q_work:'วิธีแก้ปัจจุบัน', q_impact:'ผลกระทบ', q_success:'ความสำเร็จหน้าตาเป็นอย่างไร',
   q_data:'ข้อมูลที่มี', q_market:'ลูกค้า / ตลาดเป้าหมาย', q_msize:'ขนาดตลาด', q_chan:'ทางสู่ตลาด', q_price:'ราคาที่ลูกค้ายอมจ่าย', q_comp:'ทางเลือก / คู่แข่ง', q_alumni:'ศิษย์เก่า มฟล.',
   close:'ปิด', delTask:'ลบงาน', delPP:'ลบโจทย์ (ตามคำขอ PDPA)', confirmAgain:'กดอีกครั้งเพื่อยืนยัน', exportCsv:'ส่งออก CSV',
+  boardColor:'สีบอร์ด', boardPos:'ลำดับแท็บ', moveL:'เลื่อนไปซ้าย', moveR:'เลื่อนไปขวา', dragHint:'ลากแท็บเพื่อจัดลำดับ', delBoard:'ลบบอร์ด', delBoardN:'ลบบอร์ดและงาน {n} รายการ', boardDeleted:'ลบบอร์ดแล้ว', delBoardHint:'การลบบอร์ดจะลบงานและความคิดเห็นทั้งหมดในบอร์ดนี้ และกู้คืนไม่ได้',
   boardName:'ชื่อบอร์ด', createBoard:'สร้างบอร์ด', members:'สมาชิกบอร์ด', editBoard:'แก้ไขบอร์ด / สมาชิก',
   membersHint:'สมาชิกเห็นและแก้ไขงานทุกใบในบอร์ดนี้ ผู้ดูแลระบบเห็นทุกบอร์ดเสมอ', boardHint:'บอร์ดใหม่ใช้คอลัมน์ชุดเดียวกัน (รอจัดคิว → เสร็จแล้ว) และปรากฏเป็นแท็บด้านบน',
   addPerson:'เพิ่มบุคลากร', editPerson:'แก้ไขข้อมูล', emailHint:'ใช้อีเมล @mfu.ac.th หรือ @lamduan.mfu.ac.th เพื่อให้คนนี้เข้าสู่ระบบได้',
@@ -279,6 +289,7 @@ const T = {
   q_problem:'What happens today', q_affected:'Who is affected', q_freq:'How often', q_work:'Current workaround', q_impact:'Impact', q_success:'What success looks like',
   q_data:'Data available', q_market:'Target customers / market', q_msize:'Market size', q_chan:'Route to market', q_price:'Likely price', q_comp:'Alternatives / competitors', q_alumni:'MFU alumni',
   close:'Close', delTask:'Delete task', delPP:'Delete pain point (PDPA request)', confirmAgain:'Click again to confirm', exportCsv:'Export CSV',
+  boardColor:'Board colour', boardPos:'Tab position', moveL:'Move left', moveR:'Move right', dragHint:'Drag tabs to reorder', delBoard:'Delete board', delBoardN:'Delete board and its {n} tasks', boardDeleted:'Board deleted', delBoardHint:'Deleting a board removes all its tasks and their comments. This cannot be undone.',
   boardName:'Board name', createBoard:'Create board', members:'Board members', editBoard:'Edit board / members',
   membersHint:'Members see and edit every task on this board. The admin always sees every board.', boardHint:'A new board uses the same columns (Backlog → Done) and appears as a tab above the board.',
   addPerson:'Add person', editPerson:'Edit details', emailHint:'Use an @mfu.ac.th or @lamduan.mfu.ac.th address so this person can sign in',
@@ -329,6 +340,21 @@ async function refresh(){ S = await api('GET', '/os/api/bootstrap'); render(); }
 
 /* ---------------- helpers ---------------- */
 const isAdmin = () => !!S?.admin;
+const BOARD_COLORS = ['#6E0B1C', '#C8102E', '#B7791F', '#2E7D5B', '#3F8F6F', '#2F5D9A', '#0D3B66', '#6B5B95', '#7A4E9A', '#8A5A2B'];
+const bcol = b => (b && b.color) || '#9A8F8B';
+async function saveBoardOrder(ids){ S.boards.sort((a, b) => ids.indexOf(a.id) - ids.indexOf(b.id)); render(); await act(() => api('POST', '/os/api/boards/reorder', {ids})).catch(()=>{}); }
+function bindBoardTabs(){
+  const bar = $('#boardTabs'); if (!bar || !isAdmin()) return; let dragId = null;
+  bar.querySelectorAll('button[draggable]').forEach(el => {
+    const clear = () => bar.querySelectorAll('.drop-before,.drop-after').forEach(x => x.classList.remove('drop-before', 'drop-after'));
+    el.addEventListener('dragstart', e => { dragId = +el.dataset.board; el.classList.add('dragging'); e.dataTransfer.effectAllowed = 'move'; e.dataTransfer.setData('text/plain', String(dragId)); });
+    el.addEventListener('dragend', () => { el.classList.remove('dragging'); clear(); dragId = null; });
+    el.addEventListener('dragover', e => { if (dragId == null || +el.dataset.board === dragId) return; e.preventDefault(); const r = el.getBoundingClientRect(), after = e.clientX > r.left + r.width / 2; clear(); el.classList.add(after ? 'drop-after' : 'drop-before'); });
+    el.addEventListener('dragleave', () => el.classList.remove('drop-before', 'drop-after'));
+    el.addEventListener('drop', e => { e.preventDefault(); if (dragId == null) return; const r = el.getBoundingClientRect(), after = e.clientX > r.left + r.width / 2, target = +el.dataset.board;
+      const ids = S.boards.map(b => b.id).filter(id => id !== dragId); ids.splice(ids.indexOf(target) + (after ? 1 : 0), 0, dragId); clear(); saveBoardOrder(ids); });
+  });
+}
 const ME = () => S.me.id;
 const person = id => S.people.find(p => p.id === id);
 const pname = p => p ? (lang === 'th' && p.name_th ? p.name_th : p.name) : '—';
@@ -417,7 +443,7 @@ function vTasks(){
   const q = f.q.toLowerCase();
   const list = S.tasks.filter(x => (f.board === 'all' || x.board_id === +f.board) && (f.person === 'all' || x.assignee_id === +f.person) && (!q || x.title.toLowerCase().includes(q)));
   const cur = f.board === 'all' ? null : boardOf(+f.board);
-  const btabs = `<div class="tabs" role="tablist">${[{id:'all', name:t('allBoards')}, ...S.boards].map(b => `<button type="button" role="tab" data-board="${b.id}" aria-selected="${String(f.board)===String(b.id)}">${esc(b.name)} <span class="mono" style="font-size:11px;color:var(--mute)">${S.tasks.filter(x => (b.id==='all'||x.board_id===b.id) && x.status!=='done').length}</span></button>`).join('')}${isAdmin()?`<button type="button" class="addb" id="newBoard">${ico('plus')}${t('newBoard')}</button>`:''}</div>`;
+  const btabs = `<div class="tabs" role="tablist" id="boardTabs">${[{id:'all', name:t('allBoards')}, ...S.boards].map(b => `<button type="button" role="tab" data-board="${b.id}" aria-selected="${String(f.board)===String(b.id)}"${b.id!=='all'?` style="--bc:${bcol(b)}"${isAdmin()&&S.boards.length>1?` draggable="true" title="${t('dragHint')}"`:''}`:''}>${b.id!=='all'?'<i class="bdot"></i>':''}${esc(b.name)} <span class="mono" style="font-size:11px;color:var(--mute)">${S.tasks.filter(x => (b.id==='all'||x.board_id===b.id) && x.status!=='done').length}</span></button>`).join('')}${isAdmin()?`<button type="button" class="addb" id="newBoard">${ico('plus')}${t('newBoard')}</button>`:''}</div>`;
   const memberBar = cur ? `<div class="tools" style="font-size:13px;color:var(--mute)"><span>${t('members')}:</span>${(cur.members||[]).map(id => av(id)).join('')}${cur.description?`<span>· ${esc(cur.description)}</span>`:''}${isAdmin()?`<button class="btn sm" id="editBoard">${t('editBoard')}</button>`:''}</div>` : '';
   const canAdd = S.boards.some(b => isAdmin() || (b.members||[]).includes(ME()));
   const tools = `<div class="tools"><select id="fPerson" aria-label="${t('assignee')}"><option value="all">${t('allPeople')}</option>${S.people.map(p => `<option value="${p.id}" ${String(f.person)===String(p.id)?'selected':''}>${esc(pname(p))}</option>`).join('')}</select><input id="fQ" type="search" placeholder="${t('search')}" value="${esc(f.q)}">${canAdd?`<button class="btn pri sm" id="newTask">${ico('plus')}${t('newTask')}</button>`:''}</div>`;
@@ -425,7 +451,7 @@ function vTasks(){
   if (!S.boards.length) return head + `<section class="panel bigempty"><b>${isAdmin()?t('noBoards'):t('noAccess')}</b><span>${isAdmin()?t('boardHint'):t('noAccessHint')}</span>${isAdmin()?`<button class="btn pri" id="newBoard">${ico('plus')}${t('newBoard')}</button>`:''}</section>`;
   return head + btabs + memberBar + `<div class="board" data-kind="task">${TASK_COLS.map(c => { const cards = list.filter(x => x.status === c.id).sort(byOrd); return `
    <section class="col" data-col="${c.id}"><header><i style="background:${c.c}"></i>${L(c)}<span class="n">${cards.length}</span></header>
-   ${cards.map(x => `<article class="card" data-task="${x.id}" tabindex="0"><div class="m">${f.board==='all'?`<span class="chip">${esc(boardOf(x.board_id)?.name || '—')}</span>`:''}${x.pp_id?`<span class="chip" title="${t('linked')}">↗ PP-${String(x.pp_id).padStart(4,'0')}</span>`:''}</div><div class="t">${esc(x.title)}</div><div class="m">${priChip(x.priority)}${dueChip(x.due,x.status)}${x.comments?`<span class="mono" style="font-size:11px;color:var(--mute)">💬 ${x.comments}</span>`:''}<span class="sp">${av(x.assignee_id)}</span></div></article>`).join('') || '<div class="empty">—</div>'}</section>`; }).join('')}</div>`;
+   ${cards.map(x => `<article class="card" data-task="${x.id}" tabindex="0"><div class="m">${f.board==='all'?`<span class="chip" style="--bc:${bcol(boardOf(x.board_id))}"><i class="bdot"></i>${esc(boardOf(x.board_id)?.name || '—')}</span>`:''}${x.pp_id?`<span class="chip" title="${t('linked')}">↗ PP-${String(x.pp_id).padStart(4,'0')}</span>`:''}</div><div class="t">${esc(x.title)}</div><div class="m">${priChip(x.priority)}${dueChip(x.due,x.status)}${x.comments?`<span class="mono" style="font-size:11px;color:var(--mute)">💬 ${x.comments}</span>`:''}<span class="sp">${av(x.assignee_id)}</span></div></article>`).join('') || '<div class="empty">—</div>'}</section>`; }).join('')}</div>`;
 }
 function vPeople(){
   const tabs = `<div class="tools" style="justify-content:space-between"><div class="tabs" role="tablist" style="flex:1">${[['dir','dirTab'],['onb','onbTab']].map(([k,l]) => `<button type="button" role="tab" data-ptab="${k}" aria-selected="${f.ptab===k}">${t(l)}</button>`).join('')}</div><button class="btn pri sm" id="addPerson">${ico('plus')}${t('addPerson')}</button></div>`;
@@ -511,15 +537,24 @@ function ppDrawer(id){
 function boardDrawer(editId){
   const b = editId ? boardOf(editId) : null;
   const mem = new Set(b ? b.members : [ME()]);
+  let col = b ? bcol(b) : BOARD_COLORS[S.boards.length % BOARD_COLORS.length];
+  const nTasks = b ? S.tasks.filter(x => x.board_id === b.id).length : 0;
   openDrawer(b ? b.name : t('newBoard'), `<div class="f"><label for="bName">${t('boardName')}</label><input id="bName" maxlength="120" value="${esc(b?.name||'')}" placeholder="${lang==='th'?'เช่น Forge รอบที่ 1, โครงการหุ่นยนต์ดูแลผู้สูงอายุ':'e.g. Forge Round 1, Care-robot pilot'}"></div>
    <div class="f"><label for="bDesc">${t('desc')}</label><textarea id="bDesc" style="min-height:60px" maxlength="2000">${esc(b?.description||'')}</textarea></div>
+   <div class="f"><span class="lbl" id="bColLbl">${t('boardColor')}</span><div class="swatches" role="radiogroup" aria-labelledby="bColLbl">${BOARD_COLORS.map(c => `<button type="button" role="radio" data-col="${c}" style="--sw:${c}" aria-label="${c}" aria-checked="${c === col}"></button>`).join('')}</div></div>
+   ${b && S.boards.length > 1 ? `<div class="f"><span class="lbl">${t('boardPos')}</span><div style="display:flex;gap:8px"><button type="button" class="btn sm" id="bLeft" ${S.boards[0].id===b.id?'disabled':''}>← ${t('moveL')}</button><button type="button" class="btn sm" id="bRight" ${S.boards.at(-1).id===b.id?'disabled':''}>${t('moveR')} →</button></div></div>` : ''}
    <div class="f"><span class="lbl">${t('members')}</span><span class="hint">${t('membersHint')}</span><div class="chk">${S.people.filter(p => p.status !== 'alumni').map(p => `<label><input type="checkbox" data-mem="${p.id}" ${mem.has(p.id)||p.admin?'checked':''} ${p.admin?'disabled':''}>${av(p.id)}<span>${esc(pname(p))}</span><span class="own">${p.admin?t('adminLbl'):L(KINDS[p.kind])}</span></label>`).join('')}</div></div>
    ${b?'':`<p class="hint" style="font-size:12.5px;color:var(--mute)">${t('boardHint')}</p>`}
-   <div><button class="btn pri" id="bSave">${b ? t('save') : t('createBoard')}</button></div>`);
+   <div><button class="btn pri" id="bSave">${b ? t('save') : t('createBoard')}</button></div>
+   ${b ? `<div class="f" style="margin-top:22px;padding-top:16px;border-top:1px solid var(--rule)"><span class="hint">${t('delBoardHint')}</span><div><button type="button" class="btn sm danger" id="bDel">${nTasks ? t('delBoardN').replace('{n}', nTasks) : t('delBoard')}</button></div></div>` : ''}`);
   const inp = $('#bName'); inp.focus();
+  document.querySelectorAll('.swatches [data-col]').forEach(el => el.onclick = () => { col = el.dataset.col; document.querySelectorAll('.swatches [data-col]').forEach(x => x.setAttribute('aria-checked', String(x === el))); });
+  const move = d => { const ids = S.boards.map(x => x.id), i = ids.indexOf(b.id), j = i + d; if (j < 0 || j >= ids.length) return; [ids[i], ids[j]] = [ids[j], ids[i]]; closeDrawer(); saveBoardOrder(ids); };
+  const bl = $('#bLeft'), br = $('#bRight'); if (bl) bl.onclick = () => move(-1); if (br) br.onclick = () => move(1);
+  const bd = $('#bDel'); if (bd) armDelete(bd, async () => { await act(() => api('DELETE', `/os/api/boards/${b.id}`), t('boardDeleted')); f.board = 'all'; closeDrawer(); render(); });
   const go = async () => { const name = inp.value.trim(); if (!name) { inp.focus(); return; }
     const members = [...document.querySelectorAll('[data-mem]:checked')].map(i => +i.dataset.mem);
-    const body = {name, description: $('#bDesc').value.trim(), members};
+    const body = {name, description: $('#bDesc').value.trim(), members, color: col};
     const r = await act(() => b ? api('PATCH', `/os/api/boards/${b.id}`, body) : api('POST', '/os/api/boards', body), t('saved')).catch(()=>null);
     if (r) { if (!b && r.id) f.board = String(r.id); closeDrawer(); render(); } };
   $('#bSave').onclick = go; inp.onkeydown = e => { if (e.key === 'Enter') go(); };
@@ -636,6 +671,7 @@ function render(){
   on('fPerson', 'change', e => { f.person = e.target.value; render(); });
   on('fQ', 'input', e => { f.q = e.target.value; clearTimeout(render.tq); render.tq = setTimeout(() => { render(); const q = $('#fQ'); if (q) { q.focus(); q.setSelectionRange(q.value.length, q.value.length); } }, 250); });
   v.querySelectorAll('[data-board]').forEach(b => b.onclick = () => { f.board = b.dataset.board; render(); });
+  bindBoardTabs();
   v.querySelectorAll('[data-ptab]').forEach(b => b.onclick = () => { f.ptab = b.dataset.ptab; render(); });
   v.querySelectorAll('#newBoard').forEach(b => b.onclick = () => boardDrawer());
   on('editBoard', 'click', () => boardDrawer(+f.board));
