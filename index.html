@@ -83,7 +83,11 @@ p{margin:0;text-wrap:pretty}
 
 /* ---------- hero ---------- */
 .hero{position:relative;min-height:100svh;background-color:var(--field);background-image:radial-gradient(120% 90% at 78% 70%,#8B0F25 0%,var(--field) 48%,var(--field-d) 100%);color:var(--on-red);overflow:hidden;isolation:isolate}
-.hero canvas{position:absolute;inset:0;width:100%;height:100%;z-index:0;touch-action:pan-y;cursor:crosshair}
+.hero{background-image:radial-gradient(70% 60% at 80% 52%,#9E1430 0%,rgba(158,20,48,0) 70%),radial-gradient(120% 90% at 78% 70%,#8B0F25 0%,var(--field) 48%,var(--field-d) 100%)}
+.hero canvas{position:absolute;inset:-40px;width:calc(100% + 80px);height:calc(100% + 80px);max-width:none;z-index:0;will-change:transform}
+#heroCanvas{touch-action:pan-y;cursor:crosshair}
+#heroSky,#heroFx{pointer-events:none}
+.hero::after{content:"";position:absolute;inset:auto 0 0;height:90px;z-index:0;pointer-events:none;background:linear-gradient(to top,rgba(58,6,16,.55),rgba(58,6,16,0))}
 .hero .wrap{position:relative;z-index:1;min-height:100svh;display:flex;flex-direction:column;justify-content:center;padding:120px 0 96px;pointer-events:none}
 .hero .copy{max-width:min(540px,44%);pointer-events:auto}
 .hero .by{display:flex;align-items:center;gap:12px;margin-bottom:22px;font:500 clamp(.88rem,.95vw,.95rem)/1.4 var(--disp);letter-spacing:.02em;color:var(--gold-l)}
@@ -98,9 +102,10 @@ p{margin:0;text-wrap:pretty}
 .hero .hint::before{content:"";width:22px;height:22px;flex:none;border-radius:50%;border:1.5px dashed var(--gold-l);box-shadow:inset 0 0 0 5px rgba(110,11,28,1),inset 0 0 0 9px var(--gold)}
 .toast{position:absolute;z-index:3;pointer-events:none;font:500 12px/1 var(--mono);color:var(--gold-l);letter-spacing:.04em;transform:translate(-50%,-150%);opacity:0;white-space:nowrap}
 @media (max-width:860px){
-  .hero .wrap{justify-content:flex-start;padding-top:108px;padding-bottom:46svh}
+  .hero .wrap{justify-content:flex-start;padding-top:96px;padding-bottom:30svh}
+  .hero .actions{gap:14px 16px;margin-top:30px}
   .hero .copy{max-width:100%}
-  .hero .hint{margin-top:22px}
+  .hero .hint{display:none}
 }
 
 /* ---------- sections ---------- */
@@ -438,7 +443,9 @@ footer p{line-height:1.6}
 <main id="main">
 <!-- HERO -->
 <section class="hero" id="top">
+  <canvas id="heroSky" aria-hidden="true"></canvas>
   <canvas id="heroCanvas" aria-label="ภูเขา ARIC ที่มีชีวิต แตะเพื่อเพิ่มโจทย์" role="img"></canvas>
+  <canvas id="heroFx" aria-hidden="true"></canvas>
   <div class="wrap">
     <div class="copy">
       <p class="by" data-en="By Mae Fah Luang University">โดย มหาวิทยาลัยแม่ฟ้าหลวง</p>
@@ -812,6 +819,8 @@ class Mountain {
     this.c = canvas; this.g = canvas.getContext('2d'); this.o = opts;
     this.seed = opts.seed; this.pts = genPoints(this.seed, opts.n).map(p => ({ ...p, ox: 0, oy: 0 }));
     this.user = []; this.pulses = []; this.ptr = null; this.morph = null; this.visible = true; this.t0 = performance.now();
+    this.sunDy = 0; this.sunA = 1;
+    if (opts.intro && !reduce) { const r = rng(7); this.intro = { t0: performance.now() + 150 }; this.pts.forEach(p => { p.dl = 120 + ((p.x + 14) / 540) * 950 + r() * 260; }); }
     this.resize(); new ResizeObserver(() => this.resize()).observe(canvas);
     new IntersectionObserver(es => { this.visible = es[0].isIntersecting; }, { threshold: 0 }).observe(canvas);
   }
@@ -859,6 +868,20 @@ class Mountain {
       p.ox += (tx - p.ox) * .12; p.oy += (ty - p.oy) * .12;
     });
     const Q = P.map(p => ({ x: p.x + p.ox, y: p.y + p.oy, z: height(p.x, p.y, p.n || 0) }));
+    // intro: nodes rise into place left to right, facets and edges follow their corners, then the sun comes up
+    let K = null, introG = 1;
+    if (this.intro) {
+      const el = now - this.intro.t0;
+      if (el > 2900) { this.intro = null; this.sunDy = 0; this.sunA = 1; }
+      else {
+        K = P.map(p => { const k = Math.max(0, Math.min(1, (el - (p.dl || 0)) / 700)); return 1 - Math.pow(1 - k, 3); });
+        Q.forEach((q, i) => { q.y += (1 - K[i]) * 64; });
+        introG = Math.max(0, Math.min(1, (el - 300) / 1500));
+        const sk = Math.max(0, Math.min(1, (el - 900) / 1700)), se = 1 - Math.pow(1 - sk, 3);
+        this.sunDy = (1 - se) * 70; this.sunA = se;
+      }
+    }
+    this.Q = Q;
     // glow: nodes under the pointer light up and fade slowly behind it; a few light up on their own
     if (o.reach) {
       P.forEach((p, i) => {
@@ -879,8 +902,8 @@ class Mountain {
     const stage = o.stage ? o.stage() : null;   // {spark, forge, lift} 0..1 for the engine canvas
     // sun
     const pulse = reduce ? 0 : Math.sin(now / 900) * 1.5;
-    g.fillStyle = '#E4B04A'; g.globalAlpha = stage ? Math.min(1, stage.forge * 1.5) : 1;
-    g.beginPath(); g.arc(SUN[0], SUN[1], SUN[2] + pulse, 0, 7); g.fill(); g.globalAlpha = 1;
+    g.fillStyle = '#E4B04A'; g.globalAlpha = stage ? Math.min(1, stage.forge * 1.5) : this.sunA;
+    g.beginPath(); g.arc(SUN[0], SUN[1] + this.sunDy, SUN[2] + pulse, 0, 7); g.fill(); g.globalAlpha = 1;
     // facets
     const L = o.reach && !reduce ? [.52 + Math.sin(now / 5200) * .22, -.62 + Math.cos(now / 6100) * .12, .58] : [.52, -.62, .58], hue = o.hue();   // hero light drifts so facets shimmer
     g.save(); g.beginPath(); POLY.forEach(([x, y], i) => i ? g.lineTo(x, y) : g.moveTo(x, y)); g.closePath(); g.clip();
@@ -891,8 +914,13 @@ class Mountain {
       const ux = B.x - A.x, uy = B.y - A.y, uz = (B.z - A.z) * 520, vx = C.x - A.x, vy = C.y - A.y, vz = (C.z - A.z) * 520;
       let nx = uy * vz - uz * vy, ny = uz * vx - ux * vz, nz = ux * vy - uy * vx; const nl = Math.hypot(nx, ny, nz) || 1; if (nz < 0) { nx = -nx; ny = -ny; nz = -nz; }
       const sh = Math.max(0, Math.min(1, (nx * L[0] + ny * L[1] + nz * L[2]) / nl));
-      const lit = .3 + .7 * Math.pow(sh, 1.2);
-      let a = 1; if (stage) a = Math.min(1, Math.max(0, stage.forge * 1.6 - (ti % 7) * .08));
+      let lit = .3 + .7 * Math.pow(sh, 1.2);
+      if (o.reach && !reduce) {   // a slow gleam of light crosses the range every few seconds
+        const gc = ((now + 4000) % 9500) / 2800;
+        if (gc < 1) { const d = (A.x + B.x + C.x) / 3 + ((A.y + B.y + C.y) / 3 - 320) * .7 - (-80 + gc * 700); lit = Math.min(1, lit + .32 * Math.exp(-d * d / 1400)); }
+      }
+      let a = 1;
+      if (K) a = Math.min(K[tr[0]], K[tr[1]], K[tr[2]]); if (stage) a = Math.min(1, Math.max(0, stage.forge * 1.6 - (ti % 7) * .08));
       if (stage && ti < 0) a = Math.min(1, Math.max(0, stage.forge * 1.6));
       if (lifted && ti >= 0 && lifted.has(ti)) a = a * (1 - stage.lift);
       if (a <= 0) return;
@@ -904,10 +932,15 @@ class Mountain {
     // network edges
     const ea = stage ? stage.forge : 1;
     if (ea > 0) {
-      g.lineWidth = 1.15; g.strokeStyle = `rgba(243,212,138,${.42 * ea})`; g.beginPath();
+      g.lineWidth = 1.15;
+      if (K) {   // intro: each edge fades in with its later corner
+        adj.forEach((s, a) => s.forEach(b => { if (b <= a || (P[a].fixed && P[b].fixed)) return; const v = Math.min(K[a], K[b]); if (v <= 0) return; g.strokeStyle = `rgba(243,212,138,${.42 * v})`; g.beginPath(); g.moveTo(Q[a].x, Q[a].y); g.lineTo(Q[b].x, Q[b].y); g.stroke(); }));
+      } else {
+      g.strokeStyle = `rgba(243,212,138,${.42 * ea})`; g.beginPath();
       let k = 0; const lim = stage ? Math.floor(adj.length * 3 * stage.forge) : Infinity;
       adj.forEach((s, a) => s.forEach(b => { if (b > a && !(P[a].fixed && P[b].fixed) && k++ < lim) { g.moveTo(Q[a].x, Q[a].y); g.lineTo(Q[b].x, Q[b].y); } }));   // rim-to-rim: the curved outline is the line
       g.stroke();
+      }
     }
     // edges between lit nodes glow too
     if (o.reach) {
@@ -915,6 +948,7 @@ class Mountain {
       adj.forEach((s, a) => s.forEach(b => { if (b <= a || (P[a].fixed && P[b].fixed)) return; const v = Math.min(P[a].gl || 0, P[b].gl || 0); if (v < .05) return; g.strokeStyle = `rgba(255,236,170,${.8 * v})`; g.beginPath(); g.moveTo(Q[a].x, Q[a].y); g.lineTo(Q[b].x, Q[b].y); g.stroke(); }));
     }
     // pulses
+    if (o.onArrive) this.pulses.forEach(pu => { if (!pu.f && now >= pu.s + pu.dur) { pu.f = 1; const q = Q[pu.b]; if (q) o.onArrive(q); } });
     this.pulses = this.pulses.filter(pu => now < pu.s + pu.dur);
     this.pulses.forEach(pu => {
       const k = (now - pu.s) / pu.dur; if (k < 0) return; const A = Q[pu.a], B = Q[pu.b]; if (!A || !B || (P[pu.a] && P[pu.b] && P[pu.a].fixed && P[pu.b].fixed)) return;
@@ -923,7 +957,7 @@ class Mountain {
     });
     g.restore();
     // silhouette outline, as in the logo: the curved rim is part of the network
-    if (ea > 0) { g.lineWidth = 1.6; g.lineJoin = 'round'; g.strokeStyle = `rgba(243,212,138,${.55 * ea})`; g.beginPath();
+    if (ea > 0) { g.lineWidth = 1.6; g.lineJoin = 'round'; g.strokeStyle = `rgba(243,212,138,${.55 * ea * introG})`; g.beginPath();
       POLY.forEach(([x, y], i) => { if (y >= 399.9 && i) return; i ? g.lineTo(x, y) : g.moveTo(x, y); }); g.lineTo(RIM[4][0], RIM[4][1]); g.stroke(); }
     // lifted facets (Launch = companies)
     if (lifted && stage.lift > 0) {
@@ -946,6 +980,7 @@ class Mountain {
     g.globalAlpha = stage ? Math.min(1, stage.spark * 1.4) : 1;
     P.forEach((p, i) => {
       const q = Q[i], deg = adj[i].size;
+      if (K) { if (K[i] <= 0) return; g.globalAlpha = K[i]; }
       if (stage && stage.forge < .05) { const tw = reduce ? 1 : .55 + .45 * Math.sin(now / 260 + i * 1.7); g.fillStyle = `rgba(255,226,150,${tw})`; g.beginPath(); g.arc(q.x, q.y, 3.4, 0, 7); g.fill(); return; }
       if (i === 1 || i === 2 || i === 3) { g.fillStyle = '#fff'; g.strokeStyle = '#E4B04A'; g.lineWidth = 4.5; g.beginPath(); g.arc(q.x, q.y, i === 3 ? 12.5 : i === 1 ? 11.5 : 9.5, 0, 7); g.fill(); g.stroke(); return; }
       if (p.born) { const k = Math.min(1, (now - p.born) / 900); g.strokeStyle = `rgba(255,236,170,${1 - k})`; g.lineWidth = 2; g.beginPath(); g.arc(q.x, q.y, 6 + 26 * k, 0, 7); g.stroke(); g.fillStyle = '#F3D48A'; g.beginPath(); g.arc(q.x, q.y, 5.5, 0, 7); g.fill(); return; }
@@ -981,13 +1016,16 @@ class Mountain {
 let seedN = 0x2570A1;
 const hex = n => (n >>> 0).toString(16).toUpperCase().slice(-4).padStart(4, '0');
 let round = 1;
+const PAD = 40;   // the hero canvases overhang the section by 40px so parallax never shows an edge
 const heroM = new Mountain($('#heroCanvas'), {
-  seed: seedN, n: 34, reach: true,
+  seed: seedN, n: 34, reach: true, intro: true,
   hue: () => 350 + ((seedN % 9) - 4) * .9,
   fit: (w, h) => {
-    if (w < 860) { const s = Math.min(w / 430, h * .5 / 230); return { s, x: w / 2 - 256 * s, y: h - 404 * s }; }
-    const s = Math.min(w * .6 / 470, (h - 120) / 240); return { s, x: w - 500 * s, y: h - 408 * s };
-  }
+    const vw = w - PAD * 2, vh = h - PAD * 2;
+    if (vw < 860) { const s = Math.min(vw * 1.55 / 540, vh * .3 / 157); return { s, x: PAD + vw * .55 - 300 * s, y: PAD + vh + 14 - 400 * s }; }
+    const s = Math.min(vw * .74 / 470, vh * .5 / 157); return { s, x: PAD + vw - 470 * s, y: PAD + vh + 14 - 400 * s };
+  },
+  onArrive: q => { if (Math.random() < .45) fx.glint(q, .55, 5 + Math.random() * 6); }
 });
 const toast = $('#toast');
 function popToast(x, y) {
@@ -996,11 +1034,155 @@ function popToast(x, y) {
   toast.animate([{ opacity: 0, transform: 'translate(-50%,-110%)' }, { opacity: 1, transform: 'translate(-50%,-170%)', offset: .25 }, { opacity: 0, transform: 'translate(-50%,-260%)' }], { duration: 1300, easing: 'cubic-bezier(.16,1,.3,1)' });
 }
 const hc = $('#heroCanvas');
-hc.addEventListener('pointermove', e => { const r = hc.getBoundingClientRect(); heroM.ptr = { x: e.clientX - r.left, y: e.clientY - r.top }; });
-hc.addEventListener('pointerleave', () => { heroM.ptr = null; });
+hc.addEventListener('pointermove', e => { const r = hc.getBoundingClientRect(); heroM.ptr = { x: e.clientX - r.left, y: e.clientY - r.top }; if (e.pointerType === 'mouse') { par.tx = (e.clientX / innerWidth - .5) * 2; par.ty = (e.clientY / innerHeight - .5) * 2; fx.trail(heroM.ptr); } });
+hc.addEventListener('pointerleave', () => { heroM.ptr = null; par.tx = 0; par.ty = 0; });
+
+/* ---------------- hero scene: sky behind the mountain, sparks in front ---------------- */
+const clamp01 = v => v < 0 ? 0 : v > 1 ? 1 : v, easeOut = k => 1 - Math.pow(1 - clamp01(k), 3);
+const par = { tx: 0, ty: 0, x: 0, y: 0, sy: 0 };   // pointer parallax (-1..1, eased) and hero scroll offset
+const skyC = $('#heroSky'), fxC = $('#heroFx');
+function parallax() {
+  if (reduce) return;
+  par.x += (par.tx - par.x) * .06; par.y += (par.ty - par.y) * .06;
+  par.sy = Math.min(scrollY, hero.offsetHeight);
+  const m = `translate3d(${(-par.x * 14).toFixed(2)}px,${(par.sy * .22 - par.y * 8).toFixed(2)}px,0)`;
+  hc.style.transform = m; fxC.style.transform = m;
+}
+function sprite(size, draw) { const c = document.createElement('canvas'); c.width = c.height = size; draw(c.getContext('2d'), size); return c; }
+const DOT = sprite(64, (g, n) => { const r = g.createRadialGradient(n / 2, n / 2, 0, n / 2, n / 2, n / 2); r.addColorStop(0, 'rgba(255,246,214,1)'); r.addColorStop(.18, 'rgba(255,222,150,.85)'); r.addColorStop(.5, 'rgba(243,190,90,.22)'); r.addColorStop(1, 'rgba(228,176,74,0)'); g.fillStyle = r; g.fillRect(0, 0, n, n); });
+const GLINT = sprite(128, (g, n) => {   // four-point sparkle: two tapered rays and a soft core
+  const c = n / 2; g.translate(c, c);
+  const halo = g.createRadialGradient(0, 0, 0, 0, 0, c * .55); halo.addColorStop(0, 'rgba(255,236,180,.75)'); halo.addColorStop(1, 'rgba(255,214,140,0)'); g.fillStyle = halo; g.beginPath(); g.arc(0, 0, c * .55, 0, 7); g.fill();
+  g.fillStyle = 'rgba(255,248,226,.95)';
+  for (let k = 0; k < 2; k++) { g.beginPath(); g.moveTo(0, -c); g.quadraticCurveTo(c * .07, -c * .07, c, 0); g.quadraticCurveTo(c * .07, c * .07, 0, c); g.quadraticCurveTo(-c * .07, c * .07, -c, 0); g.quadraticCurveTo(-c * .07, -c * .07, 0, -c); g.fill(); g.rotate(Math.PI / 4); g.scale(.45, .45); }
+});
+const MIST = sprite(256, (g, n) => { const r = g.createRadialGradient(n / 2, n / 2, 0, n / 2, n / 2, n / 2); r.addColorStop(0, 'rgba(255,222,210,1)'); r.addColorStop(.55, 'rgba(255,214,200,.45)'); r.addColorStop(1, 'rgba(255,214,200,0)'); g.fillStyle = r; g.fillRect(0, 0, n, n); });
+function fitCanvas(c) { const r = c.getBoundingClientRect(), dpr = Math.min(devicePixelRatio || 1, 2); c.width = Math.round(r.width * dpr); c.height = Math.round(r.height * dpr); return { w: r.width, h: r.height, dpr }; }
+function mistBank(n, r, yMin, yMax, sMin, sMax, aMin, aMax) { return Array.from({ length: n }, () => ({ x: r(), y: yMin + r() * (yMax - yMin), s: sMin + r() * (sMax - sMin), a: aMin + r() * (aMax - aMin), v: (r() < .5 ? -1 : 1) * (4 + r() * 9) })); }
+function drawMist(g, bank, w, h, now, dx, dy, k) {
+  bank.forEach(m => {
+    const span = w + m.s * 2, x = (((m.x * span + (reduce ? 0 : now / 1000 * m.v)) % span) + span) % span - m.s;
+    g.globalAlpha = m.a * k; g.drawImage(MIST, x + dx, m.y * h + dy - m.s * .16, m.s * 2, m.s * .32);
+  });
+  g.globalAlpha = 1;
+}
+
+/* the sky: stars, sun bloom and signal ripples, two distant faceted ranges, and mist between them */
+const sky = {
+  g: skyC.getContext('2d'), t0: performance.now(),
+  resize() {
+    Object.assign(this, fitCanvas(skyC));
+    const { w, h } = this, r = rng(0xA21C), mob = w - PAD * 2 < 860;
+    this.stars = Array.from({ length: Math.round(Math.min(260, w * h / 5600)) }, () => { const y = Math.pow(r(), 1.5) * h * .78; return { x: r() * w, y, s: .7 + r() * r() * 1.8, ph: r() * 7, sp: .6 + r() * 2.2, b: .45 + r() * .55 }; });
+    // ranges sit lower on the left so the headline keeps a clean field
+    this.far = this.range(r, mob ? .72 : .63, mob ? .02 : .12, mob ? 30 : 58, 'far', mob ? .45 : 1);
+    this.near = this.range(r, mob ? .82 : .77, mob ? .02 : .09, mob ? 40 : 84, 'near', mob ? .45 : 1);
+    this.mistA = mistBank(mob ? 4 : 6, r, mob ? .64 : .70, mob ? .74 : .82, w * .25, w * .55, .05, .09);
+    this.mistB = mistBank(mob ? 3 : 5, r, mob ? .76 : .84, mob ? .9 : .97, w * .3, w * .6, .06, .11);
+  },
+  range(r, base, tilt, step, kind, amp) {   // a faceted strip: ridge line, a jittered middle row, and the ground
+    const { w, h, dpr } = this, c = document.createElement('canvas'); c.width = Math.round((w + 60) * dpr); c.height = Math.round(h * dpr);
+    const g = c.getContext('2d'); g.scale(dpr, dpr);
+    const ph = [r() * 7, r() * 7, r() * 7], T = [], M = [], B = [];
+    for (let x = -10; x <= w + 70; x += step * (.75 + r() * .5)) {
+      const u = x / w, wav = (.045 * Math.sin(u * 5.1 + ph[0]) + .03 * Math.sin(u * 11.3 + ph[1]) + .018 * Math.sin(u * 23 + ph[2])) * amp * (.35 + .65 * clamp01(u * 1.3)), ridge = h * (base + tilt * (1 - u) + wav);
+      T.push([x, ridge - r() * h * .025]); M.push([x + (r() - .5) * step * .5, ridge + (h - ridge) * (.35 + r() * .25)]); B.push([x + (r() - .5) * step * .4, h + 2]);
+    }
+    const tris = [];
+    for (let i = 0; i < T.length - 1; i++) { tris.push([T[i], T[i + 1], M[i]], [T[i + 1], M[i + 1], M[i]], [M[i], M[i + 1], B[i]], [M[i + 1], B[i + 1], B[i]]); }
+    const far = kind === 'far';
+    tris.forEach(([a, b, cc]) => {
+      const slope = (b[1] - a[1]) / (b[0] - a[0] || 1), lit = clamp01(.5 - slope * .9 + (r() - .5) * .25);
+      g.fillStyle = far ? `hsl(350 ${48 + lit * 8}% ${24 + lit * 6}%)` : `hsl(349 ${58 + lit * 8}% ${16 + lit * 7}%)`;
+      g.beginPath(); g.moveTo(a[0], a[1]); g.lineTo(b[0], b[1]); g.lineTo(cc[0], cc[1]); g.closePath(); g.fill();
+      g.strokeStyle = g.fillStyle; g.lineWidth = .8; g.stroke();   // seal hairline gaps between facets
+    });
+    g.strokeStyle = far ? 'rgba(243,212,138,.07)' : 'rgba(243,212,138,.11)'; g.lineWidth = 1; g.beginPath();
+    tris.forEach(([a, b, cc]) => { g.moveTo(a[0], a[1]); g.lineTo(b[0], b[1]); g.lineTo(cc[0], cc[1]); g.closePath(); }); g.stroke();
+    g.strokeStyle = far ? 'rgba(243,212,138,.18)' : 'rgba(243,212,138,.26)'; g.lineWidth = 1.2; g.beginPath(); T.forEach(([x, y], i) => i ? g.lineTo(x, y) : g.moveTo(x, y)); g.stroke();
+    if (!far) { g.fillStyle = 'rgba(243,212,138,.45)'; T.forEach(([x, y], i) => { if (i % 2) { g.beginPath(); g.arc(x, y, 1.6, 0, 7); g.fill(); } }); }
+    return c;
+  },
+  frame(now) {
+    const { g, w, h, dpr } = this, el = now - this.t0, k = reduce ? 1 : easeOut(el / 1600);
+    g.setTransform(dpr, 0, 0, dpr, 0, 0); g.clearRect(0, 0, w, h);
+    const px = reduce ? 0 : par.x, py = reduce ? 0 : par.y, sy = reduce ? 0 : par.sy;
+    // stars
+    g.fillStyle = '#FFF1DA';
+    this.stars.forEach(st => {
+      const tw = reduce ? .8 : .55 + .45 * Math.sin(now / 1000 * st.sp + st.ph);
+      g.globalAlpha = st.b * tw * k * .8; g.fillRect(st.x - px * 2, st.y - py * 2 + sy * .05, st.s, st.s);
+    });
+    g.globalAlpha = 1;
+    // sun bloom + ripples (follows the mountain's sun)
+    const f = heroM.fit, sx = f.x + SUN[0] * f.s - px * 14, syy = f.y + (SUN[1] + heroM.sunDy) * f.s + sy * .22 - py * 8, R = SUN[2] * f.s, sa = heroM.sunA;
+    if (sa > 0) {
+      g.globalCompositeOperation = 'lighter';
+      let gr = g.createRadialGradient(sx, syy, R * .8, sx, syy, R * 9); gr.addColorStop(0, `rgba(243,190,96,${.30 * sa})`); gr.addColorStop(.35, `rgba(220,120,70,${.10 * sa})`); gr.addColorStop(1, 'rgba(200,16,46,0)');
+      g.fillStyle = gr; g.fillRect(sx - R * 9, syy - R * 9, R * 18, R * 18);
+      gr = g.createRadialGradient(sx, syy, R, sx, syy, R * 2.2); gr.addColorStop(0, `rgba(255,226,150,${.38 * sa})`); gr.addColorStop(1, 'rgba(255,226,150,0)');
+      g.fillStyle = gr; g.beginPath(); g.arc(sx, syy, R * 2.2, 0, 7); g.fill();
+      g.globalCompositeOperation = 'source-over';
+      if (!reduce) for (let j = 0; j < 3; j++) {   // the sun broadcasts: rings travel outward and fade
+        const q = ((now / 5200) + j / 3) % 1; g.strokeStyle = `rgba(243,212,138,${.32 * (1 - q) * sa})`; g.lineWidth = 1.4; g.beginPath(); g.arc(sx, syy, R * (1.15 + q * 3.6), 0, 7); g.stroke();
+      }
+    }
+    // ranges and mist, each layer drifting at its own depth; they rise into place on load
+    const lift = (1 - k) * 40;
+    g.drawImage(this.far, -30 - px * 5, sy * .12 - py * 3 + lift, w + 60, h);
+    drawMist(g, this.mistA, w, h, now, -px * 7, sy * .14 - py * 4 + lift, k);
+    g.drawImage(this.near, -30 - px * 9, sy * .16 - py * 5 + lift * 1.4, w + 60, h);
+    drawMist(g, this.mistB, w, h, now, -px * 11, sy * .18 - py * 6 + lift, k);
+  }
+};
+sky.resize(); new ResizeObserver(() => sky.resize()).observe(skyC);
+
+/* sparks: gold motes rise off the network, glints flash where signals land, a tap bursts, front mist veils the base */
+const fx = {
+  g: fxC.getContext('2d'), parts: [], last: performance.now(), acc: 0, lastTrail: 0,
+  resize() { Object.assign(this, fitCanvas(fxC)); const r = rng(0x5EED); this.mist = mistBank(this.w < 900 ? 3 : 5, r, .9, 1.0, this.w * .3, this.w * .6, .07, .12); },
+  add(p) { if (this.parts.length < 220) this.parts.push(p); },
+  toScreen(q) { const f = heroM.fit; return [f.x + q.x * f.s, f.y + q.y * f.s]; },
+  glint(q, life, size) { if (reduce) return; const [x, y] = this.toScreen(q); this.add({ x, y, vx: 0, vy: -6, t: 0, life, size, kind: 1, rot: Math.random() * .8 }); },
+  burst(x, y) {
+    if (reduce) return;
+    this.add({ x, y, vx: 0, vy: 0, t: 0, life: .8, size: 22, kind: 1, rot: 0 });
+    for (let i = 0; i < 26; i++) { const a = Math.random() * Math.PI * 2, v = 70 + Math.random() * 190; this.add({ x, y, vx: Math.cos(a) * v, vy: Math.sin(a) * v - 40, t: 0, life: .7 + Math.random() * .7, size: 1.4 + Math.random() * 2.4, kind: 0, drag: 2.6, grav: 60 }); }
+  },
+  trail(ptr) { if (reduce) return; const now = performance.now(); if (now - this.lastTrail < 45) return; this.lastTrail = now; const [lx, ly] = heroM.toLogo(ptr.x, ptr.y); if (!inPoly(lx, ly)) return; this.add({ x: ptr.x, y: ptr.y, vx: (Math.random() - .5) * 16, vy: -14 - Math.random() * 22, t: 0, life: 1 + Math.random() * .8, size: 1 + Math.random() * 1.6, kind: 0 }); },
+  spawnMote() {
+    const Q = heroM.Q; if (!Q || !Q.length) return;
+    const q = Q[Math.floor(Math.random() * Q.length)], [x, y] = this.toScreen(q), s = heroM.fit.s;
+    const big = Math.random() < .14;
+    this.add({ x: x + (Math.random() - .5) * 14 * s, y: y + (Math.random() - .5) * 8 * s, vx: (Math.random() - .5) * 10, vy: -(14 + Math.random() * 30), t: 0, life: 2.6 + Math.random() * 3.4, size: big ? 4 + Math.random() * 5 : .8 + Math.random() * 1.8, kind: big ? 1 : 0, rot: Math.random() * .8, sw: Math.random() * 7, swf: .6 + Math.random() * 1.2 });
+  },
+  frame(now) {
+    const { g, w, h, dpr } = this, dt = Math.min(.05, (now - this.last) / 1000); this.last = now;
+    g.setTransform(dpr, 0, 0, dpr, 0, 0); g.clearRect(0, 0, w, h);
+    if (!reduce && !heroM.intro) { this.acc += dt * (w < 900 ? 9 : 20); while (this.acc > 1) { this.acc--; this.spawnMote(); } }
+    g.globalCompositeOperation = 'lighter';
+    this.parts = this.parts.filter(p => (p.t += dt) < p.life);
+    this.parts.forEach(p => {
+      if (p.drag) { const d = Math.exp(-p.drag * dt); p.vx *= d; p.vy *= d; }
+      if (p.grav) p.vy += p.grav * dt;
+      p.x += p.vx * dt; p.y += p.vy * dt;
+      const u = p.t / p.life, env = Math.pow(Math.sin(Math.PI * Math.min(1, u * (p.kind ? 1 : 1.15))), p.kind ? .7 : 1.2), x = p.x + (p.sw ? Math.sin(p.t * p.swf * 2 + p.sw) * p.sw : 0);
+      if (p.kind) {
+        const tw = .75 + .25 * Math.sin(p.t * 9 + p.rot * 10), sz = p.size * 2.2 * (.6 + .4 * env) * tw;
+        g.globalAlpha = env; g.save(); g.translate(x, p.y); g.rotate(p.rot + p.t * .6); g.drawImage(GLINT, -sz, -sz, sz * 2, sz * 2); g.restore();
+      } else {
+        const sz = p.size * 4.5; g.globalAlpha = env * (.7 + .3 * Math.sin(p.t * 11 + p.size * 5)); g.drawImage(DOT, x - sz, p.y - sz, sz * 2, sz * 2);
+      }
+    });
+    g.globalCompositeOperation = 'source-over'; g.globalAlpha = 1;
+    drawMist(g, this.mist, w, h, now, 0, 0, reduce ? 1 : easeOut((now - sky.t0) / 1800));   // front mist veils the base of the range
+  }
+};
+fx.resize(); new ResizeObserver(() => fx.resize()).observe(fxC);
+
 hc.addEventListener('pointerdown', e => {
   const r = hc.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top, [lx, ly] = heroM.toLogo(x, y);
-  if (heroM.addPoint(lx, ly)) popToast(x, y);
+  if (heroM.addPoint(lx, ly)) { popToast(x, y); fx.burst(x, y); }
 });
 // idle signals from the summit so the brain is visibly alive
 if (!reduce) setInterval(() => {
@@ -1051,12 +1233,12 @@ if (reduce) { curStage = 2; stagesEl.forEach(el => el.classList.add('on')); draw
 
 /* ---------------- render loop (both canvases, paused off-screen) ---------------- */
 function loop(now) {
-  if (heroM.visible) heroM.frame(now);                       // hero always runs (calmer under reduced motion)
+  if (heroM.visible) { parallax(); sky.frame(now); heroM.frame(now); fx.frame(now); }   // hero always runs (calmer under reduced motion)
   if (stageM.visible && (!reduce || !stageM.drawn)) { stageFrame(); stageM.frame(now); stageM.drawn = true; }
   requestAnimationFrame(loop);
 }
 requestAnimationFrame(loop);
-if (reduce) { addEventListener('resize', () => { heroM.frame(performance.now()); stageM.frame(performance.now()); }); }
+if (reduce) { addEventListener('resize', () => { sky.frame(performance.now()); heroM.frame(performance.now()); stageM.frame(performance.now()); }); }
 
 /* ---------------- brain vs hands ---------------- */
 const range = $('#brainRange'), stack = $('#stack');
