@@ -6,7 +6,7 @@
 <title>ARIC — ศูนย์นวัตกรรมด้านปัญญาประดิษฐ์และหุ่นยนต์ มหาวิทยาลัยแม่ฟ้าหลวง</title>
 <meta name="description" content="ARIC ศูนย์บ่มเพาะโซลูชัน AI และหุ่นยนต์จากโจทย์จริง — ศูนย์นวัตกรรมด้านปัญญาประดิษฐ์และหุ่นยนต์ มหาวิทยาลัยแม่ฟ้าหลวง เชียงราย">
 <meta property="og:title" content="ARIC — ศูนย์บ่มเพาะโซลูชัน AI และหุ่นยนต์ จากโจทย์จริง">
-<meta property="og:description" content="ศูนย์นวัตกรรมด้านปัญญาประดิษฐ์และหุ่นยนต์ มหาวิทยาลัยแม่ฟ้าหลวง · รอบ Spark → Forge → Launch ทุก 4 เดือน">
+<meta property="og:description" content="ศูนย์นวัตกรรมด้านปัญญาประดิษฐ์และหุ่นยนต์ มหาวิทยาลัยแม่ฟ้าหลวง · บ่มเพาะทีมผ่าน Spark → Forge → Launch">
 <meta property="og:image" content="https://cnacha-mfu.github.io/aric/assets/og.jpg">
 <meta property="og:type" content="website">
 <meta name="theme-color" content="#6E0B1C">
@@ -187,16 +187,11 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
 .stage h3 .mono{font-size:13px;font-weight:500;color:var(--gold-l);letter-spacing:.05em}
 .stage p{font-size:16px;line-height:1.65;color:var(--on-red2);margin-top:6px}
 .stage p b{color:var(--on-red);font-weight:600}
-.year{display:flex;align-items:center;gap:16px;margin-top:22px;padding-left:22px}
-.year svg{width:84px;height:84px;flex:none}
-.year p{font-size:14px;line-height:1.55;color:var(--on-red3)}
-.year p b{color:var(--on-red2);font-weight:500}
 @media (max-width:900px){
   #engine{height:420vh}
   .engine-body{grid-template-columns:1fr;grid-template-rows:38svh auto;align-content:start;gap:8px}
   .stage{padding:12px 14px}.stage p{font-size:14.5px}
   .stages .stage:not(.on){display:none}
-  .year{display:none}
 }
 
 /* showcase */
@@ -492,7 +487,7 @@ footer p{line-height:1.6}
 <section id="engine" aria-labelledby="engineTitle">
   <div class="engine-sticky">
     <div class="wrap engine-head">
-      <h2 class="h2" id="engineTitle" data-en="One engine, three rounds a year">กลไกเดียว หมุนปีละ 3 รอบ</h2>
+      <h2 class="h2" id="engineTitle" data-en="One engine, from idea to market">กลไกเดียว จากไอเดียสู่ตลาด</h2>
       <p class="lead" data-en="Every round starts from a real problem and ends with customers, not just code. Each round grows a new mountain.">ทุกรอบเริ่มจากโจทย์จริง และจบที่ลูกค้า ไม่ใช่จบที่โค้ด — แต่ละรอบเติบโตเป็นภูเขาลูกใหม่</p>
     </div>
     <div class="wrap engine-body">
@@ -503,10 +498,6 @@ footer p{line-height:1.6}
           <li class="stage"><h3>Forge <span class="mono" data-en="2 MONTHS">2 เดือน</span></h3><p data-en="<b>Forge it into something real.</b> Tools, students from the Resource Pool, industry mentors and a tech PM help each team build an MVP and test it with real users.">หลอมไอเดียเป็นของจริง: <b>เครื่องมือ นักศึกษาจาก Resource Pool</b> ที่ปรึกษาจากอุตสาหกรรม และ Tech PM ช่วยทีมสร้าง MVP แล้วทดสอบกับผู้ใช้จริง</p></li>
           <li class="stage"><h3>Launch <span class="mono" data-en="1 MONTH">1 เดือน</span></h3><p data-en="<b>To market.</b> Teams meet customers and investors at national events; the customers they meet become the next round's problems.">ส่งสู่ตลาด: พบลูกค้าและนักลงทุนในงานระดับประเทศ <b>ลูกค้าที่ได้พบกลายเป็นโจทย์ของรอบถัดไป</b></p></li>
         </ol>
-        <div class="year">
-          <svg viewBox="0 0 84 84" id="yearRing" aria-hidden="true"></svg>
-          <p data-en="<b>3 rounds × 4 months.</b> 9 teams a year; phase 1 target: 10 working MVPs in 2 years.">3 รอบ × 4 เดือน · <b>ปีละ 9 ทีม</b> · เป้าหมายระยะที่ 1: MVP ที่ใช้งานได้ 10 ชิ้นใน 2 ปี</p>
-        </div>
       </div>
     </div>
   </div>
@@ -1214,22 +1205,10 @@ function onEngineScroll() {
   const r = engine.getBoundingClientRect(), span = engine.offsetHeight - innerHeight;
   prog = Math.max(0, Math.min(1, -r.top / span));
   const s = Math.min(2, Math.floor(prog * 3 * .999));
-  if (s !== curStage) { curStage = s; stagesEl.forEach((el, i) => el.classList.toggle('on', i === s)); setStageNote(); drawYear(s); }
+  if (s !== curStage) { curStage = s; stagesEl.forEach((el, i) => el.classList.toggle('on', i === s)); setStageNote(); }
 }
 addEventListener('scroll', onEngineScroll, { passive: true });
-// year ring: 3 rounds × (Spark 1 · Forge 2 · Launch 1 month)
-function drawYear(active) {
-  const svg = $('#yearRing'); let h = ''; const cx = 42, cy = 42, R = 32;
-  for (let m = 0; m < 12; m++) {
-    const st = [0, 1, 1, 2][m % 4], a0 = (m / 12) * Math.PI * 2 - Math.PI / 2 + .04, a1 = ((m + 1) / 12) * Math.PI * 2 - Math.PI / 2 - .04;
-    const x0 = cx + R * Math.cos(a0), y0 = cy + R * Math.sin(a0), x1 = cx + R * Math.cos(a1), y1 = cy + R * Math.sin(a1);
-    const col = st === active ? '#F3D48A' : 'rgba(255,236,228,.22)';
-    h += `<path d="M${x0.toFixed(1)} ${y0.toFixed(1)} A${R} ${R} 0 0 1 ${x1.toFixed(1)} ${y1.toFixed(1)}" stroke="${col}" stroke-width="7" fill="none"/>`;
-  }
-  h += `<text x="42" y="47" text-anchor="middle" font-family="Martian Mono" font-size="15" fill="#FFF4EF">×3</text>`;
-  svg.innerHTML = h;
-}
-if (reduce) { curStage = 2; stagesEl.forEach(el => el.classList.add('on')); drawYear(2); setStageNote(); } else { onEngineScroll(); }
+if (reduce) { curStage = 2; stagesEl.forEach(el => el.classList.add('on')); setStageNote(); } else { onEngineScroll(); }
 
 /* ---------------- render loop (both canvases, paused off-screen) ---------------- */
 function loop(now) {
