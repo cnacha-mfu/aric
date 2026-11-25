@@ -243,7 +243,7 @@ const T = {
   pendingNote:'ผู้ใช้ที่เข้าสู่ระบบครั้งแรกจะได้บทบาท “เจ้าหน้าที่” และยังไม่เห็นข้อมูลใด จนกว่าผู้ดูแลระบบจะเพิ่มเข้าบอร์ดหรือมอบหมายงาน',
   loginFail:'เข้าสู่ระบบไม่สำเร็จ', adminLbl:'ผู้ดูแลระบบ', staffLbl:'เจ้าหน้าที่',
   dashSub:'ภาพรวมของศูนย์วันนี้ — โจทย์ที่เข้ามา งานที่ค้าง และความคืบหน้าการออนบอร์ด', dashStaffSub:'งาน บอร์ด และโจทย์ที่คุณได้รับสิทธิ์',
-  kNew:'โจทย์ใหม่ (รอคัดกรอง)', kShort:'คัดเลือกเป็นโจทย์แล้ว', kOpen:'งานที่ยังเปิดอยู่', kLate:'งานเลยกำหนด', kOnb:'ความคืบหน้าออนบอร์ดเฉลี่ย',
+  shortForm:'แบบสั้น · รอโทรคุย', kNew:'โจทย์ใหม่ (รอคัดกรอง)', kShort:'คัดเลือกเป็นโจทย์แล้ว', kOpen:'งานที่ยังเปิดอยู่', kLate:'งานเลยกำหนด', kOnb:'ความคืบหน้าออนบอร์ดเฉลี่ย',
   kMine:'งานของฉันที่ยังเปิด', kMineLate:'งานของฉันที่เลยกำหนด', kMyPP:'โจทย์ที่มอบหมายให้ฉัน', myBoards:'บอร์ดที่ฉันเป็นสมาชิก', my:'งานของฉัน',
   pipe:'สถานะโจทย์จากพันธมิตร', load:'ภาระงานต่อคน', late:'ใกล้ถึง/เลยกำหนด', onbProg:'ความคืบหน้าออนบอร์ด', sectors:'โจทย์ตามภาคส่วน',
   ppSub:'โจทย์ปัญหาจริงจากภาคอุตสาหกรรม เจ้าของกิจการ และศิษย์เก่า — คัดกรองเพื่อใช้ใน Spark Hackathon', ppSubStaff:'เฉพาะโจทย์ที่ผู้ดูแลระบบมอบหมายให้คุณดูแล',
@@ -272,7 +272,7 @@ const T = {
   pendingNote:'People who sign in for the first time get the Staff role and see nothing until the admin adds them to a board or assigns them work.',
   loginFail:'Sign-in failed', adminLbl:'Admin', staffLbl:'Staff',
   dashSub:'Today at ARIC — incoming pain points, open work and onboarding progress', dashStaffSub:'The tasks, boards and pain points you have access to',
-  kNew:'New pain points (to triage)', kShort:'Shortlisted as challenges', kOpen:'Open tasks', kLate:'Overdue tasks', kOnb:'Average onboarding progress',
+  shortForm:'Short form · call back', kNew:'New pain points (to triage)', kShort:'Shortlisted as challenges', kOpen:'Open tasks', kLate:'Overdue tasks', kOnb:'Average onboarding progress',
   kMine:'My open tasks', kMineLate:'My overdue tasks', kMyPP:'Pain points assigned to me', myBoards:'Boards I belong to', my:'My tasks',
   pipe:'Pain-point pipeline', load:'Workload per person', late:'Due soon / overdue', onbProg:'Onboarding progress', sectors:'Pain points by sector',
   ppSub:'Real problems from industry, business owners and alumni, triaged into Spark hackathon challenges', ppSubStaff:'Only the pain points the admin has assigned to you',
@@ -436,7 +436,7 @@ function vPP(){
   if (!S.pp.length) return head + `<section class="panel bigempty"><b>${t('emptyPP')}</b><span>${isAdmin()?t('emptyPPHint'):t('noAccessHint')}</span>${isAdmin()?`<a class="btn gold" href="/challenge/" target="_blank" rel="noopener">aric.mfu.ac.th/challenge ↗</a>`:''}</section>`;
   return head + `<div class="board" data-kind="pp">${PP_STAGES.map(s => { const cards = list.filter(p => p.status === s.id).sort(byOrd); return `
    <section class="col" data-col="${s.id}"><header><i style="background:${s.c}"></i>${L(s)}<span class="n">${cards.length}</span></header>
-   ${cards.map(p => `<article class="card" data-pp="${p.id}" tabindex="0"><div class="m"><span class="mono" style="font-size:11px;color:var(--mute)">${p.ref}</span><span class="sp stars">${stars(p.priority)}</span></div><div class="t">${esc(p.title)}</div><div class="org">${esc(p.org)}</div><div class="m"><span class="chip">${esc(L(SECTORS[p.sector]) || p.sector)}</span>${p.owner_id?`<span class="sp">${av(p.owner_id)}</span>`:''}</div></article>`).join('') || '<div class="empty">—</div>'}</section>`; }).join('')}</div>`;
+   ${cards.map(p => `<article class="card" data-pp="${p.id}" tabindex="0"><div class="m"><span class="mono" style="font-size:11px;color:var(--mute)">${p.ref}</span><span class="sp stars">${stars(p.priority)}</span></div><div class="t">${esc(p.title)}</div><div class="org">${esc(p.org || p.name)}</div><div class="m">${p.sector?`<span class="chip">${esc(L(SECTORS[p.sector]) || p.sector)}</span>`:''}${p.form==='short'?`<span class="chip">${t('shortForm')}</span>`:''}${p.owner_id?`<span class="sp">${av(p.owner_id)}</span>`:''}</div></article>`).join('') || '<div class="empty">—</div>'}</section>`; }).join('')}</div>`;
 }
 function vTasks(){
   if (f.board !== 'all' && !boardOf(+f.board)) f.board = 'all';
@@ -518,8 +518,9 @@ function ppDrawer(id){
    <dt>${t('status')}</dt><dd><select data-pf="status">${opts(PP_STAGES.map(s => [s.id, L(s)]), p.status)}</select></dd>
    <dt>${t('priority')}</dt><dd><select data-pf="priority">${opts([0,1,2,3,4,5].map(n => [n, n ? stars(n) : '—']), p.priority)}</select></dd>
    <dt>${t('owner')}</dt><dd><select data-pf="owner_id" ${isAdmin()?'':'disabled'}><option value="">—</option>${opts(S.people.filter(x => x.status !== 'offered').map(x => [x.id, pname(x)]), p.owner_id)}</select></dd>
-   <dt>${t('org')}</dt><dd>${esc(p.org)}${p.position?` · ${esc(p.position)}`:''}</dd><dt>${t('type')}</dt><dd>${esc(L(RTYPES[p.rtype])||p.rtype)}</dd><dt>${t('sector')}</dt><dd>${esc(L(SECTORS[p.sector])||p.sector)}</dd>
-   <dt>${t('contact')}</dt><dd>${esc(p.name)} · ${esc(p.email)}${p.phone?` · ${esc(p.phone)}`:''}${li}</dd>
+   ${p.form==='short'?`<dt></dt><dd><span class="chip">${t('shortForm')}</span></dd>`:''}
+   <dt>${t('org')}</dt><dd>${esc([p.org, p.position].filter(Boolean).join(' · ')) || '—'}</dd><dt>${t('type')}</dt><dd>${esc(L(RTYPES[p.rtype])||p.rtype||'—')}</dd><dt>${t('sector')}</dt><dd>${esc(L(SECTORS[p.sector])||p.sector||'—')}</dd>
+   <dt>${t('contact')}</dt><dd>${esc([p.name, p.phone, p.email].filter(Boolean).join(' · '))}${li}</dd>
    <dt>${t('received')}</dt><dd class="mono">${fmtD(p.created_at)}</dd><dt>${t('publicOk')}</dt><dd>${p.public_ok?t('yes'):t('no')}</dd></dl>
   <div class="qa">${q('q_problem',p.problem)}${q('q_affected',p.affected)}${p.freq?`<div><small>${t('q_freq')}</small>${L(FREQ[p.freq])||esc(p.freq)}</div>`:''}${q('q_work',p.workaround)}${q('q_impact',p.impact)}${q('q_success',p.success)}${tags('q_data',p.data,DATA_T)}${q('q_market',p.market)}${q('q_msize',p.msize)}${tags('q_chan',p.channels,CHANNELS)}${q('q_price',p.price)}${q('q_comp',p.competitors)}${tags('involve',p.involve,INVOLVE)}${q('q_alumni',p.alumni)}</div>
   <div><h4 class="h4">${t('notes')}</h4><textarea id="ppNote" maxlength="8000">${esc(p.notes||'')}</textarea><div style="display:flex;gap:8px;margin-top:6px;flex-wrap:wrap"><button class="btn sm" id="ppSave">${t('save')}</button>${(isAdmin()||S.boards.some(b=>(b.members||[]).includes(ME())))?`<button class="btn sm pri" id="ppTask">${ico('plus')}${t('createTask')}</button>`:''}</div></div>

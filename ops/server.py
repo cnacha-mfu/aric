@@ -74,7 +74,7 @@ CREATE TABLE IF NOT EXISTS painpoints(
   ord REAL DEFAULT 0, lang TEXT DEFAULT 'th', name TEXT, org TEXT, position TEXT, email TEXT, phone TEXT, linkedin TEXT, rtype TEXT,
   sector TEXT, alumni TEXT, title TEXT, problem TEXT, affected TEXT, freq TEXT, workaround TEXT, impact TEXT, success TEXT,
   data TEXT DEFAULT '[]', market TEXT, msize TEXT, channels TEXT DEFAULT '[]', price TEXT, competitors TEXT, involve TEXT DEFAULT '[]',
-  public_ok INTEGER DEFAULT 0, consent INTEGER DEFAULT 0, ip_hash TEXT, user_agent TEXT);
+  public_ok INTEGER DEFAULT 0, consent INTEGER DEFAULT 0, ip_hash TEXT, user_agent TEXT, form TEXT DEFAULT 'long');
 CREATE TABLE IF NOT EXISTS onboarding(person_id INTEGER, item TEXT, done INTEGER DEFAULT 0, done_at TEXT, done_by INTEGER, PRIMARY KEY(person_id, item));
 CREATE TABLE IF NOT EXISTS sessions(token_hash TEXT PRIMARY KEY, person_id INTEGER NOT NULL, expires REAL NOT NULL, created_at TEXT);
 CREATE TABLE IF NOT EXISTS audit(id INTEGER PRIMARY KEY, at TEXT, person_id INTEGER, action TEXT, entity TEXT, entity_id INTEGER, detail TEXT);
@@ -96,6 +96,8 @@ def db():
 def init_db():
     with db() as c:
         c.executescript(SCHEMA)
+        if 'form' not in {r[1] for r in c.execute('PRAGMA table_info(painpoints)')}:   # short or long public form
+            c.execute("ALTER TABLE painpoints ADD COLUMN form TEXT DEFAULT 'long'")
         cols = {r[1] for r in c.execute('PRAGMA table_info(boards)')}   # columns added after release 1
         if 'ord' not in cols: c.execute('ALTER TABLE boards ADD COLUMN ord REAL DEFAULT 0'); c.execute('UPDATE boards SET ord=id')
         if 'color' not in cols:   # give existing boards distinct colours so the tabs are told apart at once
@@ -357,7 +359,7 @@ def h_pp_del(rq, c, me, m):
     p = pp_or_404(c, me, int(m[1])); c.execute('UPDATE tasks SET pp_id=NULL WHERE pp_id=?', (p['id'],)); c.execute('DELETE FROM painpoints WHERE id=?', (p['id'],))
     audit(c, me['id'], 'delete', 'painpoint', p['id'], 'PDPA / admin delete'); return {'ok': True}
 
-PP_CSV = ['id', 'created_at', 'status', 'priority', 'owner_id', 'name', 'org', 'position', 'email', 'phone', 'linkedin', 'rtype', 'sector', 'alumni',
+PP_CSV = ['id', 'created_at', 'form', 'status', 'priority', 'owner_id', 'name', 'org', 'position', 'email', 'phone', 'linkedin', 'rtype', 'sector', 'alumni',
           'title', 'problem', 'affected', 'freq', 'workaround', 'impact', 'success', 'data', 'market', 'msize', 'channels', 'price', 'competitors',
           'involve', 'public_ok', 'notes']
 
@@ -375,24 +377,27 @@ def h_public(rq, c, me, m):
     need(int(b.get('elapsed_ms') or 0) >= 2500, 400, 'please take a moment to fill in the form')
     need(rate_ok('pub:' + rq.ip, 6, 3600), 429, 'too many submissions from this network, please try again later')
     need(b.get('consent') is True, 400, 'PDPA consent is required')
-    email = txt(b.get('email'), 200, True, 'email'); need(email_ok(email), 400, 'invalid email')
+    email, phone = txt(b.get('email'), 200), txt(b.get('phone'), 100)   # the short form needs only one way to reach the owner
+    need(email or phone, 400, 'please give a phone number, LINE ID or email'); need(not email or email_ok(email), 400, 'invalid email')
+    problem = txt(b.get('problem'), 5000, True, 'problem description')
+    title = txt(b.get('title'), 300) or (lambda f: f if len(f) <= 120 else f[:117].rstrip() + '…')(problem.splitlines()[0].strip())
     li = txt(b.get('linkedin'), 300)
     need(li == '' or re.match(r'^https://([a-z]{2,3}\.)?linkedin\.com/', li, re.I), 400, 'LinkedIn link must start with https://www.linkedin.com/')
     vals = dict(
         created_at=now(), lang=pick(b.get('lang', 'th'), ['th', 'en'], 'lang'),
-        name=txt(b.get('name'), 200, True, 'name'), org=txt(b.get('org'), 200, True, 'organisation'), position=txt(b.get('position'), 200),
-        email=email, phone=txt(b.get('phone'), 100), linkedin=li, rtype=pick(b.get('rtype'), RTYPES, 'submitter type'),
-        sector=pick(b.get('sector'), SECTORS, 'sector'), alumni=txt(b.get('alumni'), 200),
-        title=txt(b.get('title'), 300, True, 'problem summary'), problem=txt(b.get('problem'), 5000, True, 'problem description'),
+        name=txt(b.get('name'), 200, True, 'name'), org=txt(b.get('org'), 200), position=txt(b.get('position'), 200),
+        email=email, phone=phone, linkedin=li, rtype=pick(b.get('rtype') or '', RTYPES + [''], 'submitter type'),
+        sector=pick(b.get('sector') or '', SECTORS + [''], 'sector'), alumni=txt(b.get('alumni'), 200),
+        title=title, problem=problem, form=pick(b.get('form') or 'long', ['short', 'long'], 'form'),
         affected=txt(b.get('affected'), 500), freq=pick(b.get('freq', ''), FREQ, 'frequency'), workaround=txt(b.get('workaround'), 2000),
         impact=txt(b.get('impact'), 2000), success=txt(b.get('success'), 2000), data=picks(b.get('data', []), DATA_TYPES, 'data'),
-        market=txt(b.get('market'), 1000, True, 'target customers'), msize=txt(b.get('msize'), 500), channels=picks(b.get('channels', []), CHANNELS, 'channels'),
+        market=txt(b.get('market'), 1000), msize=txt(b.get('msize'), 500), channels=picks(b.get('channels', []), CHANNELS, 'channels'),
         price=txt(b.get('price'), 300), competitors=txt(b.get('competitors'), 1000), involve=picks(b.get('involve', []), INVOLVE, 'involvement'),
         public_ok=1 if b.get('public_ok') is True else 0, consent=1, ip_hash=sha('ip:' + rq.ip)[:16], user_agent=(rq.headers.get('User-Agent') or '')[:200])
     mn = c.execute("SELECT COALESCE(MIN(ord),0) FROM painpoints WHERE status='new'").fetchone()[0]
     vals['ord'] = mn - 1
     cur = c.execute(f"INSERT INTO painpoints({','.join(vals)}) VALUES({','.join('?' * len(vals))})", tuple(vals.values()))
-    audit(c, None, 'submit', 'painpoint', cur.lastrowid, vals['org'])
+    audit(c, None, 'submit', 'painpoint', cur.lastrowid, vals['org'] or vals['name'])
     return {'ok': True, 'ref': f'PP-{cur.lastrowid:04d}'}
 
 # --- boards (admin)
