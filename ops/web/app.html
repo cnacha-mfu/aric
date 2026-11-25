@@ -229,7 +229,7 @@ const LS = { get(k){ try { return JSON.parse(localStorage.getItem(k)); } catch(e
 
 /* ---------------- i18n (Thai first) ---------------- */
 const T = {
- th:{tag:'ระบบปฏิบัติการศูนย์ ARIC', dash:'ภาพรวม', pp:'โจทย์จากพันธมิตร', tasks:'งาน', people:'การจัดการบุคลากร', myonb:'ออนบอร์ดของฉัน', form:'แบบฟอร์มบนเว็บไซต์ ↗',
+ th:{tag:'ระบบปฏิบัติการศูนย์ ARIC', dash:'ภาพรวม', pp:'โจทย์', tasks:'งาน', people:'บุคลากร', myonb:'ออนบอร์ดของฉัน', form:'แบบฟอร์มบนเว็บไซต์ ↗',
   signOut:'ออกจากระบบ', signInBtn:'เข้าสู่ระบบด้วยอีเมล MFU', signInNote:'ระบบปฏิบัติการศูนย์ ARIC · สำหรับบุคลากรและนักศึกษา มฟล.',
   pendingNote:'ผู้ใช้ที่เข้าสู่ระบบครั้งแรกจะได้บทบาท “เจ้าหน้าที่” และยังไม่เห็นข้อมูลใด จนกว่าผู้ดูแลระบบจะเพิ่มเข้าบอร์ดหรือมอบหมายงาน',
   loginFail:'เข้าสู่ระบบไม่สำเร็จ', adminLbl:'ผู้ดูแลระบบ', staffLbl:'เจ้าหน้าที่',
@@ -257,7 +257,7 @@ const T = {
   emptyPP:'ยังไม่มีโจทย์', emptyPPHint:'ส่งลิงก์แบบฟอร์ม aric.mfu.ac.th/challenge ให้ภาคอุตสาหกรรม เจ้าของกิจการ และศิษย์เก่า โจทย์จะเข้ามาที่คอลัมน์ “ใหม่”',
   noAccess:'ยังไม่มีงานหรือบอร์ดสำหรับคุณ', noAccessHint:'ผู้ดูแลระบบจะเพิ่มคุณเข้าบอร์ดหรือมอบหมายงานให้ แล้วงานจะปรากฏที่นี่',
   noBoards:'ยังไม่มีบอร์ด', loadFail:'โหลดข้อมูลไม่สำเร็จ', retry:'ลองอีกครั้ง', untitled:'งานใหม่', followUp:'ติดตามโจทย์: ', none:'—'},
- en:{tag:'ARIC operating system', dash:'Overview', pp:'Partner pain points', tasks:'Tasks', people:'People management', myonb:'My onboarding', form:'Form on the public site ↗',
+ en:{tag:'ARIC operating system', dash:'Overview', pp:'Challenges', tasks:'Tasks', people:'People', myonb:'My onboarding', form:'Form on the public site ↗',
   signOut:'Sign out', signInBtn:'Sign in with MFU email', signInNote:'ARIC operating system · for MFU staff and students',
   pendingNote:'People who sign in for the first time get the Staff role and see nothing until the admin adds them to a board or assigns them work.',
   loginFail:'Sign-in failed', adminLbl:'Admin', staffLbl:'Staff',
