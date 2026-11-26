@@ -168,6 +168,11 @@ textarea{width:100%;background:var(--bg);border:1px solid var(--rule);border-rad
 .cm .c small{color:var(--mute);font-family:var(--mono);font-size:11px;margin-left:6px}
 .f{display:flex;flex-direction:column;gap:5px;min-width:0}
 .f label,.f .lbl{font-size:13px;font-weight:500;color:var(--ink2)}
+.cks{display:flex;flex-wrap:wrap;gap:6px 16px}
+.f .cks label{display:flex;align-items:center;gap:7px;font-weight:400;font-size:13.5px;color:var(--ink);cursor:pointer}
+.edgrp{display:flex;flex-direction:column;gap:12px;padding-top:14px;border-top:1px solid var(--rule)}
+.edgrp>h4{margin:0;font-size:13px;letter-spacing:.04em;color:var(--mute);font-weight:600}
+.ed2{display:grid;grid-template-columns:1fr 1fr;gap:12px}@media (max-width:560px){.ed2{grid-template-columns:1fr}}
 .f input,.f select,.f textarea{background:var(--bg);border:1px solid var(--rule);border-radius:9px;padding:8px 10px}
 .f .hint{font-size:12px;color:var(--mute)}
 .frow{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
@@ -243,7 +248,7 @@ const T = {
   pendingNote:'ผู้ใช้ที่เข้าสู่ระบบครั้งแรกจะได้บทบาท “เจ้าหน้าที่” และยังไม่เห็นข้อมูลใด จนกว่าผู้ดูแลระบบจะเพิ่มเข้าบอร์ดหรือมอบหมายงาน',
   loginFail:'เข้าสู่ระบบไม่สำเร็จ', adminLbl:'ผู้ดูแลระบบ', staffLbl:'เจ้าหน้าที่',
   dashSub:'ภาพรวมของศูนย์วันนี้ — โจทย์ที่เข้ามา งานที่ค้าง และความคืบหน้าการออนบอร์ด', dashStaffSub:'งาน บอร์ด และโจทย์ที่คุณได้รับสิทธิ์',
-  shortForm:'แบบสั้น · รอโทรคุย', kNew:'โจทย์ใหม่ (รอคัดกรอง)', kShort:'คัดเลือกเป็นโจทย์แล้ว', kOpen:'งานที่ยังเปิดอยู่', kLate:'งานเลยกำหนด', kOnb:'ความคืบหน้าออนบอร์ดเฉลี่ย',
+  shortForm:'แบบสั้น · รอโทรคุย', editPP:'แก้ไขโจทย์', ppTitle:'หัวข้อโจทย์', subName:'ชื่อผู้ส่งโจทย์', position:'ตำแหน่ง', anyEmail:'อีเมล', edSubmitter:'ผู้ส่งโจทย์', edProblem:'โจทย์', edMarket:'ตลาดและการมีส่วนร่วม', kNew:'โจทย์ใหม่ (รอคัดกรอง)', kShort:'คัดเลือกเป็นโจทย์แล้ว', kOpen:'งานที่ยังเปิดอยู่', kLate:'งานเลยกำหนด', kOnb:'ความคืบหน้าออนบอร์ดเฉลี่ย',
   kMine:'งานของฉันที่ยังเปิด', kMineLate:'งานของฉันที่เลยกำหนด', kMyPP:'โจทย์ที่มอบหมายให้ฉัน', myBoards:'บอร์ดที่ฉันเป็นสมาชิก', my:'งานของฉัน',
   pipe:'สถานะโจทย์จากพันธมิตร', load:'ภาระงานต่อคน', late:'ใกล้ถึง/เลยกำหนด', onbProg:'ความคืบหน้าออนบอร์ด', sectors:'โจทย์ตามภาคส่วน',
   ppSub:'โจทย์ปัญหาจริงจากภาคอุตสาหกรรม เจ้าของกิจการ และศิษย์เก่า — คัดกรองเพื่อใช้ใน Spark Hackathon', ppSubStaff:'เฉพาะโจทย์ที่ผู้ดูแลระบบมอบหมายให้คุณดูแล',
@@ -272,7 +277,7 @@ const T = {
   pendingNote:'People who sign in for the first time get the Staff role and see nothing until the admin adds them to a board or assigns them work.',
   loginFail:'Sign-in failed', adminLbl:'Admin', staffLbl:'Staff',
   dashSub:'Today at ARIC — incoming pain points, open work and onboarding progress', dashStaffSub:'The tasks, boards and pain points you have access to',
-  shortForm:'Short form · call back', kNew:'New pain points (to triage)', kShort:'Shortlisted as challenges', kOpen:'Open tasks', kLate:'Overdue tasks', kOnb:'Average onboarding progress',
+  shortForm:'Short form · call back', editPP:'Edit challenge', ppTitle:'Challenge title', subName:'Submitter name', position:'Position', anyEmail:'Email', edSubmitter:'Submitter', edProblem:'The challenge', edMarket:'Market and involvement', kNew:'New pain points (to triage)', kShort:'Shortlisted as challenges', kOpen:'Open tasks', kLate:'Overdue tasks', kOnb:'Average onboarding progress',
   kMine:'My open tasks', kMineLate:'My overdue tasks', kMyPP:'Pain points assigned to me', myBoards:'Boards I belong to', my:'My tasks',
   pipe:'Pain-point pipeline', load:'Workload per person', late:'Due soon / overdue', onbProg:'Onboarding progress', sectors:'Pain points by sector',
   ppSub:'Real problems from industry, business owners and alumni, triaged into Spark hackathon challenges', ppSubStaff:'Only the pain points the admin has assigned to you',
@@ -368,7 +373,7 @@ const priChip = p => p ? `<span class="pr ${p}">${t({h:'hi',m:'md',l:'lo'}[p])}<
 const stars = n => n ? '★'.repeat(n) + '☆'.repeat(5-n) : '';
 const onbPct = id => Math.round(100 * S.onb.filter(o => o.person_id === id).length / ONB.length);
 const onbDone = (pid, item) => S.onb.some(o => o.person_id === pid && o.item === item);
-const ICON = {dash:'<path d="M3 13h8V3H3zM13 21h8V11h-8zM3 21h8v-6H3zM13 3v6h8V3z"/>', pp:'<path d="M4 4h16v12H5.2L4 17.2zM8 9h8M8 12h5"/>', tasks:'<path d="M4 4h4v16H4zM10 4h4v10h-4zM16 4h4v13h-4z"/>', people:'<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c1-3.5 3.5-5.5 6.5-5.5s5.5 2 6.5 5.5M16 4.5a3.5 3.5 0 0 1 0 7M18 14.8c1.8.8 3 2.5 3.5 5.2"/>', myonb:'<path d="M9 6h11M9 12h11M9 18h11M3.5 6l1.5 1.5L7.5 5M3.5 12l1.5 1.5 2.5-2.5M3.5 18l1.5 1.5 2.5-2.5"/>', form:'<path d="M6 3h9l4 4v14H6zM14 3v5h5M9 12h7M9 16h7"/>', plus:'<path d="M12 5v14M5 12h14"/>', down:'<path d="M12 4v12M6 11l6 6 6-6M5 20h14"/>'};
+const ICON = {edit:'<path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13.5 6.5l4 4"/>', dash:'<path d="M3 13h8V3H3zM13 21h8V11h-8zM3 21h8v-6H3zM13 3v6h8V3z"/>', pp:'<path d="M4 4h16v12H5.2L4 17.2zM8 9h8M8 12h5"/>', tasks:'<path d="M4 4h4v16H4zM10 4h4v10h-4zM16 4h4v13h-4z"/>', people:'<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c1-3.5 3.5-5.5 6.5-5.5s5.5 2 6.5 5.5M16 4.5a3.5 3.5 0 0 1 0 7M18 14.8c1.8.8 3 2.5 3.5 5.2"/>', myonb:'<path d="M9 6h11M9 12h11M9 18h11M3.5 6l1.5 1.5L7.5 5M3.5 12l1.5 1.5 2.5-2.5M3.5 18l1.5 1.5 2.5-2.5"/>', form:'<path d="M6 3h9l4 4v14H6zM14 3v5h5M9 12h7M9 16h7"/>', plus:'<path d="M12 5v14M5 12h14"/>', down:'<path d="M12 4v12M6 11l6 6 6-6M5 20h14"/>'};
 const ico = k => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICON[k]}</svg>`;
 const header = (title, sub, right='') => `<div class="top"><div class="grow"><h1>${title}</h1><p>${sub}</p></div>${right}</div>`;
 const byOrd = (a, b) => (a.ord ?? 0) - (b.ord ?? 0) || a.id - b.id;
@@ -524,7 +529,7 @@ function ppDrawer(id){
    <dt>${t('received')}</dt><dd class="mono">${fmtD(p.created_at)}</dd><dt>${t('publicOk')}</dt><dd>${p.public_ok?t('yes'):t('no')}</dd></dl>
   <div class="qa">${q('q_problem',p.problem)}${q('q_affected',p.affected)}${p.freq?`<div><small>${t('q_freq')}</small>${L(FREQ[p.freq])||esc(p.freq)}</div>`:''}${q('q_work',p.workaround)}${q('q_impact',p.impact)}${q('q_success',p.success)}${tags('q_data',p.data,DATA_T)}${q('q_market',p.market)}${q('q_msize',p.msize)}${tags('q_chan',p.channels,CHANNELS)}${q('q_price',p.price)}${q('q_comp',p.competitors)}${tags('involve',p.involve,INVOLVE)}${q('q_alumni',p.alumni)}</div>
   <div><h4 class="h4">${t('notes')}</h4><textarea id="ppNote" maxlength="8000">${esc(p.notes||'')}</textarea><div style="display:flex;gap:8px;margin-top:6px;flex-wrap:wrap"><button class="btn sm" id="ppSave">${t('save')}</button>${(isAdmin()||S.boards.some(b=>(b.members||[]).includes(ME())))?`<button class="btn sm pri" id="ppTask">${ico('plus')}${t('createTask')}</button>`:''}</div></div>
-  ${isAdmin()?`<div><button class="btn sm danger" id="ppDel">${t('delPP')}</button></div>`:''}`);
+  ${isAdmin()?`<div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn sm" id="ppEdit">${ico('edit')}${t('editPP')}</button><button class="btn sm danger" id="ppDel">${t('delPP')}</button></div>`:''}`);
   $('#layer').querySelectorAll('[data-pf]').forEach(el => el.onchange = () => { const k = el.dataset.pf; const v = k === 'status' ? el.value : (el.value === '' ? null : +el.value); act(() => api('PATCH', `/os/api/pp/${id}`, {[k]: v}), t('saved')).catch(()=>{}); });
   $('#ppSave').onclick = () => act(() => api('PATCH', `/os/api/pp/${id}`, {notes: $('#ppNote').value}), t('saved')).catch(()=>{});
   const mk = $('#ppTask'); if (mk) mk.onclick = async () => {
@@ -534,6 +539,45 @@ function ppDrawer(id){
     if (r) taskDrawer(r.id);
   };
   const del = $('#ppDel'); if (del) armDelete(del, async () => { await act(() => api('DELETE', `/os/api/pp/${id}`), t('deleted')); closeDrawer(); });
+  const ed = $('#ppEdit'); if (ed) ed.onclick = () => ppEditDrawer(id);
+}
+function ppEditDrawer(id){   // admin: edit every field of a challenge
+  const p = S.pp.find(y => y.id === id); if (!p || !isAdmin()) return;
+  const inp = (k, lbl, n, type='text') => `<div class="f"><label for="pe_${k}">${lbl}${['title','name'].includes(k)?' *':''}</label><input id="pe_${k}" data-pe="${k}" type="${type}" maxlength="${n}" value="${esc(p[k]||'')}"></div>`;
+  const area = (k, lbl, n, h=70) => `<div class="f"><label for="pe_${k}">${lbl}${k==='problem'?' *':''}</label><textarea id="pe_${k}" data-pe="${k}" maxlength="${n}" style="min-height:${h}px">${esc(p[k]||'')}</textarea></div>`;
+  const sel = (k, lbl, dict) => `<div class="f"><label for="pe_${k}">${lbl}</label><select id="pe_${k}" data-pe="${k}"><option value="">—</option>${opts(Object.entries(dict).map(([v,o]) => [v, L(o)]), p[k]||'')}</select></div>`;
+  const cks = (k, lbl, dict) => `<div class="f"><span class="lbl">${lbl}</span><div class="cks" data-pk="${k}">${Object.entries(dict).map(([v,o]) => `<label><input type="checkbox" value="${v}" ${(p[k]||[]).includes(v)?'checked':''}>${esc(L(o))}</label>`).join('')}</div></div>`;
+  openDrawer(`${p.ref} · ${t('editPP')}`, `
+   ${inp('title', t('ppTitle'), 300)}
+   <div class="edgrp"><h4>${t('edSubmitter')}</h4>
+    <div class="ed2">${inp('name', t('subName'), 200)}${inp('org', t('org'), 200)}</div>
+    <div class="ed2">${inp('position', t('position'), 200)}${sel('rtype', t('type'), RTYPES)}</div>
+    <div class="ed2">${inp('email', t('anyEmail'), 200, 'email')}${inp('phone', t('phone'), 100)}</div>
+    <div class="ed2">${inp('linkedin', 'LinkedIn', 300, 'url')}${inp('alumni', t('q_alumni'), 200)}</div>
+   </div>
+   <div class="edgrp"><h4>${t('edProblem')}</h4>
+    <div class="ed2">${sel('sector', t('sector'), SECTORS)}${sel('freq', t('q_freq'), FREQ)}</div>
+    ${area('problem', t('q_problem'), 5000, 180)}${area('affected', t('q_affected'), 500, 50)}${area('workaround', t('q_work'), 2000)}${area('impact', t('q_impact'), 2000)}${area('success', t('q_success'), 2000)}
+    ${cks('data', t('q_data'), DATA_T)}
+   </div>
+   <div class="edgrp"><h4>${t('edMarket')}</h4>
+    ${area('market', t('q_market'), 1000, 50)}<div class="ed2">${inp('msize', t('q_msize'), 500)}${inp('price', t('q_price'), 300)}</div>${area('competitors', t('q_comp'), 1000, 50)}
+    ${cks('channels', t('q_chan'), CHANNELS)}${cks('involve', t('involve'), INVOLVE)}
+    <div class="f"><div class="cks"><label><input type="checkbox" id="pe_public" ${p.public_ok?'checked':''}>${t('publicOk')}</label></div></div>
+   </div>
+   <div style="display:flex;gap:8px;flex-wrap:wrap;position:sticky;bottom:-20px;background:var(--panel);padding:12px 0"><button class="btn pri" id="peSave">${t('save')}</button><button class="btn" id="peCancel">${t('cancel')}</button></div>`);
+  $('#peCancel').onclick = () => ppDrawer(id);
+  $('#peSave').onclick = async () => {
+    const body = {};
+    $('#layer').querySelectorAll('[data-pe]').forEach(el => { body[el.dataset.pe] = el.value.trim(); });
+    $('#layer').querySelectorAll('[data-pk]').forEach(el => { body[el.dataset.pk] = [...el.querySelectorAll('input:checked')].map(i => i.value); });
+    body.public_ok = $('#pe_public').checked;
+    const miss = ['title','name','problem'].find(k => !body[k]);
+    if (miss) { toast(`${$('label[for="pe_' + miss + '"]').textContent.replace(' *','')}: ${lang==='th'?'ต้องกรอก':'required'}`, true); $('#pe_' + miss).focus(); return; }
+    const ok = await act(() => api('PATCH', `/os/api/pp/${id}`, body), t('saved')).then(() => true).catch(() => false);
+    if (ok) ppDrawer(id);
+  };
+  $('#pe_title').focus();
 }
 function boardDrawer(editId){
   const b = editId ? boardOf(editId) : null;

@@ -50,6 +50,10 @@ DATA_TYPES = ['img', 'vid', 'doc', 'sheet', 'iot', 'none']
 CHANNELS = ['buy', 'refer', 'distribute', 'invest', 'unsure']
 INVOLVE = ['owner', 'mentor', 'visit', 'sponsor', 'pilot', 'hire']
 KINDS = ['staff', 'intern', 'mentor']
+PP_EDIT_TXT = {'title': 300, 'name': 200, 'org': 200, 'position': 200, 'email': 200, 'phone': 100, 'linkedin': 300, 'alumni': 200,
+               'problem': 5000, 'affected': 500, 'workaround': 2000, 'impact': 2000, 'success': 2000, 'market': 1000, 'msize': 500,
+               'price': 300, 'competitors': 1000}   # max lengths, as on the public form
+PP_EDIT_OTHER = ('rtype', 'sector', 'freq', 'data', 'channels', 'involve', 'public_ok')
 PSTATUS = ['offered', 'confirmed', 'onboarding', 'active', 'alumni']
 ONB_ITEMS = [f'o{i}' for i in range(1, 13)]
 BOARD_COLORS = ['#C8102E', '#2F5D9A', '#B7791F', '#2E7D5B', '#6B5B95', '#0D3B66', '#8A5A2B', '#3F8F6F', '#7A4E9A', '#6E0B1C']   # same set as the app's swatches
@@ -341,9 +345,24 @@ def h_pp_edit(rq, c, me, m):
     if 'owner_id' in b:
         need(is_admin(me), 403, 'only the admin assigns pain points')
         need(b['owner_id'] is None or row(c, 'SELECT id FROM people WHERE id=?', (b['owner_id'],)), 400, 'unknown person'); sets['owner_id'] = b['owner_id']
+    edited = [k for k in b if k in PP_EDIT_TXT or k in PP_EDIT_OTHER]   # the challenge's own content: admin only
+    if edited:
+        need(is_admin(me), 403, 'only the admin edits challenge details')
+        for k, n in PP_EDIT_TXT.items():
+            if k in b: sets[k] = txt(b[k], n, k in ('title', 'problem', 'name'), k)
+        need(not sets.get('email') or email_ok(sets['email']), 400, 'invalid email')
+        need(not sets.get('linkedin') or re.match(r'^https://([a-z]{2,3}\.)?linkedin\.com/', sets['linkedin'], re.I), 400, 'LinkedIn link must start with https://www.linkedin.com/')
+        if 'rtype' in b: sets['rtype'] = pick(b['rtype'] or '', RTYPES + [''], 'submitter type')
+        if 'sector' in b: sets['sector'] = pick(b['sector'] or '', SECTORS + [''], 'sector')
+        if 'freq' in b: sets['freq'] = pick(b['freq'] or '', FREQ, 'frequency')
+        for k, allowed in (('data', DATA_TYPES), ('channels', CHANNELS), ('involve', INVOLVE)):
+            if k in b: sets[k] = picks(b[k], allowed, k)
+        if 'public_ok' in b: sets['public_ok'] = 1 if b['public_ok'] is True else 0
     need(sets, 400, 'nothing to change')
     c.execute(f"UPDATE painpoints SET {', '.join(k + '=?' for k in sets)} WHERE id=?", (*sets.values(), p['id']))
-    audit(c, me['id'], 'update', 'painpoint', p['id'], {k: v for k, v in sets.items() if k != 'notes'}); return {'ok': True}
+    detail = {k: v for k, v in sets.items() if k in ('status', 'priority', 'owner_id')}
+    if edited: detail['edited'] = sorted(edited)
+    audit(c, me['id'], 'update', 'painpoint', p['id'], detail); return {'ok': True}
 
 @route('POST', '/os/api/pp/reorder')
 def h_pp_order(rq, c, me, m):
